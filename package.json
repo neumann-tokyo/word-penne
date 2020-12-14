@@ -2,8 +2,16 @@
   "name": "word-penne",
   "version": "0.0.1",
   "private": true,
+  "scripts": {
+    "dev": "shadow-cljs watch app"
+  },
   "devDependencies": {
     "shadow-cljs": "2.11.8"
   },
-  "dependencies": {}
+  "dependencies": {
+    "highlight.js": "9.18.1",
+    "react": "16.14.0",
+    "react-dom": "16.14.0",
+    "react-highlight.js": "1.0.7"
+  }
 }
