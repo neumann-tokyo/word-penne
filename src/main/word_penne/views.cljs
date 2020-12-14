@@ -1,16 +1,18 @@
 (ns word-penne.views
   (:require [re-frame.core :as re-frame]
-            [word-penne.subs :as subs]))
+            [bidi.bidi :refer [path-for]]
+            [word-penne.subs :as subs]
+            [word-penne.routes :refer [routes]]))
 
 (defmulti view :handler)
 
 (defmethod view ::home [_]
   [:div "Home"
-   [:a {:href "/list"} "list"]])
+   [:a {:href (path-for routes :word-penne.views/list)} "list"]])
 
 (defmethod view ::list [_]
   [:div "Todo List"
-   [:a {:href "/"} "top"]])
+   [:a {:href (path-for routes :word-penne.views/home)} "top"]])
 
 (defmethod view ::create [_]
   [:div "Create New Todo"])
