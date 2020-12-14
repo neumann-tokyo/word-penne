@@ -1,0 +1,10 @@
+;; shadow-cljs configuration
+{:source-paths
+ ["src/main"
+  "src/test"]
+
+ :dependencies
+ []
+
+ :builds
+ {}}
