@@ -7,15 +7,17 @@
    :position "fixed"
    :top 0
    :width "100%"
+   :height "40px"
    :display "flex"
    :align-items "center"
-   :box-sizing "border-box"})
+   :box-sizing "border-box"
+   :flex-wrap "wrap"})
 
 (def s-link
   {})
 
 (def s-search-container
-  {})
+  {:flex 1})
 
 (defn Header []
   [:header (use-style s-topnav)

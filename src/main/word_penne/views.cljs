@@ -35,33 +35,31 @@
 (def s-main-panel
   {:background-color "#F9F5F1"
    :min-height "100vh"
-   :display "grid"
-   :grid-template-areas "'header header header' 'nav content side' 'footer footer footer'"
-   :grid-template-columns "200px 1fr 200px"
-   :grid-template-rows "auto 1fr auto"
-   :grid-gap "10px"})
+   :display "flex"
+   :flex-direction "column"})
 
 (def s-header
-  {:grid-area "header"})
+  {})
+
+(def layout-body
+  {:display "flex"
+   :flex 1
+   :margin-top "50px"})
 
 (def s-nav
-  {:grid-area "nav"
-   :margine-left "0.5rem"})
+  {:flex "0 0 12rem"
+   :order -1})
 
 (def s-main
-  {:grid-area "content"})
-
-(def s-aside
-  {:grid-area "side"
-   :margin-right "0.5rem"})
+  {:width "100%"})
 
 (def s-footer
-  {:grid-area "footer"})
+  {})
 
 (defn main-panel []
   [:div (use-style s-main-panel)
    [Header (use-style s-header)]
-   [:nav (use-style s-nav)]
-   [:main (use-style s-main) [view @(re-frame/subscribe [::subs/current-route])]]
-   [:aside (use-style s-aside)]
-   [:footer (use-style s-footer)]])
+   [:div (use-style layout-body)
+    [:nav (use-style s-nav) "nav"]
+    [:main (use-style s-main) [view @(re-frame/subscribe [::subs/current-route])]]]
+   [:footer (use-style s-footer) "footer"]])
