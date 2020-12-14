@@ -3,6 +3,7 @@
             [bidi.bidi :as bidi]
             [re-frame.core :as re-frame]
             [reagent.dom :as rdom]
+            [stylefy.core :as stylefy]
             [word-penne.config :as config]
             [word-penne.events :as events]
             [word-penne.routes :refer [routes]]
@@ -30,4 +31,5 @@
     :reload-same-path? true})
   (accountant/dispatch-current!)
   (dev-setup)
+  (stylefy/init)
   (mount-root))
