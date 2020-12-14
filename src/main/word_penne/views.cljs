@@ -39,12 +39,12 @@
    :flex-direction "column"})
 
 (def s-header
-  {})
+  {:position "fixed"
+   :top 0})
 
 (def layout-body
   {:display "flex"
-   :flex 1
-   :margin-top "50px"})
+   :flex 1})
 
 (def s-nav
   {:flex "0 0 12rem"

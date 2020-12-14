@@ -1,30 +1,48 @@
 (ns word-penne.components.header
-  (:require [stylefy.core :as stylefy :refer [use-style]]))
+  (:require [stylefy.core :as stylefy :refer [use-style]]
+            [word-penne.components.button :refer [Button]]))
 
+; style
 (def s-topnav
   {:overflow "hidden"
-   :border-bottom "solid 1px #e9e9e9"
-   :position "fixed"
-   :top 0
+   :border-bottom "solid 1px #cccccc"
    :width "100%"
-   :height "40px"
+   :height "4rem"
+   :padding ".5rem"
    :display "flex"
+   :justify-content "space-between"
    :align-items "center"
    :box-sizing "border-box"
    :flex-wrap "wrap"})
-
-(def s-link
-  {})
-
+(def s-title
+  {:margin "0 .5rem"})
 (def s-search-container
   {:flex 1})
+(def s-search-form
+  {:border-radius "10px"
+   :background "#dddddd"
+   :display "inline-block"})
+(def s-search-button
+  {:padding ".5rem"
+   :font-size "1.5rem"
+   :border "none"
+   :cursor "pointer"
+   :background "none"
+   ::stylefy/mode {:focus {:outline "none"}}})
+(def s-search-box
+  {:border "none"
+   :background "none"
+   :padding ".5rem"
+   :font-size "1.5rem"
+   ::stylefy/mode {:focus {:outline "none"}}})
 
 (defn Header []
   [:header (use-style s-topnav)
-   [:a {:href "/"} "Word Penne"]
+   [:a (use-style s-title {:href "/"}) "Word Penne"]
    [:div (use-style s-search-container)
-    [:input {:type "search" :placeholder "Search..." :name "search"}]
-    [:button {:type "submit"}
-     [:i {:class "material-icons"} "search"]]]
-   [:a {:href "#"} "Sign In"]
-   [:a {:href "#"} "Sign Up"]])
+    [:div (use-style s-search-form)
+     [:button (use-style s-search-button {:type "submit"})
+      [:span {:class "material-icons"} "search"]]
+     [:input (use-style s-search-box {:type "search" :placeholder "Search..." :name "search"})]]]
+   [Button {:href "#"} "Sign In"]
+   [Button {:href "#"} "Sign Up"]])
