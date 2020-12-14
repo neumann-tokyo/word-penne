@@ -27,6 +27,10 @@
 (defmethod view :default [_]
   [:div "404 Not Found"])
 
+(def main-panel-style
+  {:background-color "red"
+   :min-height "100vh"})
+
 (defn main-panel []
-  [:div "Todo App"
+  [:div (use-style main-panel-style) "Todo App"
    [view @(re-frame/subscribe [::subs/current-route])]])
