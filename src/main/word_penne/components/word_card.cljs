@@ -11,8 +11,8 @@
   {:background-color "transparent"
    :border "none"
    :perspective "1000px"
-   :width "300px"
-   :height "300px"
+   :width "10rem"
+   :height "5rem"
    ::stylefy/mode {:focus {:outline "none"}}
    ::stylefy/manual [[:&:focus [:.flipcard_inner {:transform "rotateY(180deg)"
                                                   :border "none"}]]]})
@@ -22,26 +22,25 @@
    :height "100%"
    :transition "transform 0.6s"
    :transform-style "preserve-3d"})
-(def s-flip-card-front
+
+(def m-flip-card
   {:position "absolute"
    :width "100%"
    :height "100%"
    :-webkit-backface-visibility "hidden"
    :backface-visibility "hidden"
-   :background-color "blue"
-   :font-size "2rem"
-   :font-weight "bold"
-   :text-align "center"})
-(def s-flip-card-back
-  {:width "100%"
-   :height "100%"
-   :-webkit-backface-visibility "hidden"
-   :backface-visibility "hidden"
-   :background-color "yellow"
+   :color (:main-text color)
+   :border (str "solid 1px " (:assort-border color))
+   :border-radius "1rem"
    :font-size "2rem"
    :font-weight "bold"
    :text-align "center"
-   :transform "rotateY(180deg)"})
+   :padding-top "1rem"})
+(def s-flip-card-front
+  (merge m-flip-card {:background-color (:main-background color)}))
+(def s-flip-card-back
+  (merge m-flip-card {:background-color (:assort-background color)
+                      :transform "rotateY(180deg)"}))
 
 (defn WordCard [params]
   [:div (use-style s-card)
