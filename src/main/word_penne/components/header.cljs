@@ -43,7 +43,7 @@
    [:div (use-style s-search-container)
     [:div (use-style s-search-form)
      [:button (use-style s-search-button {:type "submit"})
-      [:span {:class "material-icons"} "search"]]
+      [:span {:class "material-icons-outlined"} "search"]]
      [:input (use-style s-search-box {:type "search" :placeholder "Search..." :name "search"})]]]
    [Button {:href "#"} "Sign In"]
    [Button {:href "#"} "Sign Up"]])

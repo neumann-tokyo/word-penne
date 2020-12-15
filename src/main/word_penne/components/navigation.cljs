@@ -62,7 +62,7 @@
       [:div (use-style s-nav-close)
        [:a (use-style s-nav-close-link {:href "#"
                                         :on-click #((re-frame/dispatch [::events/set-show-navigation false]))})
-        [:span (use-style s-nav-close-icon {:class "material-icons"}) "chevron_left"]]]
+        [:span (use-style s-nav-close-icon {:class "material-icons-outlined"}) "chevron_left"]]]
       [:a (use-style s-nav-link {:href "#"}) "tag1"]
       [:a (use-style s-nav-link {:href "#"}) "tag2"]
       [:a (use-style s-nav-link {:href "#"}) "tag3"]]
@@ -70,4 +70,4 @@
       [:div (use-style s-nav-open)
        [:a (use-style s-nav-open-link {:href "#"
                                        :on-click #(re-frame/dispatch [::events/set-show-navigation true])})
-        [:span (use-style s-nav-open-icon {:class "material-icons"}) "chevron_right"]]]])])
+        [:span (use-style s-nav-open-icon {:class "material-icons-outlined"}) "chevron_right"]]]])])

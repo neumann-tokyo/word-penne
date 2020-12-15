@@ -10,7 +10,12 @@
    [:div "Home"]
    [:div
     [WordCard {:front-text "make"
-               :back-text "作る"}]]])
+               :back-text "作る"}]
+    [WordCard {:front-text "create"
+               :back-text "作る"
+               :comment "新しく作ること"}]
+    [WordCard {:front-text "have"
+               :back-text "持つ"}]
+    [WordCard {:front-text "give"
+               :back-text "あげる"}]]])
 ; [:a {:href (path-for routes :word-penne.views/list)} "list"]
-
-
