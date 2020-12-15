@@ -1,13 +1,14 @@
 (ns word-penne.components.header
   (:require [stylefy.core :as stylefy :refer [use-style]]
+            [word-penne.style.vars :refer [color layout-vars]]
             [word-penne.components.button :refer [Button]]))
 
 ; style
 (def s-topnav
   {:overflow "hidden"
-   :border-bottom "solid 1px #cccccc"
+   :border-bottom (str "solid 1px " (:assort-border color))
    :width "100%"
-   :height "4rem"
+   :height (:header-height layout-vars)
    :padding ".5rem"
    :display "flex"
    :justify-content "space-between"
@@ -20,7 +21,7 @@
   {:flex 1})
 (def s-search-form
   {:border-radius "10px"
-   :background "#dddddd"
+   :background (:assort-background color)
    :display "inline-block"})
 (def s-search-button
   {:padding ".5rem"

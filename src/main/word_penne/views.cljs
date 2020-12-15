@@ -4,6 +4,7 @@
             [bidi.bidi :refer [path-for]]
             [word-penne.subs :as subs]
             [word-penne.routes :refer [routes]]
+            [word-penne.style.vars :refer [color layout-vars]]
             [word-penne.components.header :refer [Header]]
             [word-penne.components.navigation :refer [Navigation]]))
 
@@ -31,37 +32,26 @@
   [:div "404 Not Found"])
 
 ;; ------------------
-
-;; TODO responsive
 (def s-main-panel
-  {:background-color "#F9F5F1"
-   :min-height "100vh"
-   :display "flex"
-   :flex-direction "column"
-   :transition "margin-left .5s"})
-
+  {:background-color (:main-background color)
+   :color (:main-text color)
+   :transition "margin-left .5s"
+   :height "100vh"})
 (def s-header
   {:position "fixed"
-   :top 0})
-
-(def layout-body
-  {:display "flex"
-   :flex 1})
-
-(def s-nav
-  {:flex "0 0 12rem"
-   :order -1})
-
+   :top 0
+   :width "100%"
+   :background-color "inherit"
+   :color "inherit"})
+(def s-main-container
+  {:margin-top (:header-height layout-vars)})
 (def s-main
   {:width "100%"})
 
-(def s-footer
-  {})
-
 (defn main-panel []
   [:div (use-style s-main-panel)
-   [Header (use-style s-header)]
-   [:div (use-style layout-body)
-    [Navigation (use-style s-nav)]
-    [:main (use-style s-main {:id "main"}) [view @(re-frame/subscribe [::subs/current-route])]]]
-   [:footer (use-style s-footer) "footer"]])
+   [:div (use-style s-header)
+    [Header]]
+   [:div (use-style s-main-container)
+    [Navigation]
+    [:main (use-style s-main {:id "main"}) [view @(re-frame/subscribe [::subs/current-route])]]]])
