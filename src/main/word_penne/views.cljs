@@ -43,11 +43,13 @@
    :background-color "inherit"
    :color "inherit"})
 (def s-main-container
-  {:margin-top (:header-height layout-vars)})
+  {:margin-top (:header-height layout-vars)
+   :display "flex"
+   :height "100%"})
 (def s-main
   {:width "100%"
    :transition "margin-left .5s"
-   :margin-left (if @(re-frame/subscribe [::subs/show-navigation]) (:navigation-width layout-vars) (:closed-navigation-width layout-vars))})
+   :flex 1})
 
 (defn main-panel []
   [:div (use-style s-main-panel)

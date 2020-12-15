@@ -11,3 +11,8 @@
  ::set-current-route
  (fn [db [_ route]]
    (assoc db :route route)))
+
+(re-frame/reg-event-db
+ ::set-show-navigation
+ (fn [db [_ show]]
+   (assoc db :show-navigation show)))
