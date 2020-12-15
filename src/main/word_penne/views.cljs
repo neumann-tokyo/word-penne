@@ -35,7 +35,6 @@
 (def s-main-panel
   {:background-color (:main-background color)
    :color (:main-text color)
-   :transition "margin-left .5s"
    :height "100vh"})
 (def s-header
   {:position "fixed"
@@ -47,7 +46,8 @@
   {:margin-top (:header-height layout-vars)})
 (def s-main
   {:width "100%"
-   :margin-left (:navigation-width layout-vars)})
+   :transition "margin-left .5s"
+   :margin-left (if @(re-frame/subscribe [::subs/show-navigation]) (:navigation-width layout-vars) (:closed-navigation-width layout-vars))})
 
 (defn main-panel []
   [:div (use-style s-main-panel)
