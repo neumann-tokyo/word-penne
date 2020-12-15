@@ -4,7 +4,8 @@
             [bidi.bidi :refer [path-for]]
             [word-penne.subs :as subs]
             [word-penne.routes :refer [routes]]
-            [word-penne.components.header :refer [Header]]))
+            [word-penne.components.header :refer [Header]]
+            [word-penne.components.navigation :refer [Navigation]]))
 
 (def s-home
   {:color "red"})
@@ -36,7 +37,8 @@
   {:background-color "#F9F5F1"
    :min-height "100vh"
    :display "flex"
-   :flex-direction "column"})
+   :flex-direction "column"
+   :transition "margin-left .5s"})
 
 (def s-header
   {:position "fixed"
@@ -60,6 +62,6 @@
   [:div (use-style s-main-panel)
    [Header (use-style s-header)]
    [:div (use-style layout-body)
-    [:nav (use-style s-nav) "nav"]
-    [:main (use-style s-main) [view @(re-frame/subscribe [::subs/current-route])]]]
+    [Navigation (use-style s-nav)]
+    [:main (use-style s-main {:id "main"}) [view @(re-frame/subscribe [::subs/current-route])]]]
    [:footer (use-style s-footer) "footer"]])
