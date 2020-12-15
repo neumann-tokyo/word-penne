@@ -7,7 +7,7 @@
             [word-penne.config :as config]
             [word-penne.events :as events]
             [word-penne.routes :refer [routes]]
-            [word-penne.views :as views]))
+            [word-penne.pages.main-panel :as pages]))
 
 (defn dev-setup []
   (when config/debug?
@@ -18,7 +18,7 @@
   (re-frame/clear-subscription-cache!)
   (let [root-el (.getElementById js/document "app")]
     (rdom/unmount-component-at-node root-el)
-    (rdom/render [views/main-panel] root-el)))
+    (rdom/render [pages/main-panel] root-el)))
 
 (defn ^:export init []
   (re-frame/dispatch-sync [::events/initialize-db])

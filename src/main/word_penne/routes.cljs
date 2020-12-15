@@ -3,10 +3,10 @@
             [bidi.bidi :as bidi]))
 
 (def routes
-  ["/" {"" :word-penne.views/home
-        "list" :word-penne.views/list
-        "create" :word-penne.views/create
-        [[#"\d+" :id] "/edit"] :word-penne.views/edit}])
+  ["/" {"" :word-penne.pages.home/home}])
+; "list" :word-penne.pages.cards/list
+; "create" :word-penne.pages.cards/create
+; [[#"\d+" :id] "/edit"] :word-penne.pages.cards/edit
 
 (defn navigate [view]
   (accountant/navigate! (bidi/path-for routes view)))
