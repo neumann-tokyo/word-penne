@@ -7,4 +7,5 @@
    :assort-border "#dddddd"})
 
 (def layout-vars
-  {:header-height "4rem"})
+  {:header-height "4rem"
+   :navigation-width "15rem"})

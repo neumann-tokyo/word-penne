@@ -46,7 +46,8 @@
 (def s-main-container
   {:margin-top (:header-height layout-vars)})
 (def s-main
-  {:width "100%"})
+  {:width "100%"
+   :margin-left (:navigation-width layout-vars)})
 
 (defn main-panel []
   [:div (use-style s-main-panel)
