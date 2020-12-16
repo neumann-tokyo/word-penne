@@ -10,16 +10,11 @@
 
 (def s-main-panel
   {:background-color (:main-background color)
-   :color (:main-text color)
-   :height "100vh"})
+   :color (:main-text color)})
 (def s-main-container
-  {:margin-top (:header-height layout-vars)
-   :display "flex"
-   :height "100vh"})
+  {:display "flex"})
 (def s-main
   {:width "100%"
-   :height "100vh"
-   :transition "margin-left .5s"
    :flex 1})
 
 (defn main-panel []

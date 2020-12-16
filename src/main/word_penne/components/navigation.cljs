@@ -6,12 +6,8 @@
             [word-penne.events :as events]))
 
 (def s-navigation
-  {:height "100%"
-   :padding-top ".5rem"
-   :border-right (str "1px solid " (:assort-border color))
-   :background (:main-background color)
-   :overflow-x "hidden"
-   :transition "0.5s"})
+  {:padding-top ".5rem"
+   :background (:main-background color)})
 (def s-opened-navigation
   {:width (:navigation-width layout-vars)})
 (def s-closed-navigation
@@ -50,13 +46,13 @@
    ::stylefy/mode {:hover {:background (:assort-background color)
                            :border-radius "1rem"}}})
 (def s-nav-open-icon
-  {:margin-top ".2rem"
-   :margin-right ".3rem"})
+  {:margin-top ".3rem"
+   :margin-left ".3rem"})
 
 ; https://www.w3schools.com/howto/howto_js_off-canvas.asp
 ; TODO sidnav の開閉
 (defn Navigation []
-  [:nav (use-style s-navigation {:id "sidenav"})
+  [:nav (use-style s-navigation)
    (if @(re-frame/subscribe [::subs/show-navigation])
      [:div (use-style s-opened-navigation)
       [:div (use-style s-nav-close)
@@ -70,4 +66,4 @@
       [:div (use-style s-nav-open)
        [:a (use-style s-nav-open-link {:href "#"
                                        :on-click #(re-frame/dispatch [::events/set-show-navigation true])})
-        [:span (use-style s-nav-open-icon {:class "material-icons-outlined"}) "chevron_right"]]]])])
+        [:span (use-style s-nav-open-icon {:class "material-icons-outlined"}) "menu"]]]])])

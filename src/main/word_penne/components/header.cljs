@@ -32,8 +32,7 @@
    :color (:main-text color)
    :height (:header-height layout-vars)
    :width "100%"
-  ;;  :padding ".5rem"
-   :padding "20px"
+   :padding ".5rem"
    :position "sticky"
    :top "0"
    :margin-top "-16px"
