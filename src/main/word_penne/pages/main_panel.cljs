@@ -12,25 +12,19 @@
   {:background-color (:main-background color)
    :color (:main-text color)
    :height "100vh"})
-(def s-header
-  {:position "fixed"
-   :top 0
-   :width "100%"
-   :background-color "inherit"
-   :color "inherit"})
 (def s-main-container
   {:margin-top (:header-height layout-vars)
    :display "flex"
-   :height "100%"})
+   :height "100vh"})
 (def s-main
   {:width "100%"
+   :height "100vh"
    :transition "margin-left .5s"
    :flex 1})
 
 (defn main-panel []
   [:div (use-style s-main-panel)
-   [:div (use-style s-header)
-    [Header]]
+   [Header]
    [:div (use-style s-main-container)
     [Navigation]
     [:main (use-style s-main {:id "main"}) [v/view @(re-frame/subscribe [::subs/current-route])]]]])

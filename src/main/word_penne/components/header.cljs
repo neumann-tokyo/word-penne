@@ -1,12 +1,18 @@
 (ns word-penne.components.header
   (:require [stylefy.core :as stylefy :refer [use-style]]
-            [word-penne.style.vars :refer [color layout-vars]]
+            [word-penne.style.vars :refer [color layout-vars z-indexs]]
             [word-penne.components.button :refer [Button]]))
 
+;; TODO https://stijndewitt.com/2018/06/12/pure-css-drop-shadow-on-scroll/
 ; style
 (def s-topnav
-  {:overflow "hidden"
+  {:position "fixed"
+   :top 0
+   :z-index (:header z-indexs)
+   :overflow "hidden"
    :border-bottom (str "solid 1px " (:assort-border color))
+   :background-color (:main-background color)
+   :color (:main-text color)
    :width "100%"
    :height (:header-height layout-vars)
    :padding ".5rem"
