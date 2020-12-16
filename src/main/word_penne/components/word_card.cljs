@@ -3,9 +3,7 @@
             [word-penne.style.vars :refer [color]]))
 
 (def s-card
-  {;  :border (str "solid 1px " (:assort-border color))
-  ;  :border-radius ".5rem"
-   :display "inline-block"})
+  {:display "inline-block"})
 (def s-flip-card
   {:background-color "transparent"
    :border "none"

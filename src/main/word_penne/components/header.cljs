@@ -6,20 +6,43 @@
 ;; TODO https://stijndewitt.com/2018/06/12/pure-css-drop-shadow-on-scroll/
 ; style
 (def s-topnav
-  {:position "fixed"
-   :top 0
+  {:position "sticky"
+   :top "-16px"
    :z-index (:header z-indexs)
-   :overflow "hidden"
-   :border-bottom (str "solid 1px " (:assort-border color))
+   :width "100%"
+   :height (str "calc(16px + " (:header-height layout-vars) ")")
+   :-webkit-backface-visibility "hidden"
+   :backface-visibility "hidden"
+   ::stylefy/mode {:before {:content "''"
+                            :display "block"
+                            :height "16px"
+                            :position "sticky"
+                            :top (str "calc(" (:header-height layout-vars) " - 16px)")
+                            :box-shadow (str "0 2px 4px 0 " (:assort-border color))}
+                   :after {:content "''"
+                           :display "block"
+                           :height "16px"
+                           :position "sticky"
+                           :background (:main-background color)
+                           :top 0
+                           :z-index (inc (:header z-indexs))}}})
+(def s-topnav-container
+  {:border-bottom (str "solid 1px " (:assort-border color))
    :background-color (:main-background color)
    :color (:main-text color)
-   :width "100%"
    :height (:header-height layout-vars)
-   :padding ".5rem"
+   :width "100%"
+  ;;  :padding ".5rem"
+   :padding "20px"
+   :position "sticky"
+   :top "0"
+   :margin-top "-16px"
+   :z-index 3 ;; TODO 
+   :box-sizing "border-box"
+   :overflow "hidden"
    :display "flex"
    :justify-content "space-between"
    :align-items "center"
-   :box-sizing "border-box"
    :flex-wrap "wrap"})
 (def s-title
   {:margin "0 .5rem"})
@@ -45,11 +68,12 @@
 
 (defn Header []
   [:header (use-style s-topnav)
-   [:a (use-style s-title {:href "/"}) "Word Penne"]
-   [:div (use-style s-search-container)
-    [:div (use-style s-search-form)
-     [:button (use-style s-search-button {:type "submit"})
-      [:span {:class "material-icons-outlined"} "search"]]
-     [:input (use-style s-search-box {:type "search" :placeholder "Search..." :name "search"})]]]
-   [Button {:href "#"} "Sign In"]
-   [Button {:href "#"} "Sign Up"]])
+   [:div (use-style s-topnav-container)
+    [:a (use-style s-title {:href "/"}) "Word Penne"]
+    [:div (use-style s-search-container)
+     [:div (use-style s-search-form)
+      [:button (use-style s-search-button {:type "submit"})
+       [:span {:class "material-icons-outlined"} "search"]]
+      [:input (use-style s-search-box {:type "search" :placeholder "Search..." :name "search"})]]]
+    [Button {:href "#"} "Sign In"]
+    [Button {:href "#"} "Sign Up"]]])
