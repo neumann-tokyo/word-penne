@@ -1,6 +1,8 @@
 (ns word-penne.pages.home
   (:require [stylefy.core :as stylefy :refer [use-style]]
-            [word-penne.views :refer [view]]
+            [bidi.bidi :refer [path-for]]
+            [word-penne.routes :refer [routes]]
+            [word-penne.views :as v]
             [word-penne.style.vars :refer [color layout-vars]]
             [word-penne.components.word-cards-wrap :refer [WordCardsWrap]]))
 
@@ -22,12 +24,8 @@
   {:font-size "3rem"
    :font-weight "bold"})
 
-(defmethod view ::home [_]
+(defmethod v/view ::home [_]
   [:div
-   [:a (use-style s-create-word-card-button {:href "#"})
+   [:a (use-style s-create-word-card-button {:href (path-for routes :word-penne.pages.new-card/new-card)})
     [:span (use-style s-create-word-card-button-item {:class "material-icons-outlined"}) "add"]]
    [WordCardsWrap]])
-
-;; [bidi.bidi :refer [path-for]]
-;; [word-penne.routes :refer [routes]]
-; [:a {:href (path-for routes :word-penne.views/list)} "list"]

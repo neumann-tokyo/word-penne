@@ -1,10 +1,10 @@
 (ns word-penne.components.header
   (:require [stylefy.core :as stylefy :refer [use-style]]
+            [bidi.bidi :refer [path-for]]
+            [word-penne.routes :refer [routes]]
             [word-penne.style.vars :refer [color layout-vars z-indexs]]
             [word-penne.components.button :refer [Button]]))
 
-;; TODO https://stijndewitt.com/2018/06/12/pure-css-drop-shadow-on-scroll/
-; style
 (def s-topnav
   {:position "sticky"
    :top "-16px"
@@ -68,7 +68,7 @@
 (defn Header []
   [:header (use-style s-topnav)
    [:div (use-style s-topnav-container)
-    [:a (use-style s-title {:href "/"}) "Word Penne"]
+    [:a (use-style s-title {:href (path-for routes :word-penne.pages.home/home)}) "Word Penne"]
     [:div (use-style s-search-container)
      [:div (use-style s-search-form)
       [:button (use-style s-search-button {:type "submit"})
