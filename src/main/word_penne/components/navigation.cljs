@@ -6,8 +6,7 @@
             [word-penne.events :as events]))
 
 (def s-navigation
-  {:padding-top ".5rem"
-   :background (:main-background color)})
+  {:background (:main-background color)})
 (def s-opened-navigation
   {:width (:navigation-width layout-vars)})
 (def s-closed-navigation

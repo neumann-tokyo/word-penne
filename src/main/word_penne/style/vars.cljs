@@ -4,7 +4,9 @@
   {:main-background "#f9f5f1"
    :main-text "#111111"
    :assort-background "#dddddd"
-   :assort-border "#dddddd"})
+   :assort-border "#aaaaaa"
+   :accent-background "#cf534a"
+   :accent-border "#ba4a42"})
 
 (def layout-vars
   {:header-height "4rem"
