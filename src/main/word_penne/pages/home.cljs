@@ -16,7 +16,7 @@
    :align-content "flex-start"})
 (def s-card-item
   {:break-inside "avoid"
-   :padding-bottom "1.5rem"
+   :padding-bottom "1rem"
    :display "inline-block"})
 
 (defmethod view ::home [_]
@@ -30,19 +30,21 @@
                :comment "新しく作ること"}]]
    [:div (use-style s-card-item)
     [WordCard {:front-text "have"
-               :back-text "持つ"}]]
+               :back-text "持つ"
+               :comment "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}]]
    [:div (use-style s-card-item)
     [WordCard {:front-text "give"
                :back-text "あげる"}]]
    [:div (use-style s-card-item)
-    [WordCard {:front-text "take"
+    [WordCard {:front-text "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
                :back-text "受け取る"}]]
    [:div (use-style s-card-item)
     [WordCard {:front-text "do"
-               :back-text "する"}]]
+               :back-text "長いメッセージ長いメッセージ長いメッセージ長いメッセージ長いメッセージ"}]]
    [:div (use-style s-card-item)
-    [WordCard {:front-text "it"
-               :back-text "それ"}]]
+    [WordCard {:front-text "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+               :back-text "長いメッセージ長いメッセージ長いメッセージ長いメッセージ"
+               :comment "長いメッセージ長いメッセージ長いメッセージ長いメッセージ"}]]
    [:div (use-style s-card-item)
     [WordCard {:front-text "you"
                :back-text "あなた"}]]])

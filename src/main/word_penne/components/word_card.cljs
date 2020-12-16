@@ -1,15 +1,17 @@
 (ns word-penne.components.word-card
-  (:require [stylefy.core :as stylefy :refer [use-style use-sub-style]]
+  (:require [stylefy.core :as stylefy :refer [use-style]]
             [word-penne.style.vars :refer [color]]))
 
 (def s-card
-  {:display "inline-block"})
+  {:display "inline-block"
+   :box-sizing "border-box"})
 (def s-flip-card
   {:background-color "transparent"
    :border "none"
    :perspective "1000px"
-   :width "15rem"
-   :height "10rem"
+   :min-width "10rem"
+   :max-width "40rem"
+   :height "9rem"
    ::stylefy/mode {:focus {:outline "none"}}
    ::stylefy/manual [[:&:focus-within [:.flipcard_inner {:transform "rotateY(180deg)"
                                                          :border "none"}]]]})
@@ -21,7 +23,8 @@
    :transform-style "preserve-3d"})
 
 (def m-flip-card
-  {:position "absolute"
+  {:box-sizing "border-box"
+   :position "relative"
    :width "100%"
    :height "100%"
    :-webkit-backface-visibility "hidden"
@@ -29,7 +32,8 @@
    :color (:main-text color)
    :border (str "solid 1px " (:assort-border color))
    :border-radius "1rem"
-   :padding-top "1rem"
+   :word-wrap "break-word"
+   :padding ".5rem"
    ::stylefy/mode {:hover {:box-shadow (str "0 2px 4px 0 " (:assort-border color))}}})
 (def s-flip-card-front
   (merge m-flip-card {:background-color (:main-background color)
@@ -40,18 +44,21 @@
   (merge m-flip-card {:background-color (:assort-background color)
                       :transform "rotateY(180deg)"
                       :display "flex"
-                      :flex-direction "column"}))
+                      :flex-direction "column"
+                      :top "-9rem"}))
+(def s-flip-card-front-title
+  {:margin-top ".5rem"})
 (def s-flip-card-back-title-container
   {:flex "1"})
 (def s-flip-card-back-title
   {:font-size "2rem"
    :font-weight "bold"
    :text-align "center"
-   :outline "none"})
+   :outline "none"
+   :margin-top ".5rem"})
 (def s-flip-card-buttons
   {:text-align "right"
-   :font-size ".8rem"
-   :padding-right ".5rem"})
+   :font-size ".8rem"})
 (def s-flip-card-button
   {:color (:main-text color)})
 
@@ -59,7 +66,8 @@
   [:div (use-style s-card)
    [:button (use-style s-flip-card)
     [:div.flipcard_inner (use-style s-flip-card-inner)
-     [:div (use-style s-flip-card-front) (:front-text params)]
+     [:div (use-style s-flip-card-front)
+      [:div (use-style s-flip-card-front-title) (:front-text params)]]
      [:div (use-style s-flip-card-back)
       [:div (use-style s-flip-card-back-title-container)
        (if (nil? (:comment params))
