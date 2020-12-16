@@ -76,7 +76,11 @@
           [:summary (use-style s-flip-card-back-title) (:back-text params)]
           [:p (:comment params)]])]
       [:div (use-style s-flip-card-buttons)
-       [:a (use-style s-flip-card-button {:href "#"})
+       [:a (use-style s-flip-card-button {:href "#" :title "pin"})
+        [:span {:class "material-icons-outlined"} "push_pin"]]
+       [:a (use-style s-flip-card-button {:href "#" :title "edit"})
         [:span {:class "material-icons-outlined"} "edit"]]
-       [:a (use-style s-flip-card-button {:href "#"})
+       [:a (use-style s-flip-card-button {:href "#" :title "archive"})
+        [:span {:class "material-icons-outlined"} "archive"]]
+       [:a (use-style s-flip-card-button {:href "#" :title "delete"})
         [:span {:class "material-icons-outlined"} "delete"]]]]]]])

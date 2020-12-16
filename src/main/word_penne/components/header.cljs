@@ -2,8 +2,7 @@
   (:require [stylefy.core :as stylefy :refer [use-style]]
             [bidi.bidi :refer [path-for]]
             [word-penne.routes :refer [routes]]
-            [word-penne.style.vars :refer [color layout-vars z-indexs]]
-            [word-penne.components.button :refer [Button]]))
+            [word-penne.style.vars :refer [color layout-vars z-indexs]]))
 
 (def s-topnav
   {:position "sticky"
@@ -65,6 +64,21 @@
    :font-size "1.5rem"
    ::stylefy/mode {:focus {:outline "none"}}})
 
+(def s-create-word-card-button
+  {:background-color (:accent-background color)
+   :border (str "solid 1px " (:accent-border color))
+   :color "white"
+   :width "3rem"
+   :height "3rem"
+   :display "inline-block"
+   :text-align "center"
+   :text-decoration "none"
+   :border-radius "50%"
+   ::stylefy/mode {:hover {:background-color (:accent-border color)}}})
+(def s-create-word-card-button-item
+  {:font-size "3rem"
+   :font-weight "bold"})
+
 (defn Header []
   [:header (use-style s-topnav)
    [:div (use-style s-topnav-container)
@@ -74,5 +88,6 @@
       [:button (use-style s-search-button {:type "submit"})
        [:span {:class "material-icons-outlined"} "search"]]
       [:input (use-style s-search-box {:type "search" :placeholder "Search..." :name "search"})]]]
-    [Button {:href "#"} "Sign In"]
-    [Button {:href "#"} "Sign Up"]]])
+    [:a (use-style s-create-word-card-button {:href (path-for routes :word-penne.pages.new-card/new-card)
+                                              :title "New"})
+     [:span (use-style s-create-word-card-button-item {:class "material-icons-outlined"}) "add"]]]])
