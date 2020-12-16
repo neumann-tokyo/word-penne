@@ -1,5 +1,6 @@
 (ns word-penne.pages.new-card
   (:require [stylefy.core :as stylefy :refer [use-style]]
+            [fork.core :as fork]
             [word-penne.views :as v]))
 
 (defmethod v/view ::new-card [_]
