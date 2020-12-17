@@ -79,6 +79,7 @@
   {:font-size "3rem"
    :font-weight "bold"})
 
+;; https://stijndewitt.com/2018/06/12/pure-css-drop-shadow-on-scroll/
 (defn Header []
   [:header (use-style s-topnav)
    [:div (use-style s-topnav-container)

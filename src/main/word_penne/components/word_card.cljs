@@ -62,6 +62,8 @@
 (def s-flip-card-button
   {:color (:main-text color)})
 
+;; https://www.w3schools.com/howto/howto_css_flip_card.asp
+;; https://www.w3schools.com/tags/tag_details.asp
 (defn WordCard [params]
   [:div (use-style s-card)
    [:button (use-style s-flip-card)
