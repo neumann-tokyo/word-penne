@@ -84,7 +84,7 @@
   [:header (use-style s-topnav)
    [:div (use-style s-topnav-container)
     [:a (use-style s-title {:href (path-for routes :word-penne.pages.home/home)})
-     [:img (use-style s-title-logo {:src "/images/word-penne.svg" :alt "Word Penne"})]
+     [:img (use-style s-title-logo {:src "/images/word-penne-mini.svg" :alt "Word Penne"})]
      [:span (use-style s-title-text) "Word Penne"]]
     [:div (use-style s-search-container)
      [:div (use-style s-search-form)

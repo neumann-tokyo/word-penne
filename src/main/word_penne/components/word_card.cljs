@@ -1,38 +1,38 @@
 (ns word-penne.components.word-card
-  (:require [stylefy.core :as stylefy :refer [use-style]]
+  (:require [reagent.core :as r]
+            [stylefy.core :as stylefy :refer [use-style]]
             [bidi.bidi :refer [path-for]]
             [word-penne.routes :refer [routes]]
             [word-penne.style.vars :refer [color phone-width]]))
 
-(def card-height "9rem")
-
 (def s-card
-  {:display "inline-block"
-   :box-sizing "border-box"})
+  {:display "inline-block"})
 (def s-flip-card
   {:background-color "transparent"
    :border "none"
    :perspective "1000px"
    :min-width "10rem"
-   :max-width "40rem"
-   :height card-height
+   :max-width "30rem"
+   :height "max-content"
+   :margin 0
+   :padding 0
    ::stylefy/mode {:focus {:outline "none"}}
    ::stylefy/manual [[:&:focus-within [:.flipcard_inner {:transform "rotateY(180deg)"
                                                          :border "none"}]]]
    ::stylefy/media {phone-width {:min-width "45vw"
                                  :max-width "90vw"}}})
 (def s-flip-card-inner
-  {:position "relative"
-   :width "100%"
-   :height "100%"
+  {:display "grid"
+   :min-width "10rem"
+   :max-width "30rem"
+   :grid-template-columns "1fr"
    :transition "transform 0.6s"
    :transform-style "preserve-3d"})
 
 (def m-flip-card
   {:box-sizing "border-box"
-   :position "relative"
-   :width "100%"
-   :height "100%"
+   :min-width "10rem"
+   :max-width "30rem"
    :-webkit-backface-visibility "hidden"
    :backface-visibility "hidden"
    :color (:main-text color)
@@ -40,20 +40,19 @@
    :border-radius "1rem"
    :word-wrap "break-word"
    :padding ".5rem"
+   :grid-column 1
+   :grid-row 1
    ::stylefy/mode {:hover {:box-shadow (str "0 2px 4px 0 " (:assort-border color))}}})
 (def s-flip-card-front
   (merge m-flip-card {:background-color (:main-background color)
                       :font-size "2rem"
                       :font-weight "bold"
-                      :text-align "center"
-                      :top 0}))
+                      :text-align "center"}))
 (def s-flip-card-back
   (merge m-flip-card {:background-color (:assort-background color)
                       :transform "rotateY(180deg)"
                       :display "flex"
-                      :flex-direction "column"
-                      :top (str "calc(-" card-height " + 4px)") ; TODO FIXME なぜか4pxほど上にずれる
-                      }))
+                      :flex-direction "column"}))
 (def s-flip-card-front-title
   {:margin-top ".5rem"})
 (def s-flip-card-back-title-container

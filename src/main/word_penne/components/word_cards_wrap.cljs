@@ -10,10 +10,10 @@
    :flex-wrap "wrap"
    :justify-content "flex-start"
    :align-content "flex-start"
+   :align-items "center"
    :background (:main-background color)})
 (def s-card-item
-  {:break-inside "avoid"
-   :padding-bottom "1rem"
+  {:margin ".5rem"
    :display "inline-block"})
 
 (defn WordCardsWrap []
@@ -33,7 +33,7 @@
     [WordCard {:front-text "give"
                :back-text "あげる"}]]
    [:div (use-style s-card-item)
-    [WordCard {:front-text "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    [WordCard {:front-text "bbbbbbbbbbbbbbbbbbbbbbbbb"
                :back-text "受け取る"}]]
    [:div (use-style s-card-item)
     [WordCard {:front-text "do"
