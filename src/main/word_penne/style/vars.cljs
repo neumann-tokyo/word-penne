@@ -13,7 +13,7 @@
 (def layout-vars
   {:header-height "4rem"
    :navigation-width "12rem"
-   :closed-navigation-width "3rem"})
+   :closed-navigation-width "2rem"})
 
 (def z-indexs
   {:header 1

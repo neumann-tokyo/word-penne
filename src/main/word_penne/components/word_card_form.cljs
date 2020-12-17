@@ -4,7 +4,7 @@
             [bidi.bidi :refer [path-for]]
             [word-penne.routes :refer [routes]]
             [word-penne.style.share :as share]
-            [word-penne.style.vars :refer [color]]
+            [word-penne.style.vars :refer [color phone-width]]
             [word-penne.components.button :refer [Button]]))
 
 (def s-form-container
@@ -15,7 +15,8 @@
    :border (str "solid 1px " (:assort-border color))
    :border-radius "1rem"
    :box-shadow (str "0 2px 4px 0 " (:assort-border color))
-   :padding "1rem"})
+   :padding "1rem"
+   ::stylefy/media {phone-width {:margin "0 .5rem"}}})
 (def s-text
   {:width "100%"
    :padding ".5rem"

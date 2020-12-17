@@ -22,23 +22,23 @@
     [WordCard {:front-text "create"
                :back-text "作る"
                :comment "新しく作ること"}]]
-   [:div (use-style s-card-item)
-    [WordCard {:front-text "have"
-               :back-text "持つ"
-               :comment "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}]]
-   [:div (use-style s-card-item)
-    [WordCard {:front-text "give"
-               :back-text "あげる"}]]
-   [:div (use-style s-card-item)
-    [WordCard {:front-text "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
-               :back-text "受け取る"}]]
-   [:div (use-style s-card-item)
-    [WordCard {:front-text "do"
-               :back-text "長いメッセージ長いメッセージ長いメッセージ長いメッセージ長いメッセージ"}]]
-   [:div (use-style s-card-item)
-    [WordCard {:front-text "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-               :back-text "長いメッセージ長いメッセージ長いメッセージ長いメッセージ"
-               :comment "長いメッセージ長いメッセージ長いメッセージ長いメッセージ"}]]
+  ;;  [:div (use-style s-card-item)
+  ;;   [WordCard {:front-text "have"
+  ;;              :back-text "持つ"
+  ;;              :comment "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}]]
+  ;;  [:div (use-style s-card-item)
+  ;;   [WordCard {:front-text "give"
+  ;;              :back-text "あげる"}]]
+  ;;  [:div (use-style s-card-item)
+  ;;   [WordCard {:front-text "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  ;;              :back-text "受け取る"}]]
+  ;;  [:div (use-style s-card-item)
+  ;;   [WordCard {:front-text "do"
+  ;;              :back-text "長いメッセージ長いメッセージ長いメッセージ長いメッセージ長いメッセージ"}]]
+  ;;  [:div (use-style s-card-item)
+  ;;   [WordCard {:front-text "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  ;;              :back-text "長いメッセージ長いメッセージ長いメッセージ長いメッセージ"
+  ;;              :comment "長いメッセージ長いメッセージ長いメッセージ長いメッセージ"}]]
    [:div (use-style s-card-item)
     [WordCard {:front-text "you"
                :back-text "あなた"}]]])

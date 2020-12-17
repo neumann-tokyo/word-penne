@@ -48,13 +48,13 @@
    :display "flex"
    :flex-direction "row"
    :align-items "center"
-   :color (:title-text color)
-   :font "bold 2rem Cursive"})
+   :color (:title-text color)})
 (def s-title-logo
   {:width "3rem"
    :height "3rem"})
 (def s-title-text
-  {::stylefy/media {phone-width {:display "none"}}})
+  {:font "bold 2rem Cursive"
+   ::stylefy/media {phone-width {:display "none"}}})
 (def s-search-container
   {:flex 1})
 (def s-search-form
@@ -84,7 +84,7 @@
   [:header (use-style s-topnav)
    [:div (use-style s-topnav-container)
     [:a (use-style s-title {:href (path-for routes :word-penne.pages.home/home)})
-     [:img (use-style s-title-logo {:src "images/word-penne.svg" :alt "Word Penne"})]
+     [:img (use-style s-title-logo {:src "/images/word-penne.svg" :alt "Word Penne"})]
      [:span (use-style s-title-text) "Word Penne"]]
     [:div (use-style s-search-container)
      [:div (use-style s-search-form)

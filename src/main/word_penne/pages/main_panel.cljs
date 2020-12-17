@@ -20,7 +20,8 @@
   {:width "100%"
    :flex 1})
 (def s-word-card-add-button
-  {::stylefy/media {phone-width {:display "inline-box"
+  {:display "none"
+   ::stylefy/media {phone-width {:display "inline-block"
                                  :position "absolute"
                                  :bottom 0
                                  :right 0
