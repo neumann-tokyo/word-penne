@@ -1,7 +1,7 @@
 (ns word-penne.components.word-cards-wrap
   (:require [stylefy.core :as stylefy :refer [use-style]]
             [word-penne.components.word-card :refer [WordCard]]
-            [word-penne.style.vars :refer [color]]))
+            [word-penne.style.vars :refer [color phone-width]]))
 
 (def s-cards-wrap
   {:width "100%"
@@ -11,7 +11,8 @@
    :justify-content "flex-start"
    :align-content "flex-start"
    :align-items "center"
-   :background (:main-background color)})
+   :background (:main-background color)
+   ::stylefy/media {phone-width {:flex-direction "column"}}})
 (def s-card-item
   {:margin ".5rem"
    :display "inline-block"})

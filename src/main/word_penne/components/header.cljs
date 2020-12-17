@@ -40,12 +40,12 @@
    :box-sizing "border-box"
    :overflow "hidden"
    :display "flex"
-   :justify-content "space-between"
+   :justify-content "flex-start"
    :align-items "center"})
 (def s-title
   {:margin "0 .5rem"
    :text-decoration "none"
-   :display "flex"
+   :display "inline-flex"
    :flex-direction "row"
    :align-items "center"
    :color (:title-text color)})
@@ -56,13 +56,15 @@
   {:font "bold 2rem Cursive"
    ::stylefy/media {phone-width {:display "none"}}})
 (def s-search-container
-  {:flex 1})
+  {;:flex 1
+   })
 (def s-search-form
   {:border-radius "10px"
    :background (:assort-background color)
    :display "inline-flex"
    :flex-direction "row"
-   :align-items "center"})
+   :align-items "center"
+   :margin-right ".5rem"})
 (def s-search-button
   {:padding "0 .5rem"
    :font-size "1rem"

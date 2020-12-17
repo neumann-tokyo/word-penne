@@ -19,15 +19,15 @@
    ::stylefy/mode {:focus {:outline "none"}}
    ::stylefy/manual [[:&:focus-within [:.flipcard_inner {:transform "rotateY(180deg)"
                                                          :border "none"}]]]
-   ::stylefy/media {phone-width {:min-width "45vw"
-                                 :max-width "90vw"}}})
+   ::stylefy/media {phone-width {:width "85vw"}}})
 (def s-flip-card-inner
   {:display "grid"
    :min-width "10rem"
    :max-width "30rem"
    :grid-template-columns "1fr"
    :transition "transform 0.6s"
-   :transform-style "preserve-3d"})
+   :transform-style "preserve-3d"
+   ::stylefy/media {phone-width {:width "85vw"}}})
 
 (def m-flip-card
   {:box-sizing "border-box"
@@ -42,7 +42,8 @@
    :padding ".5rem"
    :grid-column 1
    :grid-row 1
-   ::stylefy/mode {:hover {:box-shadow (str "0 2px 4px 0 " (:assort-border color))}}})
+   ::stylefy/mode {:hover {:box-shadow (str "0 2px 4px 0 " (:assort-border color))}}
+   ::stylefy/media {phone-width {:width "85vw"}}})
 (def s-flip-card-front
   (merge m-flip-card {:background-color (:main-background color)
                       :font-size "2rem"
