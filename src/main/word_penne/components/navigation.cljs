@@ -25,34 +25,17 @@
 (def s-nav-link
   {:padding "1rem"
    :text-decoration "none"
-   :font-size "1.5rem"
    :color (:main-text color)
-   :display "block"
-   ::stylefy/mode {:hover {:background (:assort-background color)}}})
-(def s-nav-close-link
-  {:text-decoration "none"
-   :display "inline-block"
-   :font-size "1.5rem"
-   :color (:main-text color)
-   :width "2rem"
-   :height "2rem"
+   :display "flex"
+   :flex-direction "row"
+   :align-items "center"
    ::stylefy/mode {:hover {:background (:assort-background color)
-                           :border-radius "1rem"}}})
-(def s-nav-open
-  {:margin-left ".5rem"})
-(def s-nav-open-link
-  {:text-decoration "none"
-   :display "inline-block"
-   :font-size "1.5rem"
-   :color (:main-text color)
-   :width "2rem"
-   :height "2rem"
-   ::stylefy/mode {:hover {:background (:assort-background color)
-                           :border-radius "1rem"}}})
-
-(def s-nav-open-icon
+                           :border-radius "0 2rem 2rem 0"}}})
+(def s-nav-icon
   {:margin-top ".3rem"
    :margin-left ".3rem"})
+(def s-nav-link-text
+  {:margin-left "1rem"})
 
 ;; Pure CSS Hamburger menu
 ;; https://codepen.io/erikterwan/pen/EVzeRP
@@ -60,9 +43,24 @@
   [:nav (use-style s-navigation)
    [:input (use-style s-navigation-checkbox {:type "checkbox" :id "navigation-menu-checkbox" :name "navigation-menu-checkbox"})]
    [:label {:for "navigation-menu-checkbox"}
-    [:span#navigation-menu-open-button (use-style s-nav-open-icon {:class "material-icons-outlined"}) "menu"]]
+    [:span#navigation-menu-open-button (use-style s-nav-icon {:class "material-icons-outlined"}) "menu"]]
    [:div#navigation-menu (use-style s-opened-navigation)
     [:div (use-style s-nav-close)]
-    [:a (use-style s-nav-link {:href "#"}) "tag1"]
-    [:a (use-style s-nav-link {:href "#"}) "tag2"]
-    [:a (use-style s-nav-link {:href "#"}) "tag3"]]])
+    [:a (use-style s-nav-link {:href "#"})
+     [:span {:class "material-icons-outlined"} "style"]
+     [:span (use-style s-nav-link-text) "Cards"]]
+    [:a (use-style s-nav-link {:href "#"})
+     [:span {:class "material-icons-outlined"} "label"]
+     [:span (use-style s-nav-link-text) "tag1"]]
+    [:a (use-style s-nav-link {:href "#"})
+     [:span {:class "material-icons-outlined"} "label"]
+     [:span (use-style s-nav-link-text) "tag2"]]
+    [:a (use-style s-nav-link {:href "#"})
+     [:span {:class "material-icons-outlined"} "label"]
+     [:span (use-style s-nav-link-text) "tag3"]]
+    [:a (use-style s-nav-link {:href "#"})
+     [:span {:class "material-icons-outlined"} "edit"]
+     [:span (use-style s-nav-link-text) "Edit tags"]]
+    [:a (use-style s-nav-link {:href "#"})
+     [:span {:class "material-icons-outlined"} "archive"]
+     [:span (use-style s-nav-link-text) "Archive"]]]])
