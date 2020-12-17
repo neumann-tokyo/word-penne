@@ -10,7 +10,7 @@
 
 (def layout-vars
   {:header-height "4rem"
-   :navigation-width "15rem"
+   :navigation-width "12rem"
    :closed-navigation-width "3rem"})
 
 (def z-indexs
