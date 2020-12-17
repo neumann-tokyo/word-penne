@@ -24,7 +24,7 @@
                            :position "sticky"
                            :background (:main-background color)
                            :top 0
-                           :z-index (inc (:header z-indexs))}}})
+                           :z-index (:header-shadow z-indexs)}}})
 (def s-topnav-container
   {:border-bottom (str "solid 1px " (:assort-border color))
    :background-color (:main-background color)
@@ -35,7 +35,7 @@
    :position "sticky"
    :top "0"
    :margin-top "-16px"
-   :z-index 3 ;; TODO 
+   :z-index (:header-shadow-blind z-indexs)
    :box-sizing "border-box"
    :overflow "hidden"
    :display "flex"
@@ -49,10 +49,12 @@
 (def s-search-form
   {:border-radius "10px"
    :background (:assort-background color)
-   :display "inline-block"})
+   :display "inline-flex"
+   :flex-direction "row"
+   :align-items "center"})
 (def s-search-button
-  {:padding ".5rem"
-   :font-size "1.5rem"
+  {:padding "0 .5rem"
+   :font-size "1rem"
    :border "none"
    :cursor "pointer"
    :background "none"
@@ -61,22 +63,22 @@
   {:border "none"
    :background "none"
    :padding ".5rem"
-   :font-size "1.5rem"
+   :font-size "1rem"
    ::stylefy/mode {:focus {:outline "none"}}})
 
 (def s-create-word-card-button
   {:background-color (:accent-background color)
    :border (str "solid 1px " (:accent-border color))
    :color (:accent-text color)
-   :width "3rem"
-   :height "3rem"
+   :width "2.5rem"
+   :height "2.5rem"
    :display "inline-block"
    :text-align "center"
    :text-decoration "none"
    :border-radius "50%"
    ::stylefy/mode {:hover {:background-color (:accent-border color)}}})
 (def s-create-word-card-button-item
-  {:font-size "3rem"
+  {:font-size "2.5rem"
    :font-weight "bold"})
 
 ;; https://stijndewitt.com/2018/06/12/pure-css-drop-shadow-on-scroll/

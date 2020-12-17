@@ -10,9 +10,11 @@
    :accent-text "#ffffff"})
 
 (def layout-vars
-  {:header-height "4rem"
+  {:header-height "3.5rem"
    :navigation-width "12rem"
    :closed-navigation-width "3rem"})
 
 (def z-indexs
-  {:header 1})
+  {:header 1
+   :header-shadow 2
+   :header-shadow-blind 3})
