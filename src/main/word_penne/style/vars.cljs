@@ -6,7 +6,8 @@
    :assort-background "#dddddd"
    :assort-border "#aaaaaa"
    :accent-background "#cf534a"
-   :accent-border "#ba4a42"})
+   :accent-border "#ba4a42"
+   :accent-text "#ffffff"})
 
 (def layout-vars
   {:header-height "4rem"

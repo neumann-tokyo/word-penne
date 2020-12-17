@@ -67,7 +67,7 @@
 (def s-create-word-card-button
   {:background-color (:accent-background color)
    :border (str "solid 1px " (:accent-border color))
-   :color "white"
+   :color (:accent-text color)
    :width "3rem"
    :height "3rem"
    :display "inline-block"
