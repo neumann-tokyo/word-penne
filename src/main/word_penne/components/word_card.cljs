@@ -4,6 +4,8 @@
             [word-penne.routes :refer [routes]]
             [word-penne.style.vars :refer [color]]))
 
+(def card-height "9rem")
+
 (def s-card
   {:display "inline-block"
    :box-sizing "border-box"})
@@ -13,7 +15,7 @@
    :perspective "1000px"
    :min-width "10rem"
    :max-width "40rem"
-   :height "9rem"
+   :height card-height
    ::stylefy/mode {:focus {:outline "none"}}
    ::stylefy/manual [[:&:focus-within [:.flipcard_inner {:transform "rotateY(180deg)"
                                                          :border "none"}]]]})
@@ -41,13 +43,15 @@
   (merge m-flip-card {:background-color (:main-background color)
                       :font-size "2rem"
                       :font-weight "bold"
-                      :text-align "center"}))
+                      :text-align "center"
+                      :top 0}))
 (def s-flip-card-back
   (merge m-flip-card {:background-color (:assort-background color)
                       :transform "rotateY(180deg)"
                       :display "flex"
                       :flex-direction "column"
-                      :top "-9rem"}))
+                      :top (str "calc(-" card-height " + 4px)") ; TODO FIXME なぜか4pxほど上にずれる
+                      }))
 (def s-flip-card-front-title
   {:margin-top ".5rem"})
 (def s-flip-card-back-title-container
