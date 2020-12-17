@@ -18,4 +18,8 @@
 (def z-indexs
   {:header 1
    :header-shadow 2
-   :header-shadow-blind 3})
+   :header-shadow-blind 3
+   :bottom-word-card-add-button 4})
+
+(def phone-width
+  {:max-width "600px"})

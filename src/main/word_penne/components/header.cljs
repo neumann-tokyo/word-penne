@@ -2,7 +2,8 @@
   (:require [stylefy.core :as stylefy :refer [use-style]]
             [bidi.bidi :refer [path-for]]
             [word-penne.routes :refer [routes]]
-            [word-penne.style.vars :refer [color layout-vars z-indexs]]))
+            [word-penne.style.vars :refer [color layout-vars z-indexs phone-width]]
+            [word-penne.components.word-card-add-button :refer [WordCardAddButton]]))
 
 (def s-topnav
   {:position "sticky"
@@ -40,8 +41,7 @@
    :overflow "hidden"
    :display "flex"
    :justify-content "space-between"
-   :align-items "center"
-   :flex-wrap "wrap"})
+   :align-items "center"})
 (def s-title
   {:margin "0 .5rem"
    :text-decoration "none"
@@ -53,6 +53,8 @@
 (def s-title-logo
   {:width "3rem"
    :height "3rem"})
+(def s-title-text
+  {::stylefy/media {phone-width {:display "none"}}})
 (def s-search-container
   {:flex 1})
 (def s-search-form
@@ -74,21 +76,8 @@
    :padding ".5rem"
    :font-size "1rem"
    ::stylefy/mode {:focus {:outline "none"}}})
-
-(def s-create-word-card-button
-  {:background-color (:accent-background color)
-   :border (str "solid 1px " (:accent-border color))
-   :color (:accent-text color)
-   :width "2.5rem"
-   :height "2.5rem"
-   :display "inline-block"
-   :text-align "center"
-   :text-decoration "none"
-   :border-radius "50%"
-   ::stylefy/mode {:hover {:background-color (:accent-border color)}}})
-(def s-create-word-card-button-item
-  {:font-size "2.5rem"
-   :font-weight "bold"})
+(def s-word-card-add-button
+  {::stylefy/media {phone-width {:display "none"}}})
 
 ;; https://stijndewitt.com/2018/06/12/pure-css-drop-shadow-on-scroll/
 (defn Header []
@@ -96,12 +85,11 @@
    [:div (use-style s-topnav-container)
     [:a (use-style s-title {:href (path-for routes :word-penne.pages.home/home)})
      [:img (use-style s-title-logo {:src "images/word-penne.svg" :alt "Word Penne"})]
-     [:span "Word Penne"]]
+     [:span (use-style s-title-text) "Word Penne"]]
     [:div (use-style s-search-container)
      [:div (use-style s-search-form)
       [:button (use-style s-search-button {:type "submit"})
        [:span {:class "material-icons-outlined"} "search"]]
       [:input (use-style s-search-box {:type "search" :placeholder "Search..." :name "search"})]]]
-    [:a (use-style s-create-word-card-button {:href (path-for routes :word-penne.pages.cards/new)
-                                              :title "New"})
-     [:span (use-style s-create-word-card-button-item {:class "material-icons-outlined"}) "add"]]]])
+    [:div (use-style s-word-card-add-button)
+     [WordCardAddButton]]]])
