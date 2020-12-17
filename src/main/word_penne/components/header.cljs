@@ -91,6 +91,6 @@
       [:button (use-style s-search-button {:type "submit"})
        [:span {:class "material-icons-outlined"} "search"]]
       [:input (use-style s-search-box {:type "search" :placeholder "Search..." :name "search"})]]]
-    [:a (use-style s-create-word-card-button {:href (path-for routes :word-penne.pages.new-card/new-card)
+    [:a (use-style s-create-word-card-button {:href (path-for routes :word-penne.pages.cards/new)
                                               :title "New"})
      [:span (use-style s-create-word-card-button-item {:class "material-icons-outlined"}) "add"]]]])

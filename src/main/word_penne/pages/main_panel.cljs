@@ -7,7 +7,7 @@
             [word-penne.components.header :refer [Header]]
             [word-penne.components.navigation :refer [Navigation]]
             [word-penne.pages.home]
-            [word-penne.pages.new-card]))
+            [word-penne.pages.cards]))
 
 (def s-main-panel
   {:background-color (:main-background color)

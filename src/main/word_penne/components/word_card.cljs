@@ -1,5 +1,7 @@
 (ns word-penne.components.word-card
   (:require [stylefy.core :as stylefy :refer [use-style]]
+            [bidi.bidi :refer [path-for]]
+            [word-penne.routes :refer [routes]]
             [word-penne.style.vars :refer [color]]))
 
 (def s-card
@@ -58,7 +60,10 @@
    :margin-top ".5rem"})
 (def s-flip-card-buttons
   {:text-align "right"
-   :font-size ".8rem"})
+   :font-size ".8rem"
+   :display "flex"
+   :flex-direction "row"
+   :justify-content "space-between"})
 (def s-flip-card-button
   {:color (:main-text color)})
 
@@ -78,11 +83,13 @@
           [:summary (use-style s-flip-card-back-title) (:back-text params)]
           [:p (:comment params)]])]
       [:div (use-style s-flip-card-buttons)
-       [:a (use-style s-flip-card-button {:href "#" :title "pin"})
-        [:span {:class "material-icons-outlined"} "push_pin"]]
-       [:a (use-style s-flip-card-button {:href "#" :title "edit"})
-        [:span {:class "material-icons-outlined"} "edit"]]
-       [:a (use-style s-flip-card-button {:href "#" :title "archive"})
-        [:span {:class "material-icons-outlined"} "archive"]]
-       [:a (use-style s-flip-card-button {:href "#" :title "delete"})
-        [:span {:class "material-icons-outlined"} "delete"]]]]]]])
+       [:div
+        [:a (use-style s-flip-card-button {:href "#" :title "pin"})
+         [:span {:class "material-icons-outlined"} "push_pin"]]
+        [:a (use-style s-flip-card-button {:href (path-for routes :word-penne.pages.cards/edit :id "aaaaaa") :title "edit"})
+         [:span {:class "material-icons-outlined"} "edit"]]]
+       [:div
+        [:a (use-style s-flip-card-button {:href "#" :title "archive"})
+         [:span {:class "material-icons-outlined"} "archive"]]
+        [:a (use-style s-flip-card-button {:href "#" :title "delete"})
+         [:span {:class "material-icons-outlined"} "delete"]]]]]]]])
