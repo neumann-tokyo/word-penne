@@ -10,7 +10,7 @@
    :accent-text "#ffffff"})
 
 (def layout-vars
-  {:header-height "3.5rem"
+  {:header-height "4rem"
    :navigation-width "12rem"
    :closed-navigation-width "3rem"})
 

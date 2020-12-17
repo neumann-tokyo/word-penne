@@ -43,7 +43,11 @@
    :align-items "center"
    :flex-wrap "wrap"})
 (def s-title
-  {:margin "0 .5rem"})
+  {:margin "0 .5rem"
+   :text-decoration "none"})
+(def s-title-logo
+  {:width "3rem"
+   :height "3rem"})
 (def s-search-container
   {:flex 1})
 (def s-search-form
@@ -85,7 +89,8 @@
 (defn Header []
   [:header (use-style s-topnav)
    [:div (use-style s-topnav-container)
-    [:a (use-style s-title {:href (path-for routes :word-penne.pages.home/home)}) "Word Penne"]
+    [:a (use-style s-title {:href (path-for routes :word-penne.pages.home/home)})
+     [:img (use-style s-title-logo {:src "images/word-penne.svg" :alt "Word Penne"})]]
     [:div (use-style s-search-container)
      [:div (use-style s-search-form)
       [:button (use-style s-search-button {:type "submit"})
