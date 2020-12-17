@@ -22,7 +22,7 @@
 (def s-word-card-add-button
   {:display "none"
    ::stylefy/media {phone-width {:display "inline-block"
-                                 :position "absolute"
+                                 :position "fixed"
                                  :bottom 0
                                  :right 0
                                  :margin "1rem"

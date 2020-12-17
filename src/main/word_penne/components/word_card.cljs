@@ -2,7 +2,7 @@
   (:require [stylefy.core :as stylefy :refer [use-style]]
             [bidi.bidi :refer [path-for]]
             [word-penne.routes :refer [routes]]
-            [word-penne.style.vars :refer [color]]))
+            [word-penne.style.vars :refer [color phone-width]]))
 
 (def card-height "9rem")
 
@@ -18,7 +18,9 @@
    :height card-height
    ::stylefy/mode {:focus {:outline "none"}}
    ::stylefy/manual [[:&:focus-within [:.flipcard_inner {:transform "rotateY(180deg)"
-                                                         :border "none"}]]]})
+                                                         :border "none"}]]]
+   ::stylefy/media {phone-width {:min-width "45vw"
+                                 :max-width "90vw"}}})
 (def s-flip-card-inner
   {:position "relative"
    :width "100%"
