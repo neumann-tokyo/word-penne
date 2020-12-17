@@ -7,7 +7,8 @@
    :assort-border "#aaaaaa"
    :accent-background "#cf534a"
    :accent-border "#ba4a42"
-   :accent-text "#ffffff"})
+   :accent-text "#ffffff"
+   :title-text "#444444"})
 
 (def layout-vars
   {:header-height "4rem"
