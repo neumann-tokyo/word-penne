@@ -1,5 +1,7 @@
 (ns word-penne.pages.home
-  (:require [word-penne.views :as v]
+  (:require [bidi.bidi :refer [path-for]]
+            [word-penne.routes :refer [routes]]
+            [word-penne.views :as v]
             [word-penne.components.button :refer [Button]]
             [word-penne.components.word-cards-wrap :refer [WordCardsWrap]]))
 
@@ -8,5 +10,5 @@
    [:div
     [:span "Tag1"]
     ;; TODO mobile では bottom navigation で Test を出したい
-    [Button {:kind "secondary" :href "#"} "Test"]]
+    [Button {:kind "secondary" :href (path-for routes :word-penne.pages.cards/test)} "Test"]]
    [WordCardsWrap]])
