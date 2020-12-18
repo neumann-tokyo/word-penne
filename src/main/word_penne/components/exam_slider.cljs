@@ -1,8 +1,7 @@
 (ns word-penne.components.exam-slider
   (:require [stylefy.core :as stylefy :refer [use-style]]
-            ["pure-react-carousel" :refer [CarouselProvider, Slider, Slide, ButtonBack, ButtonNext]]
-            [bidi.bidi :refer [path-for]]
-            [word-penne.routes :refer [routes]]))
+            ["pure-react-carousel" :refer [CarouselProvider Slider Slide ButtonNext]]
+            [word-penne.components.exam-slide :refer [ExamSlide]]))
 
 (def s-carousel-provider
   {::stylefy/manual ["~" [:* {:outline "none !important"}]]})
@@ -18,8 +17,8 @@
                                                        :touchEnabled false
                                                        :dragEnabled false})
    [:> Slider (use-style s-slider)
-    [:> Slide (use-style s-slide {:index "0"}) "First"]
-    [:> Slide (use-style s-slide {:index "1"}) "second"]
-    [:> Slide (use-style s-slide {:index "2"}) "third"]]
-   [:> ButtonBack "Back"]
+    [:> Slide (use-style s-slide {:index "0"}) [ExamSlide {:front-text "make"
+                                                           :back-text "作る"}]]
+    [:> Slide (use-style s-slide {:index "1"}) [ExamSlide]]
+    [:> Slide (use-style s-slide {:index "2"}) [ExamSlide]]]
    [:> ButtonNext "Next"]])

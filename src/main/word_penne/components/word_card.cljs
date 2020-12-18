@@ -2,7 +2,8 @@
   (:require [stylefy.core :as stylefy :refer [use-style]]
             [bidi.bidi :refer [path-for]]
             [word-penne.routes :refer [routes]]
-            [word-penne.style.vars :refer [color layout-vars phone-width]]))
+            [word-penne.style.vars :refer [color layout-vars phone-width]]
+            [word-penne.style.share :as share]))
 
 (def s-card
   {:display "inline-block"})
@@ -27,19 +28,14 @@
    ::stylefy/media {phone-width {:width "85vw"}}})
 
 (def m-flip-card
-  {:box-sizing "border-box"
-   :width (:word-card-width layout-vars)
-   :-webkit-backface-visibility "hidden"
-   :backface-visibility "hidden"
-   :color (:main-text color)
-   :border (str "solid 1px " (:assort-border color))
-   :border-radius "1rem"
-   :word-wrap "break-word"
-   :padding ".5rem"
-   :grid-column 1
-   :grid-row 1
-   ::stylefy/mode {:hover {:box-shadow (str "0 2px 4px 0 " (:assort-border color))}}
-   ::stylefy/media {phone-width {:width "85vw"}}})
+  (merge share/m-card
+         {:width (:word-card-width layout-vars)
+          :-webkit-backface-visibility "hidden"
+          :backface-visibility "hidden"
+          :grid-column 1
+          :grid-row 1
+          ::stylefy/mode {:hover {:box-shadow (str "0 2px 4px 0 " (:assort-border color))}}
+          ::stylefy/media {phone-width {:width "85vw"}}}))
 (def s-flip-card-front
   (merge m-flip-card {:background-color (:main-background color)
                       :font-size "2rem"
@@ -71,17 +67,17 @@
 
 ;; https://www.w3schools.com/howto/howto_css_flip_card.asp
 ;; https://www.w3schools.com/tags/tag_details.asp
-(defn WordCard [params]
+(defn WordCard [attrs]
   [:div (use-style s-card)
    [:button (use-style s-flip-card)
     [:div.flipcard_inner (use-style s-flip-card-inner)
      [:div (use-style s-flip-card-front)
-      [:div (use-style s-flip-card-front-title) (:front-text params)]]
+      [:div (use-style s-flip-card-front-title) (:front-text attrs)]]
      [:div (use-style s-flip-card-back)
       [:div (use-style s-flip-card-back-title-container)
-       [:div (use-style s-flip-card-back-title) (:back-text params)]
-       (when (:comment params)
-         [:p (:comment params)])]
+       [:div (use-style s-flip-card-back-title) (:back-text attrs)]
+       (when (:comment attrs)
+         [:p (:comment attrs)])]
       [:div (use-style s-flip-card-buttons)
        [:div
         [:a (use-style s-flip-card-button {:href "#" :title "pin"})

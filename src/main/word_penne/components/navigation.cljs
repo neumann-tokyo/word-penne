@@ -1,9 +1,6 @@
 (ns word-penne.components.navigation
-  (:require [re-frame.core :as re-frame]
-            [stylefy.core :as stylefy :refer [use-style]]
-            [word-penne.style.vars :refer [color layout-vars]]
-            [word-penne.subs :as subs]
-            [word-penne.events :as events]))
+  (:require [stylefy.core :as stylefy :refer [use-style]]
+            [word-penne.style.vars :refer [color layout-vars]]))
 
 (def s-navigation
   {:background (:main-background color)})
