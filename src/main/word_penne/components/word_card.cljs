@@ -83,11 +83,9 @@
       [:div (use-style s-flip-card-front-title) (:front-text params)]]
      [:div (use-style s-flip-card-back)
       [:div (use-style s-flip-card-back-title-container)
-       (if (nil? (:comment params))
-         [:div (use-style s-flip-card-back-title) (:back-text params)]
-         [:details
-          [:summary (use-style s-flip-card-back-title) (:back-text params)]
-          [:p (:comment params)]])]
+       [:div (use-style s-flip-card-back-title) (:back-text params)]
+       (when (:comment params)
+         [:p (:comment params)])]
       [:div (use-style s-flip-card-buttons)
        [:div
         [:a (use-style s-flip-card-button {:href "#" :title "pin"})
