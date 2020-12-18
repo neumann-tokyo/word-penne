@@ -7,7 +7,6 @@
   [:div
    [:div
     [:span "Tag1"]
-    ;; TODO 赤色のボタンにしたい
     ;; TODO mobile では bottom navigation で Test を出したい
-    [Button {:href "#"} "Test"]]
+    [Button {:kind "secondary" :href "#"} "Test"]]
    [WordCardsWrap]])

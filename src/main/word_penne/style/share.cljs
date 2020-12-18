@@ -11,4 +11,4 @@
    :text-decoration "none"
    :display "inline-block"
    :border-radius "10px"
-   ::stylefy/mode {:hover {:background-color (:assort-border color)}}})
+   ::stylefy/mode {:hover {:filter "brightness(90%)"}}})

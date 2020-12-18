@@ -1,11 +1,24 @@
 (ns word-penne.components.button
   (:require [stylefy.core :as stylefy :refer [use-style]]
+            [word-penne.style.vars :refer [color]]
             [word-penne.style.share :as share]))
 
 (def s-button
   share/m-button)
+(def s-button-secondary
+  (merge share/m-button
+         {:background (:main-background color)
+          :color (:accent-border color)
+          :border (str "solid 2px " (:accent-border color))
+          :font-weight "bold"}))
+(defn button-design [kind]
+  (case kind
+    "secondary" s-button-secondary
+    s-button))
 
 ; TODO この辺見ていい感じのデザインにする
 ; https://github.com/Jarzka/stylefy#passing-styles-to-components
-(defn Button [params text]
-  [:a (use-style s-button params) text])
+(defn Button [attrs text]
+  (let [kind (:kind attrs)
+        html-attrs (dissoc attrs :kind)]
+    [:a (use-style (button-design kind) html-attrs) text]))
