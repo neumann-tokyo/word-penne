@@ -1,20 +1,18 @@
 (ns word-penne.components.word-cards-wrap
   (:require [stylefy.core :as stylefy :refer [use-style]]
             [word-penne.components.word-card :refer [WordCard]]
-            [word-penne.style.vars :refer [color phone-width]]))
+            [word-penne.style.vars :refer [color layout-vars phone-width]]))
 
 (def s-cards-wrap
   {:width "100%"
    :height "100%"
-   :display "flex"
-   :flex-wrap "wrap"
-   :justify-content "flex-start"
-   :align-content "flex-start"
-   :align-items "center"
+   :column-count "auto"
+   :column-width (:word-card-width layout-vars)
    :background (:main-background color)
    ::stylefy/media {phone-width {:flex-direction "column"}}})
 (def s-card-item
-  {:margin ".5rem"
+  {:break-inside "avoid"
+   :margin ".5rem"
    :display "inline-block"})
 
 (defn WordCardsWrap []

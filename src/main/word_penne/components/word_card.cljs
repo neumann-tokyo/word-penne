@@ -1,9 +1,8 @@
 (ns word-penne.components.word-card
-  (:require [reagent.core :as r]
-            [stylefy.core :as stylefy :refer [use-style]]
+  (:require [stylefy.core :as stylefy :refer [use-style]]
             [bidi.bidi :refer [path-for]]
             [word-penne.routes :refer [routes]]
-            [word-penne.style.vars :refer [color phone-width]]))
+            [word-penne.style.vars :refer [color layout-vars phone-width]]))
 
 (def s-card
   {:display "inline-block"})
@@ -11,8 +10,7 @@
   {:background-color "transparent"
    :border "none"
    :perspective "1000px"
-   :min-width "10rem"
-   :max-width "30rem"
+   :width (:word-card-width layout-vars)
    :height "max-content"
    :margin 0
    :padding 0
@@ -22,8 +20,7 @@
    ::stylefy/media {phone-width {:width "85vw"}}})
 (def s-flip-card-inner
   {:display "grid"
-   :min-width "10rem"
-   :max-width "30rem"
+   :width (:word-card-width layout-vars)
    :grid-template-columns "1fr"
    :transition "transform 0.6s"
    :transform-style "preserve-3d"
@@ -31,8 +28,7 @@
 
 (def m-flip-card
   {:box-sizing "border-box"
-   :min-width "10rem"
-   :max-width "30rem"
+   :width (:word-card-width layout-vars)
    :-webkit-backface-visibility "hidden"
    :backface-visibility "hidden"
    :color (:main-text color)
