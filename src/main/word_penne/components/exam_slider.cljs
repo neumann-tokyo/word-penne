@@ -1,33 +1,25 @@
 (ns word-penne.components.exam-slider
   (:require [stylefy.core :as stylefy :refer [use-style]]
+            ["pure-react-carousel" :refer [CarouselProvider, Slider, Slide, ButtonBack, ButtonNext]]
             [bidi.bidi :refer [path-for]]
             [word-penne.routes :refer [routes]]))
 
+(def s-carousel-provider
+  {::stylefy/manual ["~" [:* {:outline "none !important"}]]})
 (def s-slider
-  {:width "100%"
-   :height "100%"
-   :display "flex"
-   :overflow-x "auto"
-   :scroll-snap-type "x mandatory"
-   :scroll-behavior "smooth"})
+  {:height "70vh"})
 (def s-slide
-  {:width "100%"
-   :height "100%"
-   :flex-shrink "0"
-   :scroll-snap-align "start"})
+  {})
 
 (defn ExamSlider []
-  [:div (use-style s-slider)
-   [:div (use-style s-slide {:id "s1"})
-    [:span "1"]
-    [:a {:href "#s2"} ">>"]]
-   [:div (use-style s-slide)
-    [:a {:name "s2"}]
-    [:span "2"]
-    [:a {:href "#s3"} ">>"]]
-   [:div (use-style s-slide {:id "s3"})
-    [:span "3"]
-    [:a {:href "#s4"} ">>"]]
-   [:div (use-style s-slide {:id "s4"})
-    [:span "4"]
-    [:a {:href (path-for routes :word-penne.pages.home/home)} "TOP"]]])
+  [:> CarouselProvider (use-style s-carousel-provider {:naturalSlideWidth "100"
+                                                       :naturalSlideHeight "100"
+                                                       :totalSlides "3"
+                                                       :touchEnabled false
+                                                       :dragEnabled false})
+   [:> Slider (use-style s-slider)
+    [:> Slide (use-style s-slide {:index "0"}) "First"]
+    [:> Slide (use-style s-slide {:index "1"}) "second"]
+    [:> Slide (use-style s-slide {:index "2"}) "third"]]
+   [:> ButtonBack "Back"]
+   [:> ButtonNext "Next"]])
