@@ -9,6 +9,6 @@
   [:div
    [:div
     [:span "Tag1"]
-    ;; TODO mobile では bottom navigation で Test を出したい
-    [Button {:kind "secondary" :href (path-for routes :word-penne.pages.cards/test)} "Test"]]
+    ;; TODO mobile では bottom navigation で quiz を出したい
+    [Button {:kind "secondary" :href (path-for routes :word-penne.pages.cards/quiz)} "Quiz"]]
    [WordCardsWrap]])

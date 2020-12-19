@@ -2,7 +2,7 @@
   (:require #_[stylefy.core :as stylefy :refer [use-style]]
             [word-penne.views :as v]
             [word-penne.components.word-card-form :refer [WordCardForm]]
-            [word-penne.components.exam-slider :refer [ExamSlider]]))
+            [word-penne.components.quiz-slider :refer [QuizSlider]]))
 
 (defmethod v/view ::new [_]
   [:div
@@ -12,5 +12,5 @@
   [:div
    [WordCardForm]])
 
-(defmethod v/view ::test [_]
-  [ExamSlider])
+(defmethod v/view ::quiz [_]
+  [QuizSlider])

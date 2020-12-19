@@ -6,7 +6,7 @@
   ["/" {"" :word-penne.pages.home/home
         "cards/" {"new" :word-penne.pages.cards/new
                   [:id "/edit"] :word-penne.pages.cards/edit
-                  "test" :word-penne.pages.cards/test}}])
+                  "quiz" :word-penne.pages.cards/quiz}}])
 ; "list" :word-penne.pages.cards/list
 ; "create" :word-penne.pages.cards/create
 ; [[#"\d+" :id] "/edit"] :word-penne.pages.cards/edit

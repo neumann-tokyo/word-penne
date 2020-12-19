@@ -1,4 +1,4 @@
-(ns word-penne.components.exam-slide
+(ns word-penne.components.quiz-slide
   (:require [stylefy.core :as stylefy :refer [use-style]]
             [word-penne.style.vars :refer [color phone-width]]
             [word-penne.style.share :as share]
@@ -60,7 +60,7 @@
 (def s-buttons-wrap
   {:margin-left ".5rem"})
 
-(defn ExamSlide [attrs]
+(defn QuizSlide [attrs]
   [:div (use-style s-container)
    [:div (use-style s-card)
     ;; TODO js で .turned-flip をつける
