@@ -7,7 +7,8 @@
             [word-penne.config :as config]
             [word-penne.events :as events]
             [word-penne.routes :refer [routes]]
-            [word-penne.pages.main-panel :as pages]))
+            [word-penne.pages.main-panel :as pages]
+            [word-penne.firebase.init :refer [initialize-firebase]]))
 
 (defn dev-setup []
   (when config/debug?
@@ -21,6 +22,7 @@
     (rdom/render [pages/main-panel] root-el)))
 
 (defn ^:export init []
+  (initialize-firebase)
   (re-frame/dispatch-sync [::events/initialize-db])
   (accountant/configure-navigation!
    {:nav-handler (fn [path]
