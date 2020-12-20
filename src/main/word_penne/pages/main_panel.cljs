@@ -8,7 +8,8 @@
             [word-penne.components.navigation :refer [Navigation]]
             [word-penne.components.word-card-add-button :refer [WordCardAddButton]]
             [word-penne.pages.home]
-            [word-penne.pages.cards]))
+            [word-penne.pages.cards]
+            [word-penne.pages.auth]))
 
 (def s-main-panel
   {:background-color (:main-background color)
