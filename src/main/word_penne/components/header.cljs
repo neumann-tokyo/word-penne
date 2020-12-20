@@ -1,9 +1,12 @@
 (ns word-penne.components.header
   (:require [stylefy.core :as stylefy :refer [use-style]]
+            [re-frame.core :as re-frame]
             [bidi.bidi :refer [path-for]]
+            [word-penne.subs :as subs]
             [word-penne.routes :refer [routes]]
             [word-penne.style.vars :refer [color layout-vars z-indexs phone-width]]
-            [word-penne.components.word-card-add-button :refer [WordCardAddButton]]))
+            [word-penne.components.word-card-add-button :refer [WordCardAddButton]]
+            [word-penne.components.avatar :refer [Avatar]]))
 
 (def s-topnav
   {:position "sticky"
@@ -80,6 +83,10 @@
    ::stylefy/mode {:focus {:outline "none"}}})
 (def s-word-card-add-button
   {::stylefy/media {phone-width {:display "none"}}})
+(def s-user-container
+  {:flex 1
+   :text-align "right"
+   :margin-right "1rem"})
 
 ;; https://stijndewitt.com/2018/06/12/pure-css-drop-shadow-on-scroll/
 (defn Header []
@@ -94,4 +101,7 @@
        [:span {:class "material-icons-outlined"} "search"]]
       [:input (use-style s-search-box {:type "search" :placeholder "Search..." :name "search"})]]]
     [:div (use-style s-word-card-add-button)
-     [WordCardAddButton]]]])
+     [WordCardAddButton]]
+    [:div (use-style s-user-container)
+     (let [{:keys [photo-url display-name]} @(re-frame/subscribe [::subs/current-user])]
+       [Avatar {:src photo-url :alt display-name}])]]])

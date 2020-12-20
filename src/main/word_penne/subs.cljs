@@ -5,3 +5,8 @@
  ::current-route
  (fn [db _]
    (get db :route {:handler :word-penne.pages.home/home})))
+
+(re-frame/reg-sub
+ ::current-user
+ (fn [db _]
+   (:user db)))

@@ -2,11 +2,23 @@
   (:require ["@firebase/app" :refer (firebase)]
             ["@firebase/auth"]
             ["firebaseui" :as firebaseui]
+            [re-frame.core :as re-frame]
             [bidi.bidi :refer [path-for]]
-            [word-penne.routes :refer [routes]]))
+            [word-penne.routes :refer [routes]]
+            [word-penne.events :as events]))
 
-(defn- auth []
+(defn auth []
   (.auth firebase))
+
+(defn check-auth []
+  (-> (auth)
+      (.onAuthStateChanged
+       (fn [user]
+         (when user
+           (re-frame/dispatch [::events/set-current-user
+                               {:uid (.-uid user)
+                                :display-name (.-displayName user)
+                                :photo-url (.-photoURL user)}]))))))
 
 (defn- ui []
   (try (new (.AuthUI (.-auth firebaseui) (auth)))

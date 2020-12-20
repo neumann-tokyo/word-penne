@@ -11,3 +11,8 @@
  ::set-current-route
  (fn [db [_ route]]
    (assoc db :route route)))
+
+(re-frame/reg-event-db
+ ::set-current-user
+ (fn [db [_ user]]
+   (assoc db :user user)))

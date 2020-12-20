@@ -8,7 +8,8 @@
             [word-penne.events :as events]
             [word-penne.routes :refer [routes]]
             [word-penne.pages.main-panel :as pages]
-            [word-penne.firebase.init :refer [initialize-firebase]]))
+            [word-penne.firebase.init :refer [initialize-firebase]]
+            [word-penne.firebase.auth :as firebase-auth]))
 
 (defn dev-setup []
   (when config/debug?
@@ -24,6 +25,7 @@
 (defn ^:export init []
   (initialize-firebase)
   (re-frame/dispatch-sync [::events/initialize-db])
+  (firebase-auth/check-auth)
   (accountant/configure-navigation!
    {:nav-handler (fn [path]
                    (re-frame/dispatch [::events/set-current-route
