@@ -20,7 +20,8 @@
   {:header 1
    :header-shadow 2
    :header-shadow-blind 3
-   :bottom-word-card-add-button 4})
+   :bottom-word-card-add-button 4
+   :avatar-menu 5})
 
 (def phone-width
   {:max-width "600px"})

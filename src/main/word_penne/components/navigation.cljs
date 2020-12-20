@@ -40,7 +40,7 @@
   [:nav (use-style s-navigation)
    [:input (use-style s-navigation-checkbox {:type "checkbox" :id "navigation-menu-checkbox" :name "navigation-menu-checkbox"})]
    [:label {:for "navigation-menu-checkbox"}
-    [:span#navigation-menu-open-button (use-style s-nav-icon {:class "material-icons-outlined"}) "menu"]]
+    [:span (use-style s-nav-icon {:class "material-icons-outlined"}) "menu"]]
    [:div#navigation-menu (use-style s-opened-navigation)
     [:div (use-style s-nav-close)]
     [:a (use-style s-nav-link {:href "#"})
