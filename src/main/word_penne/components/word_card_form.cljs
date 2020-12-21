@@ -57,13 +57,13 @@
         [:label {:for "front"} "Front"]
         [:input (use-style s-text {:type "text" :id "front" :name "front"})]]
        [:div
-        [:lavel {:for "back"} "Back"]
+        [:label {:for "back"} "Back"]
         [:input (use-style s-text {:type "text" :id "back" :name "back"})]]
        [:div
-        [:lavel {:for "comment"} "Comment"]
+        [:label {:for "comment"} "Comment"]
         [:input (use-style s-text {:type "text" :id "comment" :name "comment"})]]
        [:div
-        [:lavel {:for "tags"} "Tags"]
+        [:label {:for "tags"} "Tags"]
         [:input (use-style s-text {:type "text" :id "tags" :name "tags"})]]
        [:div (use-style s-buttons-container)
         [:input (use-style s-submit {:type "submit" :value "Submit"})]

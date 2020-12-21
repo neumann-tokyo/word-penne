@@ -69,7 +69,7 @@
      [:div (use-style s-card-back) (:back-text attrs)]]]
    [:div (use-style s-input)
     [:div
-     [:input (use-style s-text {:type "text" :id (str "text-" (:id attrs)) :name (str "text-" (:id attrs))})]]
+     [:input (use-style s-text {:type "text" :id (str "text-" (:index attrs)) :name (str "text-" (:index attrs))})]]
     [:div (use-style s-buttons-container)
      [:span (use-style s-buttons-wrap) [Button {:href "#"} "I don't know"]]
      [:span (use-style s-buttons-wrap) [Button {:href "#" :kind "secondary"} "OK"]]]]])
