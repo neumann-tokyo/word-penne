@@ -1,10 +1,6 @@
-(ns word-penne.components.header
+(ns word-penne.components.signouted-header
   (:require [stylefy.core :as stylefy :refer [use-style]]
-            [bidi.bidi :refer [path-for]]
-            [word-penne.routes :refer [routes]]
-            [word-penne.style.vars :refer [color layout-vars z-indexs phone-width]]
-            [word-penne.components.word-card-add-button :refer [WordCardAddButton]]
-            [word-penne.components.avatar-menu :refer [AvatarMenu]]))
+            [word-penne.style.vars :refer [color layout-vars z-indexs phone-width]]))
 
 (def s-topnav
   {:position "sticky"
@@ -55,51 +51,10 @@
 (def s-title-text
   {:font "bold 2rem Cursive"
    ::stylefy/media {phone-width {:display "none"}}})
-(def s-search-container
-  {;:flex 1
-   })
-(def s-search-form
-  {:border-radius "10px"
-   :background (:assort-background color)
-   :display "inline-flex"
-   :flex-direction "row"
-   :align-items "center"
-   :margin-right ".5rem"})
-(def s-search-button
-  {:padding "0 .5rem"
-   :font-size "1rem"
-   :border "none"
-   :cursor "pointer"
-   :background "none"
-   ::stylefy/mode {:focus {:outline "none"}}})
-(def s-search-box
-  {:border "none"
-   :background "none"
-   :padding ".5rem"
-   :font-size "1rem"
-   :width "100%"
-   ::stylefy/mode {:focus {:outline "none"}}})
-(def s-word-card-add-button
-  {::stylefy/media {phone-width {:display "none"}}})
-(def s-user-container
-  {:flex 1
-   :text-align "right"
-   :margin-right "1rem"
-   ::stylefy/media {phone-width {:margin-right ".5rem"}}})
 
-;; https://stijndewitt.com/2018/06/12/pure-css-drop-shadow-on-scroll/
-(defn Header []
+(defn SignoutedHeader []
   [:header (use-style s-topnav)
    [:div (use-style s-topnav-container)
-    [:a (use-style s-title {:href (path-for routes :word-penne.pages.home/home)})
+    [:span (use-style s-title)
      [:img (use-style s-title-logo {:src "/images/word-penne-mini.svg" :alt "Word Penne"})]
-     [:span (use-style s-title-text) "Word Penne"]]
-    [:div (use-style s-search-container)
-     [:div (use-style s-search-form)
-      [:button (use-style s-search-button {:type "submit"})
-       [:span {:class "material-icons-outlined"} "search"]]
-      [:input (use-style s-search-box {:type "search" :placeholder "Search..." :name "search"})]]]
-    [:div (use-style s-word-card-add-button)
-     [WordCardAddButton]]
-    [:div (use-style s-user-container)
-     [AvatarMenu]]]])
+     [:span (use-style s-title-text) "Word Penne"]]]])

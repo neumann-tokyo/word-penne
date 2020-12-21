@@ -7,6 +7,7 @@
             [word-penne.components.header :refer [Header]]
             [word-penne.components.navigation :refer [Navigation]]
             [word-penne.components.word-card-add-button :refer [WordCardAddButton]]
+            [word-penne.components.signouted-header :refer [SignoutedHeader]]
             [word-penne.pages.home]
             [word-penne.pages.cards]
             [word-penne.pages.auth]))
@@ -31,9 +32,15 @@
 
 (defn main-panel []
   [:div (use-style s-main-panel)
-   [Header]
-   [:div (use-style s-main-container)
-    [Navigation]
-    [:main (use-style s-main {:id "main"}) [v/view @(re-frame/subscribe [::subs/current-route])]]]
-   [:div (use-style s-word-card-add-button)
-    [WordCardAddButton]]])
+   (if @(re-frame/subscribe [::subs/current-user])
+     [:<> ; when user signed in
+      [Header]
+      [:div (use-style s-main-container)
+       [Navigation]
+       [:main (use-style s-main {:id "main"}) [v/view @(re-frame/subscribe [::subs/current-route])]]]
+      [:div (use-style s-word-card-add-button)
+       [WordCardAddButton]]]
+     [:<> ; when user didn't sign in
+      [SignoutedHeader]
+      [:div (use-style s-main-container)
+       [:main (use-style s-main {:id "main"}) [v/view {:handler :word-penne.pages.auth/signin}]]]])])

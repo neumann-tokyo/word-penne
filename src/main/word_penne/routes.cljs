@@ -8,9 +8,8 @@
         "cards/" {"new" :word-penne.pages.cards/new
                   [:id "/edit"] :word-penne.pages.cards/edit
                   "quiz" :word-penne.pages.cards/quiz}}])
-; "list" :word-penne.pages.cards/list
-; "create" :word-penne.pages.cards/create
-; [[#"\d+" :id] "/edit"] :word-penne.pages.cards/edit
 
-(defn navigate [view]
-  (accountant/navigate! (bidi/path-for routes view)))
+(defn navigate
+  ([view] (navigate view {}))
+  ([view params]
+   (accountant/navigate! (apply bidi/path-for routes view (apply concat params)))))

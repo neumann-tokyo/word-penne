@@ -1,5 +1,7 @@
 (ns word-penne.components.avatar-menu
   (:require [stylefy.core :as stylefy :refer [use-style]]
+            [re-frame.core :as re-frame]
+            [word-penne.subs :as subs]
             [word-penne.style.vars :refer [color z-indexs]]))
 
 (def s-menu
@@ -36,10 +38,11 @@
    :padding ".5rem"
    ::stylefy/mode {:hover {:background (:assort-background color)}}})
 
-(defn AvatarMenu [attrs]
+(defn AvatarMenu []
   [:div (use-style s-menu)
    [:button (use-style s-menu-button)
-    [:img (use-style s-avatar attrs)]
+    (let [{:keys [photo-url display-name]} @(re-frame/subscribe [::subs/current-user])]
+      [:img (use-style s-avatar {:src photo-url :alt display-name})])
     [:div#avatar-menu (use-style s-menu-content)
      [:a (use-style s-menu-link {:href "#"}) "Setting"]
      [:a (use-style s-menu-link {:href "#"}) "xxx"]

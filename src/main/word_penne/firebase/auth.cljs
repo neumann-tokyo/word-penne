@@ -10,7 +10,9 @@
 (defn auth []
   (.auth firebase))
 
-(defn check-auth []
+(defn check-auth
+  "Set the state if the user has signed in"
+  []
   (-> (auth)
       (.onAuthStateChanged
        (fn [user]
@@ -18,7 +20,8 @@
            (re-frame/dispatch [::events/set-current-user
                                {:uid (.-uid user)
                                 :display-name (.-displayName user)
-                                :photo-url (.-photoURL user)}]))))))
+                                :photo-url (.-photoURL user)}])
+           (re-frame/dispatch [::events/navigate :word-penne.pages.home/home]))))))
 
 (defn- ui []
   (try (new (.AuthUI (.-auth firebaseui) (auth)))
