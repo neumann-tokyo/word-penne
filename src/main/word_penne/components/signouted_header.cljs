@@ -2,6 +2,7 @@
   (:require [stylefy.core :as stylefy :refer [use-style]]
             [word-penne.style.vars :refer [color layout-vars z-indexs phone-width]]))
 
+;; TODO CSSもっとシンプルで良い
 (def s-topnav
   {:position "sticky"
    :top "-16px"
@@ -49,8 +50,7 @@
   {:width "3rem"
    :height "3rem"})
 (def s-title-text
-  {:font "bold 2rem Cursive"
-   ::stylefy/media {phone-width {:display "none"}}})
+  {:font "bold 2rem Cursive"})
 
 (defn SignoutedHeader []
   [:header (use-style s-topnav)

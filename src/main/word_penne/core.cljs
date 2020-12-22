@@ -23,14 +23,26 @@
     (rdom/unmount-component-at-node root-el)
     (rdom/render [main-panel/main-panel] root-el)))
 
+(defn firebase-check-auth
+  "Set the state if the user has signed in"
+  []
+  (-> (firebase-auth/auth)
+      (.onAuthStateChanged
+       (fn [user]
+         (when user
+           (re-frame/dispatch [::events/set-current-user
+                               {:uid (.-uid user)
+                                :display-name (.-displayName user)
+                                :photo-url (.-photoURL user)}])
+           (re-frame/dispatch [::events/navigate :word-penne.pages.home/home]))))))
+
 (defn ^:export init []
   (initialize-firebase)
   (re-frame/dispatch-sync [::events/initialize-db])
-  (firebase-auth/check-auth)
+  (firebase-check-auth)
   (accountant/configure-navigation!
    {:nav-handler (fn [path]
-                   (re-frame/dispatch [::events/set-current-route
-                                       (bidi/match-route routes path)])
+                   (re-frame/dispatch [::events/set-current-route (bidi/match-route routes path)])
                    (when-not (or @(re-frame/subscribe [::subs/current-user]) (= path (bidi/path-for routes :word-penne.pages.auth/signin)))
                      (re-frame/dispatch [::events/navigate :word-penne.pages.auth/signin])))
     :path-exists? (fn [path]

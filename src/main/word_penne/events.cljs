@@ -3,7 +3,8 @@
             [bidi.bidi :as bidi]
             [word-penne.db :as db]
             [word-penne.fx :as fx]
-            [word-penne.routes :refer [routes]]))
+            [word-penne.routes :refer [routes]]
+            [word-penne.firebase.auth :as firebase-auth]))
 
 (re-frame/reg-event-db
  ::initialize-db
@@ -34,3 +35,14 @@
  ::set-current-user
  (fn [db [_ user]]
    (assoc db :user user)))
+
+(re-frame/reg-event-fx
+ ::signout
+ (fn [_ _]
+   (-> (firebase-auth/auth)
+       (.signOut)
+       (.then (fn []
+                (re-frame/dispatch [::set-current-user nil])
+                (re-frame/dispatch [::navigate :word-penne.pages.auth/signin])))
+       (.catch (fn [_]
+                 (re-frame/dispatch [::navigate :word-penne.pages.home/home]))))))

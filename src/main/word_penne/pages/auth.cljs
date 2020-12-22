@@ -1,7 +1,14 @@
 (ns word-penne.pages.auth
-  (:require [reagent.core :as reagent]
+  (:require [stylefy.core :as stylefy :refer [use-style]]
+            [reagent.core :as reagent]
             [word-penne.views :as v]
+            [word-penne.style.share :as share]
             [word-penne.firebase.auth :as f-auth]))
+
+(def s-signin-container
+  (merge share/m-card
+         {:margin "0 auto"
+          :width "70%"}))
 
 (defmethod v/view ::signin [_]
   (reagent/create-class
@@ -10,5 +17,6 @@
       (f-auth/initialize-firebaseui "#firebaseui-auth-container"))
     :reagent-render
     (fn []
-      [:div "signin"
+      [:div (use-style s-signin-container)
+       [:h1 "Sign In / Sign Up"]
        [:div#firebaseui-auth-container]])}))

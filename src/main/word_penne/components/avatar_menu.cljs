@@ -2,6 +2,7 @@
   (:require [stylefy.core :as stylefy :refer [use-style]]
             [re-frame.core :as re-frame]
             [word-penne.subs :as subs]
+            [word-penne.events :as events]
             [word-penne.style.vars :refer [color z-indexs]]))
 
 (def s-menu
@@ -44,6 +45,7 @@
     (let [{:keys [photo-url display-name]} @(re-frame/subscribe [::subs/current-user])]
       [:img (use-style s-avatar {:src photo-url :alt display-name})])
     [:div#avatar-menu (use-style s-menu-content)
-     [:a (use-style s-menu-link {:href "#"}) "Setting"]
-     [:a (use-style s-menu-link {:href "#"}) "xxx"]
-     [:a (use-style s-menu-link {:href "#"}) "Logout"]]]])
+    ;;  [:a (use-style s-menu-link {:href "#"}) "Setting"]
+    ;;  [:a (use-style s-menu-link {:href "#"}) "xxx"]
+     [:a (use-style s-menu-link {:href "#" :on-click #((.preventDefault %)
+                                                       (re-frame/dispatch [::events/signout]))}) "Logout"]]]])
