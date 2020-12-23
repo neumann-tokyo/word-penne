@@ -42,9 +42,9 @@
   (firebase-check-auth)
   (accountant/configure-navigation!
    {:nav-handler (fn [path]
-                   (if-not (or @(re-frame/subscribe [::subs/current-user]) (= path (bidi/path-for routes :word-penne.pages.auth/signin)))
-                     (re-frame/dispatch [::events/navigate :word-penne.pages.auth/signin])
-                     (re-frame/dispatch [::events/set-current-route (bidi/match-route routes path)])))
+                   (re-frame/dispatch [::events/set-current-route (bidi/match-route routes path)])
+                   (when-not (or @(re-frame/subscribe [::subs/current-user]) (= path (bidi/path-for routes :word-penne.pages.auth/signin)))
+                     (re-frame/dispatch [::events/navigate :word-penne.pages.auth/signin])))
     :path-exists? (fn [path]
                     (boolean (bidi/match-route routes path)))
     :reload-same-path? true})

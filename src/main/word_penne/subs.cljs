@@ -10,3 +10,8 @@
  ::current-user
  (fn [db _]
    (:user db)))
+
+(re-frame/reg-sub
+ ::cards
+ (fn [db _]
+   (:cards db)))

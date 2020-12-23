@@ -1,9 +1,10 @@
 (ns word-penne.events
   (:require [re-frame.core :as re-frame]
-            [bidi.bidi :as bidi]
+            ;; [bidi.bidi :as bidi]
             [word-penne.db :as db]
             [word-penne.fx :as fx]
-            [word-penne.routes :refer [routes]]
+            [word-penne.subs :as subs]
+            ;; [word-penne.routes :refer [routes]]
             [word-penne.firebase.auth :as firebase-auth]))
 
 (re-frame/reg-event-db
@@ -46,3 +47,13 @@
                 (re-frame/dispatch [::navigate :word-penne.pages.auth/signin])))
        (.catch (fn [_]
                  (re-frame/dispatch [::navigate :word-penne.pages.home/home]))))))
+
+(re-frame/reg-event-fx
+ ::fetch-cards
+ (fn [_ _]
+   {:fx/firebase-load-cards {:user-id @(re-frame/subscribe [::subs/current-user])}}))
+
+(re-frame/reg-event-db
+ ::set-cards
+ (fn [db [_ res]]
+   (assoc db :cards res)))
