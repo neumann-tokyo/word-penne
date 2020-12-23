@@ -19,4 +19,5 @@
     (fn []
       [:div (use-style s-signin-container)
        [:h1 "Sign In / Sign Up"]
+       ;; TODO 利用規約(TOS)
        [:div#firebaseui-auth-container]])}))
