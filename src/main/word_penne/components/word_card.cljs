@@ -1,7 +1,7 @@
 (ns word-penne.components.word-card
-  (:require [stylefy.core :as stylefy :refer [use-style]]
-            [bidi.bidi :refer [path-for]]
-            [word-penne.routes :refer [routes]]
+  (:require [re-frame.core :as re-frame]
+            [stylefy.core :as stylefy :refer [use-style]]
+            [word-penne.events :as events]
             [word-penne.style.vars :refer [color layout-vars phone-width]]
             [word-penne.style.share :as share]))
 
@@ -82,7 +82,10 @@
        [:div
         [:a (use-style s-flip-card-button {:href "#" :title "pin"})
          [:span {:class "material-icons-outlined"} "push_pin"]]
-        [:a (use-style s-flip-card-button {:href (path-for routes :word-penne.pages.cards/edit :id "aaaaaa") :title "edit"})
+        [:a (use-style s-flip-card-button {:href "#"
+                                           :on-click #((.preventDefault %)
+                                                       (re-frame/dispatch [::events/navigate :word-penne.pages.cards/edit {:id (:uid attrs)}]))
+                                           :title "edit"})
          [:span {:class "material-icons-outlined"} "edit"]]]
        [:div
         [:a (use-style s-flip-card-button {:href "#" :title "archive"})

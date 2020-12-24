@@ -15,8 +15,8 @@
 (defmulti on-navigate (fn [view _] view))
 (defmethod on-navigate :word-penne.pages.home/home [_ _]
   {:dispatch [::fetch-cards]})
-;; (defmethod on-navigate :todo-app.views/edit [_ params]
-;;   {:dispatch [::fetch-todo-by-id (:id params)]})
+(defmethod on-navigate :word-penne.pages.cards/edit [_ params]
+  {:dispatch [::fetch-card-by-uid (:id params)]})
 (defmethod on-navigate :default [_ _] nil)
 
 (re-frame/reg-event-fx
@@ -57,7 +57,9 @@
 (re-frame/reg-event-db
  ::set-cards
  (fn [db [_ res]]
-   (assoc db :cards res)))
+   (assoc db
+          :cards res
+          :selected-card nil)))
 
 (re-frame/reg-event-fx
  ::create-card
@@ -65,3 +67,24 @@
    {::fx/firebase-create-card {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
                                :values values
                                :on-success (fn [] [::navigate :word-penne.pages.home/home])}}))
+
+(re-frame/reg-event-fx
+ ::fetch-card-by-uid
+ (fn [{:keys [db]} [_ card-uid]]
+   {:db (assoc db :selected-card nil)
+    ::fx/firebase-load-card-by-uid {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
+                                    :card-uid card-uid
+                                    :on-success (fn [card] [::set-selected-card card])}}))
+
+(re-frame/reg-event-db
+ ::set-selected-card
+ (fn [db [_ res]]
+   (assoc db :selected-card res)))
+
+(re-frame/reg-event-fx
+ ::update-card-by-uid
+ (fn [_ [_ card-uid {:keys [values]}]]
+   {::fx/firebase-update-card-by-uid {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
+                                      :card-uid card-uid
+                                      :values values
+                                      :on-success (fn [] [::navigate :word-penne.pages.home/home])}}))

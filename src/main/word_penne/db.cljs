@@ -2,4 +2,5 @@
 
 (def default-db
   {:user nil
-   :cards []})
+   :cards []
+   :selected-card nil})

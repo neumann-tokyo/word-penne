@@ -34,3 +34,25 @@
        (.add (clj->js values))
        (.then (fn [_]
                 (re-frame/dispatch (on-success)))))))
+
+(re-frame/reg-fx
+ ::firebase-load-card-by-uid
+ (fn [{:keys [user-uid card-uid on-success]}]
+   (when user-uid
+     (-> (firestore)
+         (.collection (str "users/" user-uid "/cards"))
+         (.doc card-uid)
+         (.get)
+         (.then (fn [doc]
+                  (when (.-exists doc)
+                    (re-frame/dispatch (on-success (conj {:uid card-uid} (js->clj (.data doc) :keywordize-keys true)))))))))))
+
+(re-frame/reg-fx
+ ::firebase-update-card-by-uid
+ (fn [{:keys [user-uid card-uid values on-success]}]
+   (when user-uid
+     (-> (firestore)
+         (.collection (str "users/" user-uid "/cards"))
+         (.doc card-uid)
+         (.set (clj->js values))
+         (.then (fn [_] (re-frame/dispatch (on-success))))))))

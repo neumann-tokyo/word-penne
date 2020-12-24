@@ -30,11 +30,11 @@
       (.onAuthStateChanged
        (fn [user]
          (when user
-           (re-frame/dispatch [::events/set-current-user
-                               {:uid (.-uid user)
-                                :display-name (.-displayName user)
-                                :photo-url (.-photoURL user)}])
-           (re-frame/dispatch [::events/navigate :word-penne.pages.home/home]))))))
+           (re-frame/dispatch-sync [::events/set-current-user
+                                    {:uid (.-uid user)
+                                     :display-name (.-displayName user)
+                                     :photo-url (.-photoURL user)}])
+           (re-frame/dispatch-sync [::events/navigate :word-penne.pages.home/home]))))))
 
 (defn ^:export init []
   (initialize-firebase)
