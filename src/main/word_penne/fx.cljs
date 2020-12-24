@@ -10,16 +10,27 @@
 
 (re-frame/reg-fx
  ::firebase-load-cards
- (fn [{:keys [user-uid]}] ; TODO I want to pass a sort order
+ (fn [{:keys [user-uid on-success]}] ; TODO I want to pass a sort order
+   (when user-uid
+     (-> (firestore)
+         (.collection (str "users/" user-uid "/cards"))
+         (.get)
+         (.then
+          (fn [snapshot]
+            (let [result (atom [])]
+              (.forEach snapshot
+                        (fn [doc]
+                          (swap! result conj
+                                 (conj {:uid (.-id doc)}
+                                       (js->clj (.data doc) :keywordize-keys true)))))
+              (re-frame/dispatch (on-success @result)))))))))
+
+;; TODO core.spec
+(re-frame/reg-fx
+ ::firebase-create-card
+ (fn [{:keys [user-uid values on-success]}]
    (-> (firestore)
        (.collection (str "users/" user-uid "/cards"))
-       (.get)
-       (.then
-        (fn [snapshot]
-          (let [result (atom [])]
-            (.forEach snapshot
-                      (fn [doc]
-                        (swap! result conj
-                               (conj {:id (.-id doc)}
-                                     (js->clj (.data doc) :keywordize-keys true)))))
-            (re-frame/dispatch [::set-cards @result])))))))
+       (.add (clj->js values))
+       (.then (fn [_]
+                (re-frame/dispatch (on-success)))))))

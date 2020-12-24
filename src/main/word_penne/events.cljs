@@ -13,8 +13,8 @@
    db/default-db))
 
 (defmulti on-navigate (fn [view _] view))
-;; (defmethod on-navigate :todo-app.views/list [_ _]
-;;   {:dispatch [::fetch-todos]})
+(defmethod on-navigate :word-penne.pages.home/home [_ _]
+  {:dispatch [::fetch-cards]})
 ;; (defmethod on-navigate :todo-app.views/edit [_ params]
 ;;   {:dispatch [::fetch-todo-by-id (:id params)]})
 (defmethod on-navigate :default [_ _] nil)
@@ -51,9 +51,17 @@
 (re-frame/reg-event-fx
  ::fetch-cards
  (fn [_ _]
-   {:fx/firebase-load-cards {:user-id @(re-frame/subscribe [::subs/current-user])}}))
+   {::fx/firebase-load-cards {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
+                              :on-success (fn [cards] [::set-cards cards])}}))
 
 (re-frame/reg-event-db
  ::set-cards
  (fn [db [_ res]]
    (assoc db :cards res)))
+
+(re-frame/reg-event-fx
+ ::create-card
+ (fn [_ [_ {:keys [values]}]]
+   {::fx/firebase-create-card {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
+                               :values values
+                               :on-success (fn [] [::navigate :word-penne.pages.home/home])}}))

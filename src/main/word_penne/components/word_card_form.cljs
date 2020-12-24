@@ -38,8 +38,10 @@
           :background (:accent-background color)
           :border (str "solid 1px " (:accent-border color))
           :color (:accent-text color)
+          :cursor "pointer"
           ::stylefy/mode {:hover {:background-color (:accent-border color)}}}))
 
+;; TODO validation
 (defn WordCardForm [props]
   [:div (use-style s-form-container)
    [fork/form (merge {:prevent-default? true
@@ -54,17 +56,17 @@
       [:form (use-style s-form {:id form-id
                                 :on-submit handle-submit})
        [:div
-        [:label {:for "front"} "Front"]
-        [:input (use-style s-text {:type "text" :id "front" :name "front"})]]
+        [:label {:for "front-text"} "Front"]
+        [:input (use-style s-text {:type "text" :id "front-text" :name "front-text" :required true :value (values "front-text") :on-change handle-change :on-blur handle-blur})]]
        [:div
-        [:label {:for "back"} "Back"]
-        [:input (use-style s-text {:type "text" :id "back" :name "back"})]]
+        [:label {:for "back-text"} "Back"]
+        [:input (use-style s-text {:type "text" :id "back-text" :name "back-text" :required true :value (values "back-text") :on-change handle-change :on-blur handle-blur})]]
        [:div
         [:label {:for "comment"} "Comment"]
-        [:input (use-style s-text {:type "text" :id "comment" :name "comment"})]]
+        [:input (use-style s-text {:type "text" :id "comment" :name "comment" :value (values "comment") :on-change handle-change :on-blur handle-blur})]]
        [:div
         [:label {:for "tags"} "Tags"]
         [:input (use-style s-text {:type "text" :id "tags" :name "tags"})]]
        [:div (use-style s-buttons-container)
-        [:input (use-style s-submit {:type "submit" :value "Submit"})]
+        [:input (use-style s-submit {:type "submit" :value "Submit" :disabled submitting?})]
         [Button {:href (path-for routes :word-penne.pages.home/home)} "Cancel"]]])]])

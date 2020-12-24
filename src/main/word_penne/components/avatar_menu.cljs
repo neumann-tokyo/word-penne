@@ -13,6 +13,7 @@
    :background (:main-background color)
    :outline "none"
    :border "none"
+   :cursor "pointer"
    ::stylefy/manual [[:&:focus-within [:#avatar-menu {:display "block"}]]]})
 (def s-avatar
   {:vertical-align "middle"
