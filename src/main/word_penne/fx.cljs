@@ -1,12 +1,21 @@
 (ns word-penne.fx
   (:require [re-frame.core :as re-frame]
             [word-penne.firebase.firestore :refer [firestore]]
+            [word-penne.firebase.auth :as firebase-auth]
             [word-penne.routes :as routes]))
 
 (re-frame/reg-fx
  ::navigate
  (fn [{:keys [view params]}]
    (routes/navigate view params)))
+
+(re-frame/reg-fx
+ ::firabase-signout
+ (fn [{:keys [on-success on-failure]}]
+   (-> (firebase-auth/auth)
+       (.signOut)
+       (.then on-success)
+       (.catch on-failure))))
 
 (re-frame/reg-fx
  ::firebase-load-cards

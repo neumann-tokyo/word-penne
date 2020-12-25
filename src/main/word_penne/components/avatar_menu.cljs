@@ -48,5 +48,6 @@
     [:div#avatar-menu (use-style s-menu-content)
     ;;  [:a (use-style s-menu-link {:href "#"}) "Setting"]
     ;;  [:a (use-style s-menu-link {:href "#"}) "xxx"]
-     [:a (use-style s-menu-link {:href "#" :on-click #((.preventDefault %)
+     [:a (use-style s-menu-link {:href "#" :on-click (fn [e]
+                                                       (.preventDefault e)
                                                        (re-frame/dispatch [::events/signout]))}) "Logout"]]]])

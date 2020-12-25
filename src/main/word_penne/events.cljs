@@ -5,7 +5,7 @@
             [word-penne.fx :as fx]
             [word-penne.subs :as subs]
             ;; [word-penne.routes :refer [routes]]
-            [word-penne.firebase.auth :as firebase-auth]))
+            ))
 
 (re-frame/reg-event-db
  ::initialize-db
@@ -40,13 +40,11 @@
 (re-frame/reg-event-fx
  ::signout
  (fn [_ _]
-   (-> (firebase-auth/auth)
-       (.signOut)
-       (.then (fn []
-                (re-frame/dispatch [::set-current-user nil])
-                (re-frame/dispatch [::navigate :word-penne.pages.auth/signin])))
-       (.catch (fn [_]
-                 (re-frame/dispatch [::navigate :word-penne.pages.home/home]))))))
+   {::fx/firabase-signout {:on-success (fn []
+                                         (re-frame/dispatch [::set-current-user nil])
+                                         (re-frame/dispatch [::navigate :word-penne.pages.auth/signin]))
+                           :on-failure (fn [_]
+                                         (re-frame/dispatch [::navigate :word-penne.pages.home/home]))}}))
 
 (re-frame/reg-event-fx
  ::fetch-cards
