@@ -9,10 +9,9 @@
   (.auth firebase))
 
 (defn- ui []
-  (try (new (.AuthUI (.-auth firebaseui) (auth)))
-       (catch js/Error e
-         (print e))) ;; TODO ここでエラーになるときにうまく動かない
-  (.. firebaseui -auth -AuthUI getInstance))
+  (or
+   (.. firebaseui -auth -AuthUI getInstance)
+   (new (.. firebaseui -auth -AuthUI) (auth))))
 
 (defn initialize-firebaseui [target-id]
   (-> (ui)
