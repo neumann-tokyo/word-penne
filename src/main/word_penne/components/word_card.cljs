@@ -83,7 +83,8 @@
         [:a (use-style s-flip-card-button {:href "#" :title "pin"})
          [:span {:class "material-icons-outlined"} "push_pin"]]
         [:a (use-style s-flip-card-button {:href "#"
-                                           :on-click #((.preventDefault %)
+                                           :on-click (fn [e]
+                                                       (.preventDefault e)
                                                        (re-frame/dispatch [::events/navigate :word-penne.pages.cards/edit {:id (:uid attrs)}]))
                                            :title "edit"})
          [:span {:class "material-icons-outlined"} "edit"]]]

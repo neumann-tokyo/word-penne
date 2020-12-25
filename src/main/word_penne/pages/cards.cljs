@@ -12,13 +12,13 @@
    [WordCardForm {:on-submit #(re-frame/dispatch [::events/create-card %])}]])
 
 (defmethod v/view ::edit [_]
-  (when-let [{:keys [uid front-text back-text comment]} @(re-frame/subscribe [::subs/selected-card])]
-    [:div
+  [:div
+   (when-let [{:keys [uid front-text back-text comment]} @(re-frame/subscribe [::subs/selected-card])]
      [WordCardForm {:initial-values {"uid" uid
                                      "front-text" front-text
                                      "back-text" back-text
                                      "comment" comment}
-                    :on-submit #(re-frame/dispatch [::events/update-card-by-uid uid %])}]]))
+                    :on-submit #(re-frame/dispatch [::events/update-card-by-uid uid %])}])])
 
 (defmethod v/view ::quiz [_]
   [QuizSlider])

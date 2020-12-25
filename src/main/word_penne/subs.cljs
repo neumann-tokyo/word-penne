@@ -15,3 +15,8 @@
  ::cards
  (fn [db _]
    (:cards db)))
+
+(re-frame/reg-sub
+ ::selected-card
+ (fn [db _]
+   (:selected-card db)))
