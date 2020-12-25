@@ -10,7 +10,8 @@
   [reagent "0.10.0"]
   [venantius/accountant "0.2.5"]
   [stylefy "2.2.1"]
-  [fork "2.2.5"]]
+  [fork "2.2.5"]
+  [org.clojure/spec.alpha "0.2.187"]]
 
  :builds
  {:app {:target :browser

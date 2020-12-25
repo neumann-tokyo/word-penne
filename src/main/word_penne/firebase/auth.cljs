@@ -9,9 +9,10 @@
   (.auth firebase))
 
 (defn- ui []
-  (or
-   (.. firebaseui -auth -AuthUI getInstance)
-   (new (.. firebaseui -auth -AuthUI) (auth))))
+  (try (new (.. firebaseui -auth -AuthUI) (auth))
+       (catch js/Object e
+         (js/console.log e)))
+  (.. firebaseui -auth -AuthUI getInstance))
 
 (defn initialize-firebaseui [target-id]
   (-> (ui)
