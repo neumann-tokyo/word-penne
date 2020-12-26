@@ -8,6 +8,7 @@
 (defn auth []
   (.auth firebase))
 
+;; TODO FIXME 例外が発生するときに画面遷移がうまく行かない
 (defn- ui []
   (try (new (.. firebaseui -auth -AuthUI) (auth))
        (catch js/Object e

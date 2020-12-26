@@ -32,7 +32,7 @@
 
 (defn main-panel []
   [:div (use-style s-main-panel)
-   (if @(re-frame/subscribe [::subs/current-user])
+   (if (and @(re-frame/subscribe [::subs/current-user]) (not= (:handler @(re-frame/subscribe [::subs/current-route])) :word-penne.pages.auth/signin))
      [:<> ; when user signed in
       [Header]
       [:div (use-style s-main-container)
