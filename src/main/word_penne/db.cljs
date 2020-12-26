@@ -4,7 +4,7 @@
 (s/def ::uid string?)
 (s/def ::display-name string?)
 (s/def ::photo-url string?)
-(s/def ::user (s/keys :req-un [::uid ::display-name ::photo-url]))
+(s/def ::user (s/nilable (s/keys :req-un [::uid ::display-name ::photo-url])))
 (s/def ::front-text string?)
 (s/def ::back-text string?)
 (s/def ::comment string?)
