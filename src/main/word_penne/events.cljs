@@ -12,13 +12,19 @@
 
 (def check-asserts? config/debug?)
 
-(defn check-and-throw
-  "Throws an exception if `db` doesn't match the Spec `a-spec`."
-  [a-spec db]
-  (when (and check-asserts? (not (m/validate a-spec db)))
-    (throw (js/Error. (str "spec check failed: " (with-out-str (pprint (m/explain a-spec db))))))))
+(defn- check-and-throw
+  "Throws an exception if `form` doesn't match the Spec `a-spec`."
+  [a-spec form]
+  (when (and check-asserts? (not (m/validate a-spec form)))
+    (throw (js/Error. (str "spec check failed: " (with-out-str (pprint (m/explain a-spec form))))))))
 
 (def validate-db (re-frame/after (partial check-and-throw db/t-db)))
+(defn validate-args [a-spec]
+  (re-frame/->interceptor
+   :id :validate-args
+   :before (fn [{{:keys [event]} :coeffects :as context}]
+             (check-and-throw a-spec (last event))
+             context)))
 
 (re-frame/reg-event-db
  ::initialize-db
@@ -47,7 +53,8 @@
 
 (re-frame/reg-event-db
  ::set-current-user
- [validate-db]
+ [(validate-args db/t-user)
+  validate-db]
  (fn [db [_ user]]
    (assoc db :user user)))
 
@@ -68,7 +75,8 @@
 
 (re-frame/reg-event-db
  ::set-cards
- [validate-db]
+ [(validate-args [:sequential db/t-card])
+  validate-db]
  (fn [db [_ res]]
    (assoc db
           :cards res
@@ -76,6 +84,11 @@
 
 (re-frame/reg-event-fx
  ::create-card
+ [(validate-args [:map [:values
+                        [:map
+                         ["front-text" string?]
+                         ["back-text" string?]
+                         ["comment" {:optional true} string?]]]])]
  (fn [_ [_ {:keys [values]}]]
    {::fx/firebase-create-card {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
                                :values values
@@ -91,7 +104,8 @@
 
 (re-frame/reg-event-db
  ::set-selected-card
- [validate-db]
+ [(validate-args db/t-card)
+  validate-db]
  (fn [db [_ res]]
    (assoc db :selected-card res)))
 
