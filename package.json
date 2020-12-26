@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "shadow-cljs watch app"
+    "dev": "shadow-cljs watch app",
+    "repl": "shadow-cljs clj-repl"
   },
   "devDependencies": {
     "shadow-cljs": "2.11.8"

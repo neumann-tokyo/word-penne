@@ -1,6 +1,7 @@
 (ns word-penne.events
   (:require [re-frame.core :as re-frame]
-            [cljs.spec.alpha :as s]
+            [malli.core :as m]
+            [cljs.pprint :refer [pprint]]
             ;; [bidi.bidi :as bidi]
             [word-penne.db :as db]
             [word-penne.fx :as fx]
@@ -9,15 +10,15 @@
             ;; [word-penne.routes :refer [routes]]
             ))
 
-(s/check-asserts config/debug?)
+(def check-asserts? config/debug?)
 
 (defn check-and-throw
   "Throws an exception if `db` doesn't match the Spec `a-spec`."
   [a-spec db]
-  (when (and (s/check-asserts?) (not (s/valid? a-spec db)))
-    (throw (js/Error. (ex-info (str "spec check failed: " (s/explain-str a-spec db)) {})))))
+  (when (and check-asserts? (not (m/validate a-spec db)))
+    (throw (js/Error. (str "spec check failed: " (with-out-str (pprint (m/explain a-spec db))))))))
 
-(def check-spec-interceptor (re-frame/after (partial check-and-throw ::db/db)))
+(def validate-db (re-frame/after (partial check-and-throw db/t-db)))
 
 (re-frame/reg-event-db
  ::initialize-db
@@ -46,7 +47,7 @@
 
 (re-frame/reg-event-db
  ::set-current-user
- [check-spec-interceptor]
+ [validate-db]
  (fn [db [_ user]]
    (assoc db :user user)))
 
@@ -67,7 +68,7 @@
 
 (re-frame/reg-event-db
  ::set-cards
- [check-spec-interceptor]
+ [validate-db]
  (fn [db [_ res]]
    (assoc db
           :cards res
@@ -90,7 +91,7 @@
 
 (re-frame/reg-event-db
  ::set-selected-card
- [check-spec-interceptor]
+ [validate-db]
  (fn [db [_ res]]
    (assoc db :selected-card res)))
 

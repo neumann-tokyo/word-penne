@@ -1,20 +1,25 @@
-(ns word-penne.db
-  (:require [cljs.spec.alpha :as s]))
+(ns word-penne.db)
 
-(s/def ::uid string?)
-(s/def ::display-name string?)
-(s/def ::photo-url string?)
-(s/def ::user (s/nilable (s/keys :req-un [::uid ::display-name ::photo-url])))
-(s/def ::front-text string?)
-(s/def ::back-text string?)
-(s/def ::comment string?)
-;; (s/def ::tag string?)
-;; (s/def ::tags (s/map-of ::tag))
-(s/def ::card (s/keys :req-un [::uid ::front-text ::back-text]
-                      :opt-un [::comment])) ; TODO tag をいれる
-(s/def ::cards (s/coll-of ::card))
-(s/def ::selected-card (s/nilable ::card))
-(s/def ::db (s/keys :req-un [::user ::cards ::selected-card]))
+;; malli type: https://github.com/metosin/malli
+(def t-user
+  [:map
+   [:uid string?]
+   [:display-name string?]
+   [:photo-url string?]])
+(def t-card
+  [:map
+   [:uid string?]
+   [:front-text string?]
+   [:back-text string?]
+   [:comment {:optional true} string?]])
+(def t-db
+  [:map
+   [:user
+    [:maybe t-user]]
+   [:cards
+    [:sequential t-card]]
+   [:selected-card
+    [:maybe t-card]]])
 
 (def default-db
   {:user nil
