@@ -19,12 +19,14 @@
     (throw (js/Error. (str "spec check failed: " (with-out-str (pprint (m/explain a-spec form))))))))
 
 (def validate-db (re-frame/after (partial check-and-throw db/t-db)))
-(defn validate-args [a-spec]
-  (re-frame/->interceptor
-   :id :validate-args
-   :before (fn [{{:keys [event]} :coeffects :as context}]
-             (check-and-throw a-spec (last event))
-             context)))
+(defn validate-args
+  ([a-spec] (validate-args 0 a-spec))
+  ([index a-spec]
+   (re-frame/->interceptor
+    :id :validate-args
+    :before (fn [{{:keys [event]} :coeffects :as context}]
+              (check-and-throw a-spec (get (next event) index))
+              context))))
 
 (re-frame/reg-event-db
  ::initialize-db
@@ -96,6 +98,7 @@
 
 (re-frame/reg-event-fx
  ::fetch-card-by-uid
+ [(validate-args string?)]
  (fn [{:keys [db]} [_ card-uid]]
    {:db (assoc db :selected-card nil)
     ::fx/firebase-load-card-by-uid {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
@@ -110,6 +113,9 @@
    (assoc db :selected-card res)))
 
 (re-frame/reg-event-fx
+ [(validate-args 0 string?)
+  (validate-args 1 [:map [:values
+                          [:map db/t-card]]])]
  ::update-card-by-uid
  (fn [_ [_ card-uid {:keys [values]}]]
    {::fx/firebase-update-card-by-uid {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
