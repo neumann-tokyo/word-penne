@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "shadow-cljs watch app",
-    "repl": "shadow-cljs clj-repl"
+    "repl": "shadow-cljs clj-repl",
+    "test": "shadow-cljs compile test && node out/node-tests.js || :"
   },
   "devDependencies": {
     "shadow-cljs": "2.11.8"
