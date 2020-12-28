@@ -92,13 +92,15 @@
           :cards res
           :selected-card nil)))
 
+(def t-create-card-arg
+  [:map [:values
+         [:map
+          ["front-text" string?]
+          ["back-text" string?]
+          ["comment" {:optional true} string?]]]])
 (re-frame/reg-event-fx
  ::create-card
- [(validate-args [:map [:values
-                        [:map
-                         ["front-text" string?]
-                         ["back-text" string?]
-                         ["comment" {:optional true} string?]]]])]
+ [(validate-args t-create-card-arg)]
  (fn [_ [_ {:keys [values]}]]
    {::fx/firebase-create-card {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
                                :values values
@@ -120,15 +122,17 @@
  (fn [db [_ res]]
    (assoc db :selected-card res)))
 
+(def t-update-card-by-uid-arg
+  [:map [:values
+         [:map
+          ["uid" string?]
+          ["front-text" string?]
+          ["back-text" string?]
+          ["comment" {:optional true} string?]]]])
 (re-frame/reg-event-fx
  ::update-card-by-uid
  [(validate-args 0 string?)
-  (validate-args 1 [:map [:values
-                          [:map
-                           ["uid" string?]
-                           ["front-text" string?]
-                           ["back-text" string?]
-                           ["comment" {:optional true} string?]]]])]
+  (validate-args 1 t-update-card-by-uid-arg)]
  (fn [_ [_ card-uid {:keys [values]}]]
    {::fx/firebase-update-card-by-uid {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
                                       :card-uid card-uid
