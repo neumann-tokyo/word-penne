@@ -14,18 +14,26 @@
 
 (defn- check-and-throw
   "Throws an exception if `form` doesn't match the Spec `a-spec`."
-  [a-spec form]
+  [validation-type event-name a-spec form]
   (when (and check-asserts? (not (m/validate a-spec form)))
-    (throw (js/Error. (str "spec check failed: " (with-out-str (pprint (m/explain a-spec form))))))))
-
-(def validate-db (re-frame/after (partial check-and-throw db/t-db)))
+    (throw (js/Error. (str "spec check failed: \n"
+                           "method: " validation-type "\n"
+                           "evnet: " event-name "\n"
+                           (with-out-str (pprint (m/explain a-spec form))))))))
+(def validate-db
+  (re-frame/->interceptor
+   :id :validate-db
+   :after (fn [{{:keys [event]} :coeffects
+                {:keys [db]} :effects :as context}]
+            (check-and-throw :validate-db (first event) db/t-db db)
+            context)))
 (defn validate-args
   ([a-spec] (validate-args 0 a-spec))
   ([index a-spec]
    (re-frame/->interceptor
     :id :validate-args
     :before (fn [{{:keys [event]} :coeffects :as context}]
-              (check-and-throw a-spec (get (next event) index))
+              (check-and-throw :validate-args (first event) a-spec (nth (next event) index))
               context))))
 
 (re-frame/reg-event-db
@@ -55,7 +63,7 @@
 
 (re-frame/reg-event-db
  ::set-current-user
- [(validate-args db/t-user)
+ [(validate-args [:maybe db/t-user])
   validate-db]
  (fn [db [_ user]]
    (assoc db :user user)))
@@ -113,10 +121,14 @@
    (assoc db :selected-card res)))
 
 (re-frame/reg-event-fx
+ ::update-card-by-uid
  [(validate-args 0 string?)
   (validate-args 1 [:map [:values
-                          [:map db/t-card]]])]
- ::update-card-by-uid
+                          [:map
+                           ["uid" string?]
+                           ["front-text" string?]
+                           ["back-text" string?]
+                           ["comment" {:optional true} string?]]]])]
  (fn [_ [_ card-uid {:keys [values]}]]
    {::fx/firebase-update-card-by-uid {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
                                       :card-uid card-uid
