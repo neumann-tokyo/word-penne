@@ -5,7 +5,8 @@
             [word-penne.routes :refer [routes]]
             [word-penne.style.share :as share]
             [word-penne.style.vars :refer [color phone-width]]
-            [word-penne.components.button :refer [Button]]))
+            [word-penne.components.button :refer [Button]]
+            [word-penne.validator :as v]))
 
 (def s-form-container
   {:display "flex"
@@ -41,13 +42,23 @@
           :cursor "pointer"
           ::stylefy/mode {:hover {:background-color (:accent-border color)}}}))
 
+(def t-card-form
+  [:map
+   [:front-text [:string {:min 1 :max 100}]]
+   [:back-text [:string {:min 1 :max 100}]]
+   [:comment {:optional true} [:string {:min 1 :max 100}]]])
+
 ;; TODO validation
 (defn WordCardForm [props]
   [:div (use-style s-form-container)
-   [fork/form (merge {:prevent-default? true
-                      :clean-on-unmount? true}
+   [fork/form (merge {:path [:form]
+                      :prevent-default? true
+                      :clean-on-unmount? true
+                      :validation (v/validator-for-humans t-card-form)}
                      props)
     (fn [{:keys [values
+                 errors
+                 touched
                  form-id
                  handle-change
                  handle-blur
@@ -57,13 +68,19 @@
                                 :on-submit handle-submit})
        [:div
         [:label {:for "front-text"} "Front"]
-        [:input (use-style s-text {:type "text" :id "front-text" :name "front-text" :required true :value (values "front-text") :on-change handle-change :on-blur handle-blur})]]
+        [:input (use-style s-text {:type "text" :id "front-text" :name "front-text" :required true :value (values "front-text") :on-change handle-change :on-blur handle-blur})]
+        (when (touched "front-text")
+          [:div (first (get errors (list "front-text")))])]
        [:div
         [:label {:for "back-text"} "Back"]
-        [:input (use-style s-text {:type "text" :id "back-text" :name "back-text" :required true :value (values "back-text") :on-change handle-change :on-blur handle-blur})]]
+        [:input (use-style s-text {:type "text" :id "back-text" :name "back-text" :required true :value (values "back-text") :on-change handle-change :on-blur handle-blur})]
+        (when (touched "back-text")
+          [:div (first (get errors (list "back-text")))])]
        [:div
         [:label {:for "comment"} "Comment"]
-        [:input (use-style s-text {:type "text" :id "comment" :name "comment" :value (values "comment") :on-change handle-change :on-blur handle-blur})]]
+        [:input (use-style s-text {:type "text" :id "comment" :name "comment" :value (values "comment") :on-change handle-change :on-blur handle-blur})]
+        (when (touched "comment")
+          [:div (first (get errors (list "comment")))])]
        [:div
         [:label {:for "tags"} "Tags"]
         [:input (use-style s-text {:type "text" :id "tags" :name "tags"})]]
