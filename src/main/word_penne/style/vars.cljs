@@ -8,7 +8,8 @@
    :accent-background "#cf534a"
    :accent-border "#ba4a42"
    :accent-text "#ffffff"
-   :title-text "#444444"})
+   :title-text "#444444"
+   :error-text "#cf534a"})
 
 (def layout-vars
   {:header-height "4rem"
