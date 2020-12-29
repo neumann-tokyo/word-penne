@@ -44,9 +44,9 @@
 
 (def t-card-form
   [:map
-   [:front-text [:string {:min 1 :max 100}]]
-   [:back-text [:string {:min 1 :max 100}]]
-   [:comment {:optional true} [:string {:min 1 :max 100}]]])
+   [:front-text [:string {:min 1 :max 10}]]
+   [:back-text [:string {:min 1 :max 10}]]
+   [:comment {:optional true} [:string {:min 1 :max 10}]]])
 
 ;; TODO validation
 (defn WordCardForm [props]
@@ -54,6 +54,7 @@
    [fork/form (merge {:path [:form]
                       :prevent-default? true
                       :clean-on-unmount? true
+                      :keywordize-keys true
                       :validation (v/validator-for-humans t-card-form)}
                      props)
     (fn [{:keys [values

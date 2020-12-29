@@ -11,7 +11,8 @@
   [venantius/accountant "0.2.5"]
   [stylefy "2.2.1"]
   [fork "2.2.5"]
-  [metosin/malli "0.2.1"]]
+  [metosin/malli "0.2.1"]
+  [vlad "3.3.2"]]
 
  :builds
  {:app {:target :browser
