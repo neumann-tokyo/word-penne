@@ -8,8 +8,17 @@
 (defn auth []
   (let [auth (.auth firebase)]
     (when (= js/location.hostname "localhost")
-      (.useEmulator auth "http://127.0.0.1:9099/"))
+      (.useEmulator auth "http://localhost:9099/")
+      (.signInWithCredential auth
+                             ((.. firebase -auth -GoogleAuthProvider -credential)
+                              "{\"sub\": \"abc123\", 
+                               \"email\": \"foo@example.com\", 
+                               \"email_verified\": true}")))
     auth))
+
+;; firebase.auth().signInWithCredential(firebase.auth.GoogleAuthProvider.credential(
+;;   '{"sub": "abc123", "email": "foo@example.com", "email_verified": true}'
+;; ));
 
 ;; TODO FIXME 例外が発生するときに画面遷移がうまく行かない
 (defn- ui []
