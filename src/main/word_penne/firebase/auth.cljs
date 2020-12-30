@@ -5,22 +5,21 @@
             [bidi.bidi :refer [path-for]]
             [word-penne.routes :refer [routes]]))
 
+(def auth-instance (atom nil))
+
 (defn auth []
-  (let [auth (.auth firebase)]
-    (when (= js/location.hostname "localhost")
-      (.useEmulator auth "http://localhost:9099/")
-      (.signInWithCredential auth
-                             ((.. firebase -auth -GoogleAuthProvider -credential)
-                              "{\"sub\": \"abc123\", 
+  (if @auth-instance
+    @auth-instance
+    (let [auth (.auth firebase)]
+      (when (= js/location.hostname "localhost")
+        (.useEmulator auth "http://localhost:9099/")
+        (.signInWithCredential auth
+                               ((.. firebase -auth -GoogleAuthProvider -credential)
+                                "{\"sub\": \"abc123\", 
                                \"email\": \"foo@example.com\", 
                                \"email_verified\": true}")))
-    auth))
+      (reset! auth-instance auth))))
 
-;; firebase.auth().signInWithCredential(firebase.auth.GoogleAuthProvider.credential(
-;;   '{"sub": "abc123", "email": "foo@example.com", "email_verified": true}'
-;; ));
-
-;; TODO FIXME 例外が発生するときに画面遷移がうまく行かない
 (defn- ui []
   (try (new (.. firebaseui -auth -AuthUI) (auth))
        (catch js/Object e

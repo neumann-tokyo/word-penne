@@ -53,7 +53,8 @@
 
 (defn ErrorMessange [touched errors target]
   (when (touched target)
-    [:div (use-style s-error-message) (first (get errors (list target)))]))
+    (when-let [message (first (get errors (list target)))]
+      [:div (use-style s-error-message) message])))
 
 ;; TODO validation
 (defn WordCardForm [props]
@@ -89,5 +90,5 @@
         [:label {:for "tags"} "Tags"]
         [:input (use-style s-text {:type "text" :id "tags" :name "tags"})]]
        [:div (use-style s-buttons-container)
-        [:input (use-style s-submit {:type "submit" :value "Submit" :disabled submitting?})]
+        [:button (use-style s-submit {:type "submit" :disabled submitting?}) "Submit"] ;; TODO FIXME double submit を回避できてない...
         [Button {:href (path-for routes :word-penne.pages.home/home)} "Cancel"]]])]])
