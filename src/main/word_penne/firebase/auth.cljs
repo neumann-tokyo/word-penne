@@ -15,9 +15,9 @@
         (.useEmulator auth "http://localhost:9099/")
         (.signInWithCredential auth
                                ((.. firebase -auth -GoogleAuthProvider -credential)
-                                "{\"sub\": \"abc123\", 
-                               \"email\": \"foo@example.com\", 
-                               \"email_verified\": true}")))
+                                (js/JSON.stringify #js {:sub "abc123"
+                                                        :email "foo@example.com"
+                                                        :email_verified true}))))
       (reset! auth-instance auth))))
 
 (defn- ui []

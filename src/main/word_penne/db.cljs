@@ -4,7 +4,7 @@
 (def t-user
   [:map
    [:uid string?]
-   [:display-name string?]
+   [:email string?]
    [:photo-url string?]])
 (def t-card
   [:map

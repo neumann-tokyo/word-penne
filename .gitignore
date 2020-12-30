@@ -2,6 +2,7 @@ node_modules/
 public/js
 /out/
 /.firebase/
+/.firebase-emulators-data/
 
 /target
 /checkouts

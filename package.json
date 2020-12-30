@@ -6,7 +6,7 @@
     "dev": "shadow-cljs watch app",
     "repl": "shadow-cljs clj-repl",
     "test": "shadow-cljs compile test && node out/node-tests.js || :",
-    "emulators": "firebase emulators:start --only firestore,auth"
+    "emulators": "firebase emulators:start --only firestore,auth --import=./.firebase-emulators-data --export-on-exit"
   },
   "devDependencies": {
     "shadow-cljs": "2.11.8"

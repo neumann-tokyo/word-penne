@@ -30,7 +30,7 @@
    :border (str "solid 1px " (:assort-border color))
    :border-radius "1rem"
    :color (:main-text color)
-   :width "7rem"
+   :min-width "7rem"
    :box-shadow (str "0 2px 4px 0 " (:assort-border color))
    :overflow "hidden"})
 (def s-menu-link
@@ -41,13 +41,12 @@
    ::stylefy/mode {:hover {:background (:assort-background color)}}})
 
 (defn AvatarMenu []
-  [:div (use-style s-menu)
-   [:button (use-style s-menu-button)
-    (let [{:keys [photo-url display-name]} @(re-frame/subscribe [::subs/current-user])]
-      [:img (use-style s-avatar {:src photo-url :alt display-name})])
-    [:div#avatar-menu (use-style s-menu-content)
-    ;;  [:a (use-style s-menu-link {:href "#"}) "Setting"]
-    ;;  [:a (use-style s-menu-link {:href "#"}) "xxx"]
-     [:a (use-style s-menu-link {:href "#" :on-click (fn [e]
-                                                       (.preventDefault e)
-                                                       (re-frame/dispatch [::events/signout]))}) "Logout"]]]])
+  (let [{:keys [photo-url email]} @(re-frame/subscribe [::subs/current-user])]
+    [:div (use-style s-menu)
+     [:button (use-style s-menu-button)
+      [:img (use-style s-avatar {:src photo-url :alt email})]
+      [:div#avatar-menu (use-style s-menu-content)
+       [:a (use-style s-menu-link) email]
+       [:a (use-style s-menu-link {:href "#" :on-click (fn [e]
+                                                         (.preventDefault e)
+                                                         (re-frame/dispatch [::events/signout]))}) "Logout"]]]]))

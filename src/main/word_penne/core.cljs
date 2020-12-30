@@ -32,8 +32,8 @@
          (when user
            (re-frame/dispatch-sync [::events/set-current-user
                                     {:uid (.-uid user)
-                                     :display-name (.-displayName user)
-                                     :photo-url (.-photoURL user)}])
+                                     :email (.-email user)
+                                     :photo-url (or (.-photoURL user) "/images/account_circle-24px.svg")}])
            (re-frame/dispatch-sync [::events/navigate :word-penne.pages.home/home]))))))
 
 (defn ^:export init []
