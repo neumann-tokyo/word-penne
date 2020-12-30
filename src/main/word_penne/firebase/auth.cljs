@@ -6,7 +6,10 @@
             [word-penne.routes :refer [routes]]))
 
 (defn auth []
-  (.auth firebase))
+  (let [auth (.auth firebase)]
+    (when (= js/location.hostname "localhost")
+      (.useEmulator auth "http://127.0.0.1:9099/"))
+    auth))
 
 ;; TODO FIXME 例外が発生するときに画面遷移がうまく行かない
 (defn- ui []

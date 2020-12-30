@@ -3,12 +3,7 @@
             ["@firebase/firestore"]))
 
 (defn firestore []
-  (.firestore firebase))
-
-; (-> firestore
-;     (.collection "cards")
-;     (.get)
-;     (.then (fn [snapshot]
-;              (-> snapshot
-;                  (.forEach (fn [doc]
-;                              (js/console.log (.data doc))))))))
+  (let [db (.firestore firebase)]
+    (when (= js/location.hostname "localhost")
+      (.useEmulator db "127.0.0.1" "8081"))
+    db))

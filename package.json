@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "shadow-cljs watch app",
     "repl": "shadow-cljs clj-repl",
-    "test": "shadow-cljs compile test && node out/node-tests.js || :"
+    "test": "shadow-cljs compile test && node out/node-tests.js || :",
+    "emulators": "firebase emulators:start"
   },
   "devDependencies": {
     "shadow-cljs": "2.11.8"
