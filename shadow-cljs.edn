@@ -11,8 +11,7 @@
   [venantius/accountant "0.2.5"]
   [stylefy "2.2.1"]
   [fork "2.2.5"]
-  [metosin/malli "0.2.1"]
-  [day8.re-frame/test "0.1.5"]]
+  [metosin/malli "0.2.1"]]
 
  :builds
  {:app {:target :browser
