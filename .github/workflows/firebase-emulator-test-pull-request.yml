@@ -18,6 +18,12 @@ jobs:
           path: .shadow-cljs
           key: "${{ runner.os }}-shadow-cljs-${{ hashFiles('**/shadow-cljs.edn') }}"
           restore-keys: "${{ runner.os }}-shadow-cljs-"
+      - name: Use Cache Firebase Emulators
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/firebase/emulators/
+          key: "${{ runner.os }}-firebase-emulators-${{ hashFiles('**/firebase.json') }}"
+          restore-keys: "${{ runner.os }}-firebase-emulators-"
       - name: Install Dependencies
         run: npm install
       - name: Run Firebase Emulator
