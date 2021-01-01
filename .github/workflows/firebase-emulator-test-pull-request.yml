@@ -6,6 +6,18 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
+      - name: Use Cache Node Modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: "${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}"
+          restore-keys: "${{ runner.os }}-node-modules-"
+      - name: Use Cache Shadow Cljs
+        uses: actions/cache@v2
+        with:
+          path: .shadow-cljs
+          key: "${{ runner.os }}-shadow-cljs-${{ hashFiles('**/shadow-cljs.edn') }}"
+          restore-keys: "${{ runner.os }}-shadow-cljs-"
       - name: Install Dependencies
         run: npm install
       - name: Run Firebase Emulator
