@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "shadow-cljs watch app",
     "repl": "shadow-cljs clj-repl",
-    "test": "shadow-cljs compile test",
+    "test": "shadow-cljs compile test && cp karma_setup.js target && karma start --single-run",
     "emulators": "firebase emulators:start --only firestore,auth --import=./.firebase-emulators-data --export-on-exit",
     "emulators-test": "firebase emulators:start --only firestore,auth"
   },
