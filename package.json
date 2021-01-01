@@ -10,6 +10,7 @@
     "emulators-test": "firebase emulators:start --only firestore,auth"
   },
   "devDependencies": {
+    "firebase-tools": "^9.1.0",
     "karma": "^5.2.3",
     "karma-chrome-launcher": "^3.1.0",
     "karma-cljs-test": "^0.1.0",

@@ -1,0 +1,14 @@
+name: Test by Firebase Emulator on PR
+"on": pull_request
+jobs:
+  build_and_preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: npm install
+      - name: Run Firebase Emulator
+        run: npm run emulators-test &
+      - name: Run Test
+        run: npm run test
