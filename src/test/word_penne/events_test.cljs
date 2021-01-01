@@ -1,6 +1,11 @@
 (ns word-penne.events-test
   (:require [cljs.test :as t]
-            ["node-fetch" :default fetch]))
+            ["node-fetch" :default fetch]
+            [re-frame.core :as rf]
+            [day8.re-frame.test :as rf-test]
+            [word-penne.events :as events]
+            [word-penne.subs :as subs]
+            [word-penne.firebase.init :refer [initialize-firebase]]))
 
 ;; clean up the database
 (t/use-fixtures :each
@@ -9,8 +14,15 @@
      (let [res (fetch "http://localhost:8081/emulator/v1/projects/word-penne/databases/(default)/documents" #js {:method "DELETE"})]
        (t/async done (.then res #(done)))))})
 
-(t/deftest a-failure-test
-  (t/is (= 1 2)))
-
 (t/deftest a-success-test
-  (t/is (= 1 1)))
+  (rf-test/run-test-sync
+   (let [current-user (rf/subscribe [::subs/current-user])]
+     (initialize-firebase)
+     (rf/dispatch [::events/initialize-db])
+     (rf/dispatch [::events/set-current-user
+                   {:uid "uid1234"
+                    :email "foo@example.com"
+                    :photo-url "/images/account_circle-24px.svg"}])
+     (t/is (= (:uid @current-user) "uid1234"))
+     (t/is (= (:email @current-user) "foo@example.com"))
+     (t/is (= (:photo-url @current-user) "/images/account_circle-24px.svg")))))

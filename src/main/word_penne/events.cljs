@@ -18,7 +18,7 @@
   (when (and check-asserts? (not (m/validate a-spec form)))
     (throw (js/Error. (str "spec check failed: \n"
                            "method: " validation-type "\n"
-                           "evnet: " event-name "\n"
+                           "event: " event-name "\n"
                            (with-out-str (pprint (m/explain a-spec form))))))))
 (def validate-db
   (re-frame/->interceptor

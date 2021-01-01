@@ -11,7 +11,8 @@
   [venantius/accountant "0.2.5"]
   [stylefy "2.2.1"]
   [fork "2.2.5"]
-  [metosin/malli "0.2.1"]]
+  [metosin/malli "0.2.1"]
+  [day8.re-frame/test "0.1.5"]]
 
  :builds
  {:app {:target :browser
@@ -47,6 +48,14 @@
                            word-penne.firebase.init/MESSAGING_SENDER_ID #shadow/env "PRD_MESSAGING_SENDER_ID"
                            word-penne.firebase.init/APP_ID #shadow/env "PRD_APP_ID"
                            word-penne.firebase.init/MEASUREMENT_ID #shadow/env "PRD_MEASUREMENT_ID"}}}
-  :test {:target    :node-test
-         :output-to "out/node-tests.js"
-         :autorun   false}}}
+  :test {:target    :browser-test
+         :test-dir  "public/js/test"
+         :devtools  {:http-port 8021
+                     :http-root "public/js/test"}
+         :dev {:closure-defines {word-penne.firebase.init/API_KEY #shadow/env "API_KEY"
+                                 word-penne.firebase.init/AUTH_DOMAIN #shadow/env "AUTH_DOMAIN"
+                                 word-penne.firebase.init/PROJECT_ID #shadow/env "PROJECT_ID"
+                                 word-penne.firebase.init/STORAGE_BUCKET #shadow/env "STORAGE_BUCKET"
+                                 word-penne.firebase.init/MESSAGING_SENDER_ID #shadow/env "MESSAGING_SENDER_ID"
+                                 word-penne.firebase.init/APP_ID #shadow/env "APP_ID"
+                                 word-penne.firebase.init/MEASUREMENT_ID #shadow/env "MEASUREMENT_ID"}}}}}
