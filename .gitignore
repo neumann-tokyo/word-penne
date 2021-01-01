@@ -3,6 +3,8 @@ public/js
 /out/
 /.firebase/
 /.firebase-emulators-data/
+/.clj-kondo/
+/.lsp/
 
 /target
 /checkouts
