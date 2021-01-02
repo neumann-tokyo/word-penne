@@ -61,6 +61,7 @@
                                  word-penne.firebase.init/MEASUREMENT_ID #shadow/env "MEASUREMENT_ID"}}}
   :ci {:target :karma
        :output-to  "target/ci.js"
+       :compiler-options {:output-feature-set :es8}
        :dev {:closure-defines {word-penne.firebase.init/API_KEY #shadow/env "API_KEY"
                                word-penne.firebase.init/AUTH_DOMAIN #shadow/env "AUTH_DOMAIN"
                                word-penne.firebase.init/PROJECT_ID #shadow/env "PROJECT_ID"
