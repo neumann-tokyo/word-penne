@@ -18,7 +18,7 @@
      (let [res (fetch "http://localhost:8081/emulator/v1/projects/word-penne/databases/(default)/documents" #js {:method "DELETE"})]
        (t/async done (.then res #(done)))))})
 
-(t/deftest create-and-update-a-card-test
+(t/deftest create-a-card-test
   (rf-test/run-test-sync
    (let [current-user (re-frame/subscribe [::subs/current-user])
          cards (re-frame/subscribe [::subs/cards])]
@@ -56,4 +56,5 @@
           (t/is (= (:back-text card) "作る"))
           (t/is (= (:comment card) "一般的な作る")))
         (done))))))
-; update a card
+
+; TODO FIXME update a card うまくかけない...
