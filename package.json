@@ -6,9 +6,12 @@
     "dev": "shadow-cljs watch app",
     "repl": "shadow-cljs clj-repl",
     "xvfb": "Xvfb :1 -screen 0 '1600x1024x16'",
-    "e2e": "DISPLAY=:1 cypress run",
+    "headless-e2e": "DISPLAY=:1 cypress run",
+    "cypress:run": "cypress run",
+    "cypress:open": "cypress open",
     "emulators": "firebase emulators:start --only firestore,auth --import=./.firebase-emulators-data --export-on-exit",
-    "emulators-test": "firebase emulators:start --only firestore,auth"
+    "emulators-test": "firebase emulators:start --only firestore,auth",
+    "check-env": "bash check-env.sh"
   },
   "devDependencies": {
     "cypress": "^6.2.0",
@@ -18,7 +21,8 @@
     "karma-cljs-test": "^0.1.0",
     "node-fetch": "^2.6.1",
     "puppeteer": "^5.5.0",
-    "shadow-cljs": "2.11.8"
+    "shadow-cljs": "2.11.8",
+    "wait-port": "^0.2.9"
   },
   "dependencies": {
     "firebase": "^8.2.1",

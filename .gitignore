@@ -9,6 +9,7 @@ public/js
 /checkouts
 /src/gen
 /cypress/videos/
+/cypress/screenshots/
 
 pom.xml
 pom.xml.asc

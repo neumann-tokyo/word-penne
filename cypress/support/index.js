@@ -14,7 +14,24 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands'
+import "./commands";
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+// reset db
+beforeEach(() => {
+  cy.request(
+    "DELETE",
+    "http://localhost:8081/emulator/v1/projects/word-penne/databases/(default)/documents"
+  );
+});
+
+Cypress.on("uncaught:exception", (err, _) => {
+  expect(err.message).to.include(
+    "Could not find the FirebaseUI widget element on the page."
+  );
+  done();
+
+  return false;
+});
