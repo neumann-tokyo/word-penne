@@ -18,6 +18,7 @@
      (let [res (fetch "http://localhost:8081/emulator/v1/projects/word-penne/databases/(default)/documents" #js {:method "DELETE"})]
        (t/async done (.then res #(done)))))})
 
+;; FIXME browser-test では動くが karma + puppeteer で動かない
 (t/deftest create-a-card-test
   (rf-test/run-test-sync
    (let [current-user (re-frame/subscribe [::subs/current-user])

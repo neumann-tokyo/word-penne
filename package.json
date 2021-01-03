@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "shadow-cljs watch app",
     "repl": "shadow-cljs clj-repl",
-    "test": "shadow-cljs watch test",
-    "ci": "shadow-cljs compile ci && cp karma_setup.js target && karma start --single-run",
+    "xvfb": "Xvfb :1 -screen 0 '1600x1024x16'",
+    "e2e": "DISPLAY=:1 cypress run",
     "emulators": "firebase emulators:start --only firestore,auth --import=./.firebase-emulators-data --export-on-exit",
     "emulators-test": "firebase emulators:start --only firestore,auth"
   },

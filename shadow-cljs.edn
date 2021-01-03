@@ -48,6 +48,7 @@
                            word-penne.firebase.init/MESSAGING_SENDER_ID #shadow/env "PRD_MESSAGING_SENDER_ID"
                            word-penne.firebase.init/APP_ID #shadow/env "PRD_APP_ID"
                            word-penne.firebase.init/MEASUREMENT_ID #shadow/env "PRD_MEASUREMENT_ID"}}}
+  ;; don't use now   
   :test {:target    :browser-test
          :test-dir  "public/js/test"
          :devtools  {:http-port          8021

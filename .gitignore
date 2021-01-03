@@ -5,10 +5,10 @@ public/js
 /.firebase-emulators-data/
 /.clj-kondo/
 /.lsp/
-
 /target
 /checkouts
 /src/gen
+/cypress/videos/
 
 pom.xml
 pom.xml.asc
