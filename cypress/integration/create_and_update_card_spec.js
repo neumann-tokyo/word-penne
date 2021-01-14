@@ -13,7 +13,7 @@ describe("Create and update a card", () => {
     // create a new card
     cy.url().should("include", "/cards/new");
 
-    cy.get("input#front-text").type("make", { waitForAnimations: false });
+    cy.get("input#front-text").type("make", { force: true });
     cy.get("input#back-text").type("作る");
     cy.contains("Submit").click();
 
