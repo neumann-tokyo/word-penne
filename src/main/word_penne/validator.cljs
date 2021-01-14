@@ -11,7 +11,7 @@
                       ))
 
 (defn validator-for-humans
-  "HOF returning a Fork compatible validation fn from a schema."
+  "returning a Fork compatible validation fn from a schema."
   [schema]
   ; pre-compile schema for best performance
   (let [explain (m/explainer schema)]

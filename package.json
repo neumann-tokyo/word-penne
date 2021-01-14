@@ -5,11 +5,17 @@
   "scripts": {
     "dev": "shadow-cljs watch app",
     "repl": "shadow-cljs clj-repl",
-    "test": "shadow-cljs compile test",
+    "xvfb": "Xvfb :1 -screen 0 '1600x1024x16'",
+    "headless-e2e": "DISPLAY=:1 cypress run",
+    "cypress:run": "cypress run",
+    "cypress:open": "cypress open",
     "emulators": "firebase emulators:start --only firestore,auth --import=./.firebase-emulators-data --export-on-exit",
-    "emulators-test": "firebase emulators:start --only firestore,auth"
+    "emulators-test": "firebase emulators:start --only firestore,auth",
+    "check-env": "bash check-env.sh"
   },
   "devDependencies": {
+    "cypress": "^6.2.0",
+    "firebase-tools": "^9.1.0",
     "karma": "^5.2.3",
     "karma-chrome-launcher": "^3.1.0",
     "karma-cljs-test": "^0.1.0",
