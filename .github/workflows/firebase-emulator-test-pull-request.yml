@@ -17,41 +17,6 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
-      # - name: install xvfb
-      #   run: sudo apt-get install -y xvfb
-      # - run: npm run xvfb &
-      # - name: Use Cache Node Modules
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: node_modules
-      #     key: "${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}"
-      #     restore-keys: "${{ runner.os }}-node-modules-"
-      # - name: Use Cache Shadow Cljs
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: .shadow-cljs
-      #     key: "${{ runner.os }}-shadow-cljs-${{ hashFiles('**/shadow-cljs.edn') }}"
-      #     restore-keys: "${{ runner.os }}-shadow-cljs-"
-      # - name: Use Cache Firebase Emulators
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: ~/.cache/firebase/emulators/
-      #     key: "${{ runner.os }}-firebase-emulators-${{ hashFiles('**/firebase.json') }}"
-      #     restore-keys: "${{ runner.os }}-firebase-emulators-"
-      # - name: Install Dependencies
-      #   run: npm install
-      # - name: Run Firebase Emulator
-      #   run: npm run emulators-test &
-      # - name: Run System
-      #   run: npm run check-env && npx shadow-cljs compile app && npx shadow-cljs start
-      # - name: Wait port
-      #   run: |
-      #     npx wait-port 8081
-      #     npx wait-port 8080
-      # - name: Check 8080
-      #   run: curl localhost:8080/js/main.js | head
-      # - name: Run Cypress
-      #   run: npm run headless-e2e
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:

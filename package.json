@@ -21,8 +21,7 @@
     "karma-cljs-test": "^0.1.0",
     "node-fetch": "^2.6.1",
     "puppeteer": "^5.5.0",
-    "shadow-cljs": "2.11.8",
-    "wait-port": "^0.2.9"
+    "shadow-cljs": "2.11.8"
   },
   "dependencies": {
     "firebase": "^8.2.1",
