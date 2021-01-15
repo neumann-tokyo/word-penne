@@ -20,14 +20,14 @@
                            "method: " validation-type "\n"
                            "event: " event-name "\n"
                            (with-out-str (pprint (m/explain a-spec form))))))))
-(def validate-db
+(def ^:private validate-db
   (re-frame/->interceptor
    :id :validate-db
    :after (fn [{{:keys [event]} :coeffects
                 {:keys [db]} :effects :as context}]
             (check-and-throw :validate-db (first event) db/t-db db)
             context)))
-(defn validate-args
+(defn- validate-args
   ([a-spec] (validate-args 0 a-spec))
   ([index a-spec]
    (re-frame/->interceptor
@@ -90,8 +90,7 @@
  (fn [db [_ res]]
    (assoc db
           :cards res
-          ;; :selected-card nil ;; なぜか delete のとき再描画されている
-          )))
+          :selected-card nil)))
 
 (def t-create-card-arg
   [:map [:values
