@@ -19,9 +19,11 @@
    [:cards
     [:sequential t-card]]
    [:selected-card
-    [:maybe t-card]]])
+    [:maybe t-card]]
+   [:show-delete-modal boolean?]])
 
 (def default-db
   {:user nil
    :cards []
-   :selected-card nil})
+   :selected-card nil
+   :show-delete-modal false})

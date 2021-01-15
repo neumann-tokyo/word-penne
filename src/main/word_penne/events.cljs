@@ -138,3 +138,20 @@
                                       :card-uid card-uid
                                       :values values
                                       :on-success (fn [] [::navigate :word-penne.pages.home/home])}}))
+
+(re-frame/reg-event-db
+ ::show-delete-card-modal
+ [(validate-args db/t-card)
+  validate-db]
+ (fn [db [_ res]]
+   (assoc db
+          :selected-card res
+          :show-delete-modal true)))
+
+(re-frame/reg-event-db
+ ::hide-delete-card-modal
+ [validate-db]
+ (fn [db [_ _]]
+   (assoc db
+          :selected-card nil
+          :show-delete-modal false)))
