@@ -65,3 +65,13 @@
          (.doc card-uid)
          (.set (clj->js values))
          (.then (fn [_] (re-frame/dispatch (on-success))))))))
+
+(re-frame/reg-fx
+ ::firebase-delete-card-by-uid
+ (fn [{:keys [user-uid card-uid on-success]}]
+   (when user-uid
+     (-> (firestore)
+         (.collection (str "users/" user-uid "/cards"))
+         (.doc card-uid)
+         (.delete)
+         (.then on-success))))) ;; TODO 全体的にon-successをこのinterfaceにしたい

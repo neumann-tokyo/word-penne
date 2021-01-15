@@ -120,7 +120,6 @@
  [(validate-args db/t-card)
   validate-db]
  (fn [db [_ res]]
-   (prn res)
    (assoc db :selected-card res)))
 
 (def t-update-card-by-uid-arg
@@ -145,7 +144,6 @@
  [(validate-args db/t-card)
   validate-db]
  (fn [db [_ res]]
-   (prn res)
    (assoc db
           :selected-card res
           :show-delete-card-modal true)))
@@ -157,3 +155,13 @@
    (assoc db
           :selected-card nil
           :show-delete-card-modal false)))
+
+(re-frame/reg-event-fx
+ ::delete-card-by-uid
+ [(validate-args string?)]
+ (fn [_ [_ card-uid]]
+   {::fx/firebase-delete-card-by-uid {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
+                                      :card-uid card-uid
+                                      :on-success (fn [_]
+                                                    (re-frame/dispatch [::hide-delete-card-modal])
+                                                    (re-frame/dispatch [::fetch-cards]))}}))
