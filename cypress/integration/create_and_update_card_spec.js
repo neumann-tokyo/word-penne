@@ -8,14 +8,14 @@ describe("Create and update a card", () => {
   it("Create and Update a new card", () => {
     cy.visit("/");
 
-    cy.contains("add").click();
+    cy.getBySel("word-card-add-button").click({ multiple: true, force: true });
 
     // create a new card
     cy.url().should("include", "/cards/new");
 
-    cy.get("input#front-text").type("make", { force: true });
-    cy.get("input#back-text").type("作る");
-    cy.contains("Submit").click();
+    cy.getBySel("word-card-form__front-text").type("make", { force: true });
+    cy.getBySel("word-card-form__back-text").type("作る");
+    cy.getBySel("word-card-form__submit").click();
 
     // show the new card on the top page
     cy.url().should("eq", "http://localhost:8080/");
@@ -25,12 +25,14 @@ describe("Create and update a card", () => {
     // edit the card
     cy.contains("make").contains("edit").click({ force: true });
     cy.url().should("include", "edit");
-    cy.get("input#front-text").type(
+    cy.getBySel("word-card-form__front-text").type(
       "{backspace}{backspace}{backspace}{backspace}create"
     );
-    cy.get("input#back-text").type("{backspace}{backspace}創造する");
-    cy.get("input#comment").type("新しく作る");
-    cy.contains("Submit").click();
+    cy.getBySel("word-card-form__back-text").type(
+      "{backspace}{backspace}創造する"
+    );
+    cy.getBySel("word-card-form__comment").type("新しく作る");
+    cy.getBySel("word-card-form__submit").click();
 
     // show the edited card on the top page
     cy.url().should("eq", "http://localhost:8080/");
