@@ -19,7 +19,7 @@
 (def s-modal-content
   {:background-color (:main-background color)
    :margin "0 auto"
-   :padding "20px"
+   :padding "1rem"
    :border (str "1px solid " (:assort-border color))
    :border-radius "0 0 1rem 1rem"
    :width "33%"
