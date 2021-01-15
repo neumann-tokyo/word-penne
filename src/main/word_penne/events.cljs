@@ -90,7 +90,8 @@
  (fn [db [_ res]]
    (assoc db
           :cards res
-          :selected-card nil)))
+          ;; :selected-card nil ;; なぜか delete のとき再描画されている
+          )))
 
 (def t-create-card-arg
   [:map [:values
@@ -120,6 +121,7 @@
  [(validate-args db/t-card)
   validate-db]
  (fn [db [_ res]]
+   (prn res)
    (assoc db :selected-card res)))
 
 (def t-update-card-by-uid-arg
@@ -144,9 +146,10 @@
  [(validate-args db/t-card)
   validate-db]
  (fn [db [_ res]]
+   (prn res)
    (assoc db
           :selected-card res
-          :show-delete-modal true)))
+          :show-delete-card-modal true)))
 
 (re-frame/reg-event-db
  ::hide-delete-card-modal
@@ -154,4 +157,4 @@
  (fn [db [_ _]]
    (assoc db
           :selected-card nil
-          :show-delete-modal false)))
+          :show-delete-card-modal false)))

@@ -20,3 +20,8 @@
  ::selected-card
  (fn [db _]
    (:selected-card db)))
+
+(re-frame/reg-sub
+ ::show-delete-card-modal
+ (fn [db _]
+   (:show-delete-card-modal db)))

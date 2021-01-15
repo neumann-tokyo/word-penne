@@ -30,7 +30,8 @@
         :devtools
         {:http-root "public"
          :http-port 8080
-         :preloads [devtools.preload]} ;; day8.re-frame-10x.preload
+         :preloads [devtools.preload
+                    day8.re-frame-10x.preload]} ;; day8.re-frame-10x.preload
         :dev {:closure-defines {word-penne.firebase.init/API_KEY #shadow/env "API_KEY"
                                 word-penne.firebase.init/AUTH_DOMAIN #shadow/env "AUTH_DOMAIN"
                                 word-penne.firebase.init/PROJECT_ID #shadow/env "PROJECT_ID"
