@@ -5,7 +5,7 @@ describe("Create and update a card", () => {
     cy.contains("Logout");
   });
 
-  it("Create and Update a new card", () => {
+  it("Create, update and delete a new card", () => {
     cy.visit("/");
 
     cy.getBySel("word-card-add-button").click({ multiple: true, force: true });
@@ -41,5 +41,13 @@ describe("Create and update a card", () => {
     cy.contains("create");
     cy.contains("創造する");
     cy.contains("新しく作る");
+
+    // delete a card
+    cy.contains("create").contains("delete").click({ force: true });
+    cy.contains("Confirmation");
+    cy.getBySel("delete-card-modal__ok").click();
+    cy.contains("create").not();
+    cy.contains("創造する").not();
+    cy.contains("新しく作る").not();
   });
 });

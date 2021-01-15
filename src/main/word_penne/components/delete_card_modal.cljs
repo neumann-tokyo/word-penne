@@ -40,7 +40,8 @@
                  :kind "primary"
                  :on-click (fn [e]
                              (.preventDefault e)
-                             (re-frame/dispatch [::events/delete-card-by-uid (:uid @(re-frame/subscribe [::subs/selected-card]))]))} "OK"]
+                             (re-frame/dispatch [::events/delete-card-by-uid (:uid @(re-frame/subscribe [::subs/selected-card]))]))
+                 :data-testid "delete-card-modal__ok"} "OK"]
         [Button {:href "#"
                  :kind "secondary"
                  :on-click (fn [e]
