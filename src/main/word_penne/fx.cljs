@@ -32,17 +32,15 @@
                           (swap! result conj
                                  (conj {:uid (.-id doc)}
                                        (js->clj (.data doc) :keywordize-keys true)))))
-              (re-frame/dispatch (on-success @result)))))))))
+              (on-success @result))))))))
 
-;; TODO core.spec
 (re-frame/reg-fx
  ::firebase-create-card
  (fn [{:keys [user-uid values on-success]}]
    (-> (firestore)
        (.collection (str "users/" user-uid "/cards"))
        (.add (clj->js values))
-       (.then (fn [_]
-                (re-frame/dispatch (on-success)))))))
+       (.then on-success))))
 
 (re-frame/reg-fx
  ::firebase-load-card-by-uid
@@ -54,7 +52,7 @@
          (.get)
          (.then (fn [doc]
                   (when (.-exists doc)
-                    (re-frame/dispatch (on-success (conj {:uid card-uid} (js->clj (.data doc) :keywordize-keys true)))))))))))
+                    (on-success (conj {:uid card-uid} (js->clj (.data doc) :keywordize-keys true))))))))))
 
 (re-frame/reg-fx
  ::firebase-update-card-by-uid
@@ -64,7 +62,7 @@
          (.collection (str "users/" user-uid "/cards"))
          (.doc card-uid)
          (.set (clj->js values))
-         (.then (fn [_] (re-frame/dispatch (on-success))))))))
+         (.then on-success)))))
 
 (re-frame/reg-fx
  ::firebase-delete-card-by-uid
@@ -74,4 +72,4 @@
          (.collection (str "users/" user-uid "/cards"))
          (.doc card-uid)
          (.delete)
-         (.then on-success))))) ;; TODO 全体的にon-successをこのinterfaceにしたい
+         (.then on-success)))))

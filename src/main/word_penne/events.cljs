@@ -81,7 +81,7 @@
  ::fetch-cards
  (fn [_ _]
    {::fx/firebase-load-cards {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
-                              :on-success (fn [cards] [::set-cards cards])}}))
+                              :on-success (fn [cards] (re-frame/dispatch [::set-cards cards]))}}))
 
 (re-frame/reg-event-db
  ::set-cards
@@ -104,7 +104,7 @@
  (fn [_ [_ {:keys [values]}]]
    {::fx/firebase-create-card {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
                                :values values
-                               :on-success (fn [] [::navigate :word-penne.pages.home/home])}}))
+                               :on-success (fn [] (re-frame/dispatch [::navigate :word-penne.pages.home/home]))}}))
 
 (re-frame/reg-event-fx
  ::fetch-card-by-uid
@@ -113,7 +113,7 @@
    {:db (assoc db :selected-card nil)
     ::fx/firebase-load-card-by-uid {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
                                     :card-uid card-uid
-                                    :on-success (fn [card] [::set-selected-card card])}}))
+                                    :on-success (fn [card] (re-frame/dispatch [::set-selected-card card]))}}))
 
 (re-frame/reg-event-db
  ::set-selected-card
@@ -137,7 +137,7 @@
    {::fx/firebase-update-card-by-uid {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
                                       :card-uid card-uid
                                       :values values
-                                      :on-success (fn [] [::navigate :word-penne.pages.home/home])}}))
+                                      :on-success (fn [] (re-frame/dispatch [::navigate :word-penne.pages.home/home]))}}))
 
 (re-frame/reg-event-db
  ::show-delete-card-modal
