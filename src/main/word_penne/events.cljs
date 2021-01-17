@@ -20,14 +20,14 @@
                            "method: " validation-type "\n"
                            "event: " event-name "\n"
                            (with-out-str (pprint (m/explain a-spec form))))))))
-(def validate-db
+(def ^:private validate-db
   (re-frame/->interceptor
    :id :validate-db
    :after (fn [{{:keys [event]} :coeffects
                 {:keys [db]} :effects :as context}]
             (check-and-throw :validate-db (first event) db/t-db db)
             context)))
-(defn validate-args
+(defn- validate-args
   ([a-spec] (validate-args 0 a-spec))
   ([index a-spec]
    (re-frame/->interceptor
@@ -81,7 +81,7 @@
  ::fetch-cards
  (fn [_ _]
    {::fx/firebase-load-cards {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
-                              :on-success (fn [cards] [::set-cards cards])}}))
+                              :on-success (fn [cards] (re-frame/dispatch [::set-cards cards]))}}))
 
 (re-frame/reg-event-db
  ::set-cards
@@ -104,7 +104,7 @@
  (fn [_ [_ {:keys [values]}]]
    {::fx/firebase-create-card {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
                                :values values
-                               :on-success (fn [] [::navigate :word-penne.pages.home/home])}}))
+                               :on-success (fn [] (re-frame/dispatch [::navigate :word-penne.pages.home/home]))}}))
 
 (re-frame/reg-event-fx
  ::fetch-card-by-uid
@@ -113,7 +113,7 @@
    {:db (assoc db :selected-card nil)
     ::fx/firebase-load-card-by-uid {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
                                     :card-uid card-uid
-                                    :on-success (fn [card] [::set-selected-card card])}}))
+                                    :on-success (fn [card] (re-frame/dispatch [::set-selected-card card]))}}))
 
 (re-frame/reg-event-db
  ::set-selected-card
@@ -137,4 +137,31 @@
    {::fx/firebase-update-card-by-uid {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
                                       :card-uid card-uid
                                       :values values
-                                      :on-success (fn [] [::navigate :word-penne.pages.home/home])}}))
+                                      :on-success (fn [] (re-frame/dispatch [::navigate :word-penne.pages.home/home]))}}))
+
+(re-frame/reg-event-db
+ ::show-delete-card-modal
+ [(validate-args db/t-card)
+  validate-db]
+ (fn [db [_ res]]
+   (assoc db
+          :selected-card res
+          :show-delete-card-modal true)))
+
+(re-frame/reg-event-db
+ ::hide-delete-card-modal
+ [validate-db]
+ (fn [db [_ _]]
+   (assoc db
+          :selected-card nil
+          :show-delete-card-modal false)))
+
+(re-frame/reg-event-fx
+ ::delete-card-by-uid
+ [(validate-args string?)]
+ (fn [_ [_ card-uid]]
+   {::fx/firebase-delete-card-by-uid {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
+                                      :card-uid card-uid
+                                      :on-success (fn [_]
+                                                    (re-frame/dispatch [::hide-delete-card-modal])
+                                                    (re-frame/dispatch [::fetch-cards]))}}))

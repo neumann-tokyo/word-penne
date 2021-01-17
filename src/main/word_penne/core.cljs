@@ -47,7 +47,7 @@
                      (re-frame/dispatch [::events/navigate :word-penne.pages.auth/signin])))
     :path-exists? (fn [path]
                     (boolean (bidi/match-route routes path)))
-    :reload-same-path? true})
+    :reload-same-path? false})
   (accountant/dispatch-current!)
   (dev-setup)
   (stylefy/init)

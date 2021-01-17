@@ -56,7 +56,6 @@
     (when-let [message (first (get errors (list target)))]
       [:div (use-style s-error-message) message])))
 
-;; TODO validation
 (defn WordCardForm [props]
   [:div (use-style s-form-container)
    [fork/form (merge {:path [:form]
@@ -76,19 +75,19 @@
                                 :on-submit handle-submit})
        [:div
         [:label {:for "front-text"} "Front"]
-        [:input (use-style s-text {:type "text" :id "front-text" :name "front-text" :required true :value (values "front-text") :on-change handle-change :on-blur handle-blur})]
+        [:input (use-style s-text {:type "text" :id "front-text" :name "front-text" :data-testid "word-card-form__front-text" :required true :value (values "front-text") :on-change handle-change :on-blur handle-blur})]
         (ErrorMessange touched errors "front-text")]
        [:div
         [:label {:for "back-text"} "Back"]
-        [:input (use-style s-text {:type "text" :id "back-text" :name "back-text" :required true :value (values "back-text") :on-change handle-change :on-blur handle-blur})]
+        [:input (use-style s-text {:type "text" :id "back-text" :name "back-text" :data-testid "word-card-form__back-text" :required true :value (values "back-text") :on-change handle-change :on-blur handle-blur})]
         (ErrorMessange touched errors "back-text")]
        [:div
         [:label {:for "comment"} "Comment"]
-        [:input (use-style s-text {:type "text" :id "comment" :name "comment" :value (values "comment") :on-change handle-change :on-blur handle-blur})]
+        [:input (use-style s-text {:type "text" :id "comment" :name "comment" :data-testid "word-card-form__comment" :value (values "comment") :on-change handle-change :on-blur handle-blur})]
         (ErrorMessange touched errors "comment")]
        [:div
         [:label {:for "tags"} "Tags"]
         [:input (use-style s-text {:type "text" :id "tags" :name "tags"})]]
        [:div (use-style s-buttons-container)
-        [:button (use-style s-submit {:type "submit" :disabled submitting?}) "Submit"] ;; TODO FIXME double submit を回避できてない...
+        [:button (use-style s-submit {:type "submit" :data-testid "word-card-form__submit" :disabled submitting?}) "Submit"] ;; TODO FIXME double submit を回避できてない...
         [Button {:href (path-for routes :word-penne.pages.home/home)} "Cancel"]]])]])

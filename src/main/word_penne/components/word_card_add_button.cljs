@@ -22,5 +22,6 @@
 
 (defn WordCardAddButton [_]
   [:a (use-style s-create-word-card-button {:href (path-for routes :word-penne.pages.cards/new)
-                                            :title "New"})
+                                            :title "New"
+                                            :data-testid "word-card-add-button"})
    [:span (use-style s-create-word-card-button-item {:class "material-icons-outlined"}) "add"]])

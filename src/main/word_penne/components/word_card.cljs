@@ -91,5 +91,9 @@
        [:div
         [:a (use-style s-flip-card-button {:href "#" :title "archive"})
          [:span {:class "material-icons-outlined"} "archive"]]
-        [:a (use-style s-flip-card-button {:href "#" :title "delete"})
+        [:a (use-style s-flip-card-button {:href "#"
+                                           :title "delete"
+                                           :on-click (fn [e]
+                                                       (.preventDefault e)
+                                                       (re-frame/dispatch [::events/show-delete-card-modal attrs]))})
          [:span {:class "material-icons-outlined"} "delete"]]]]]]]])
