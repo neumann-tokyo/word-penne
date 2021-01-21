@@ -1,6 +1,7 @@
 (ns word-penne.firebase.firestore
   (:require ["@firebase/app" :refer (firebase)]
-            ["@firebase/firestore"]))
+            ["@firebase/firestore"]
+            [word-penne.config :as config]))
 
 (def db (atom nil))
 
@@ -8,7 +9,7 @@
   (if @db
     @db
     (let [-db (.firestore firebase)]
-      (when (= js/location.hostname "localhost")
+      (when config/debug?
         ; cypress 用の設定
         (.settings -db #js {:experimentalForceLongPolling true})
         (.useEmulator -db "localhost" 8081))

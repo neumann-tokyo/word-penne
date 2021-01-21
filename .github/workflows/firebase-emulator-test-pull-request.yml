@@ -21,7 +21,7 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           build: npx shadow-cljs compile app
-          start: npm run emulators-test, npx shadow-cljs start
+          start: npm run emulators:test, npx shadow-cljs start
           wait-on: "http://localhost:8081, http://localhost:8080"
       - uses: actions/upload-artifact@v1
         if: failure()

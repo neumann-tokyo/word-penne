@@ -3,7 +3,8 @@
             ["@firebase/auth"]
             ["firebaseui" :as firebaseui]
             [bidi.bidi :refer [path-for]]
-            [word-penne.routes :refer [routes]]))
+            [word-penne.routes :refer [routes]]
+            [word-penne.config :as config]))
 
 (def auth-instance (atom nil))
 
@@ -11,7 +12,7 @@
   (if @auth-instance
     @auth-instance
     (let [auth (.auth firebase)]
-      (when (= js/location.hostname "localhost")
+      (when config/debug?
         (.useEmulator auth "http://localhost:9099/")
         (.signInWithCredential auth
                                ((.. firebase -auth -GoogleAuthProvider -credential)
