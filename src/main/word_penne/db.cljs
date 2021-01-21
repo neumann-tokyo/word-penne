@@ -9,8 +9,8 @@
 (def t-card
   [:map
    [:uid string?]
-   [:front-text string?]
-   [:back-text string?]
+   [:front string?]
+   [:back string?]
    [:comment {:optional true} string?]])
 (def t-db
   [:map

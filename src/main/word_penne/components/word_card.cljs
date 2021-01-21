@@ -72,10 +72,10 @@
    [:button (use-style s-flip-card)
     [:div.flipcard_inner (use-style s-flip-card-inner)
      [:div (use-style s-flip-card-front)
-      [:div (use-style s-flip-card-front-title) (:front-text attrs)]]
+      [:div (use-style s-flip-card-front-title) (:front attrs)]]
      [:div (use-style s-flip-card-back)
       [:div (use-style s-flip-card-back-title-container)
-       [:div (use-style s-flip-card-back-title) (:back-text attrs)]
+       [:div (use-style s-flip-card-back-title) (:back attrs)]
        (when (:comment attrs)
          [:p (:comment attrs)])]
       [:div (use-style s-flip-card-buttons)

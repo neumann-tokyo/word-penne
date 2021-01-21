@@ -95,8 +95,8 @@
 (def t-create-card-arg
   [:map [:values
          [:map
-          ["front-text" string?]
-          ["back-text" string?]
+          ["front" string?]
+          ["back" string?]
           ["comment" {:optional true} string?]]]])
 (re-frame/reg-event-fx
  ::create-card
@@ -126,8 +126,8 @@
   [:map [:values
          [:map
           ["uid" string?]
-          ["front-text" string?]
-          ["back-text" string?]
+          ["front" string?]
+          ["back" string?]
           ["comment" {:optional true} string?]]]])
 (re-frame/reg-event-fx
  ::update-card-by-uid
