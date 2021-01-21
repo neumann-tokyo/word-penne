@@ -18,8 +18,8 @@
                                                        :dragEnabled false})
    [:> Slider (use-style s-slider)
     [:> Slide (use-style s-slide {:index "0"})
-     [QuizSlide {:front-text "make"
-                 :back-text "作る"
+     [QuizSlide {:front "make"
+                 :back "作る"
                  :index "0"}]
      [:> ButtonNext "Next"]]
     [:> Slide (use-style s-slide {:index "1"}) [QuizSlide {:index "1"}]]

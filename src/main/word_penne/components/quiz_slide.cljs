@@ -65,8 +65,8 @@
    [:div (use-style s-card)
     ;; TODO js で .turned-flip をつける
     [:div (use-style s-card-inner)
-     [:div (use-style s-card-front) (:front-text attrs)]
-     [:div (use-style s-card-back) (:back-text attrs)]]]
+     [:div (use-style s-card-front) (:front attrs)]
+     [:div (use-style s-card-back) (:back attrs)]]]
    [:div (use-style s-input)
     [:div
      [:input (use-style s-text {:type "text" :id (str "text-" (:index attrs)) :name (str "text-" (:index attrs))})]]

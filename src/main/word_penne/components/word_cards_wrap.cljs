@@ -21,4 +21,4 @@
   [:div (use-style s-cards-wrap)
    (doall (for [card @(re-frame/subscribe [::subs/cards])]
             [:div (use-style s-card-item {:key (:uid card)})
-             [WordCard (select-keys card [:uid :front-text :back-text :comment])]]))])
+             [WordCard (select-keys card [:uid :front :back :comment])]]))])

@@ -47,8 +47,8 @@
 
 (def t-card-form
   [:map
-   [:front-text [:string {:min 1 :max 140}]]
-   [:back-text [:string {:min 1 :max 140}]]
+   [:front [:string {:min 1 :max 140}]]
+   [:back [:string {:min 1 :max 140}]]
    [:comment {:optional true} [:string {:min 1 :max 140}]]])
 
 (defn ErrorMessange [touched errors target]
@@ -74,13 +74,13 @@
       [:form (use-style s-form {:id form-id
                                 :on-submit handle-submit})
        [:div
-        [:label {:for "front-text"} "Front"]
-        [:input (use-style s-text {:type "text" :id "front-text" :name "front-text" :data-testid "word-card-form__front-text" :required true :value (values "front-text") :on-change handle-change :on-blur handle-blur})]
-        (ErrorMessange touched errors "front-text")]
+        [:label {:for "front"} "Front"]
+        [:input (use-style s-text {:type "text" :id "front" :name "front" :data-testid "word-card-form__front" :required true :value (values "front") :on-change handle-change :on-blur handle-blur})]
+        (ErrorMessange touched errors "front")]
        [:div
-        [:label {:for "back-text"} "Back"]
-        [:input (use-style s-text {:type "text" :id "back-text" :name "back-text" :data-testid "word-card-form__back-text" :required true :value (values "back-text") :on-change handle-change :on-blur handle-blur})]
-        (ErrorMessange touched errors "back-text")]
+        [:label {:for "back"} "Back"]
+        [:input (use-style s-text {:type "text" :id "back" :name "back" :data-testid "word-card-form__back" :required true :value (values "back") :on-change handle-change :on-blur handle-blur})]
+        (ErrorMessange touched errors "back")]
        [:div
         [:label {:for "comment"} "Comment"]
         [:input (use-style s-text {:type "text" :id "comment" :name "comment" :data-testid "word-card-form__comment" :value (values "comment") :on-change handle-change :on-blur handle-blur})]

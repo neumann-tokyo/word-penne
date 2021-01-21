@@ -13,10 +13,10 @@
 
 (defmethod v/view ::edit [_]
   [:div
-   (when-let [{:keys [uid front-text back-text comment]} @(re-frame/subscribe [::subs/selected-card])]
+   (when-let [{:keys [uid front back comment]} @(re-frame/subscribe [::subs/selected-card])]
      [WordCardForm {:initial-values {"uid" uid
-                                     "front-text" front-text
-                                     "back-text" back-text
+                                     "front" front
+                                     "back" back
                                      "comment" comment}
                     :on-submit #(re-frame/dispatch [::events/update-card-by-uid uid %])}])])
 
