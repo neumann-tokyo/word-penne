@@ -12,7 +12,7 @@
   (if @auth-instance
     @auth-instance
     (let [auth (.auth firebase)]
-      (when (config/debug?)
+      (when config/debug?
         (.useEmulator auth "http://localhost:9099/")
         (.signInWithCredential auth
                                ((.. firebase -auth -GoogleAuthProvider -credential)

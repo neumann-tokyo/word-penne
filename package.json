@@ -10,8 +10,8 @@
     "cypress:run": "cypress run",
     "cypress:open": "cypress open",
     "emulators": "firebase emulators:start --only firestore,auth --import=./.firebase-emulators-data --export-on-exit",
-    "emulators-test": "firebase emulators:start --only firestore,auth",
-    "check-env": "bash check-env.sh",
+    "emulators:test": "firebase emulators:start --only firestore,auth",
+    "emulators:hosting": "firebase emulators:start --only hosting",
     "release": "rm -r public/js && shadow-cljs release app"
   },
   "devDependencies": {
@@ -29,8 +29,8 @@
     "firebaseui": "^4.7.1",
     "highlight.js": "9.18.1",
     "pure-react-carousel": "^1.27.6",
-    "react": "16.14.0",
-    "react-dom": "16.14.0",
+    "react": "16.13.0",
+    "react-dom": "16.13.0",
     "react-highlight.js": "1.0.7"
   }
 }

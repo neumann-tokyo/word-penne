@@ -9,7 +9,7 @@
   (if @db
     @db
     (let [-db (.firestore firebase)]
-      (when (config/debug?)
+      (when config/debug?
         ; cypress 用の設定
         (.settings -db #js {:experimentalForceLongPolling true})
         (.useEmulator -db "localhost" 8081))
