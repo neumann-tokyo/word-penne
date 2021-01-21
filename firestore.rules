@@ -1,9 +1,21 @@
 rules_version = '2';
 service cloud.firestore {
+  function isMySelf(request, user_uid) {
+    return request.auth != null && request.auth.uid == user_uid;
+  }
+
+  function isValidCard(card) {
+    return ('front' in card && card.front is string && card.front.size() < 140) 
+      && ('back' in card && card.back is string && card.back.size() < 140) 
+      || (card.keys.hasAll(['comment']) && card.comment is string && card.comment.size() < 140);
+  }
+
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if
-          request.time < timestamp.date(2021, 2, 28);
+    match /users/{user_uid}/cards/{card_uid} {
+      allow read: if isMySelf(request, user_uid);
+      allow create: if isMySelf(request, user_uid) && isValidCard(request.resource.data);
+      allow update: if isMySelf(request, user_uid) && isValidCard(request.resource.data);
+      allow delete: if isMySelf(request, user_uid);
     }
   }
 }
