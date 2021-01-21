@@ -23,17 +23,16 @@
         {:main
          {:entries [word-penne.core]}}
 
-        :compiler-options
-        {:closure-defines
-         {"re_frame.trace.trace_enabled_QMARK_" true}}
-
         :devtools
         {:http-root "public"
          :http-port 8080
          :preloads [devtools.preload
                     ;; day8.re-frame-10x.preload
                     ]}
-        :dev {:closure-defines {word-penne.firebase.init/API_KEY #shadow/env "API_KEY"
+        :dev {:compiler-options
+              {:closure-defines
+               {"re_frame.trace.trace_enabled_QMARK_" true}}
+              :closure-defines {word-penne.firebase.init/API_KEY #shadow/env "API_KEY"
                                 word-penne.firebase.init/AUTH_DOMAIN #shadow/env "AUTH_DOMAIN"
                                 word-penne.firebase.init/PROJECT_ID #shadow/env "PROJECT_ID"
                                 word-penne.firebase.init/STORAGE_BUCKET #shadow/env "STORAGE_BUCKET"
@@ -41,7 +40,7 @@
                                 word-penne.firebase.init/APP_ID #shadow/env "APP_ID"
                                 word-penne.firebase.init/MEASUREMENT_ID #shadow/env "MEASUREMENT_ID"}}
         :release
-        {:output-dir "dist/js"
+        {:compiler-options {:optimizations :simple}
          :closure-defines {word-penne.firebase.init/API_KEY #shadow/env "PRD_API_KEY"
                            word-penne.firebase.init/AUTH_DOMAIN #shadow/env "PRD_AUTH_DOMAIN"
                            word-penne.firebase.init/PROJECT_ID #shadow/env "PRD_PROJECT_ID"
