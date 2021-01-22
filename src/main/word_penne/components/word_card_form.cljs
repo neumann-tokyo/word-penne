@@ -49,7 +49,7 @@
   [:map
    [:front [:string {:min 1 :max 140}]]
    [:back [:string {:min 1 :max 140}]]
-   [:comment [:maybe [:string {:min 0 :max 140}]]]])
+   [:comment {:optional true} [:maybe [:string {:min 0 :max 140}]]]])
 
 (defn ErrorMessange [touched errors target]
   (when (touched target)
