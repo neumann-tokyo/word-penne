@@ -74,6 +74,10 @@
    :cursor "pointer"
    :background "none"
    ::stylefy/mode {:focus {:outline "none"}}})
+(def s-search-target
+  {:border "none"
+   :background "none"
+   :outline "none"})
 (def s-search-box
   {:border "none"
    :background "none"
@@ -100,6 +104,14 @@
      [:div (use-style s-search-form)
       [:button (use-style s-search-button {:type "submit"})
        [:span {:class "material-icons-outlined"} "search"]]
+      [:select (use-style
+                s-search-target
+                {:name "search-target"
+                 :id "search-target"
+                 :on-change #(re-frame/dispatch [::events/set-search-target (-> % .-target .-value)])})
+       [:option {:value "front"} "Front"]
+       [:option {:value "back"} "Back"]
+       [:option {:value "comment"} "Comment"]]
       [:input (use-style
                s-search-box
                {:type "search"

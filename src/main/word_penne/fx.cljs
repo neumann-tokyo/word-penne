@@ -19,13 +19,13 @@
 
 (re-frame/reg-fx
  ::firebase-load-cards
- (fn [{:keys [user-uid search-word on-success]}] ; TODO I want to pass a sort order
+ (fn [{:keys [user-uid search-target search-word on-success]}] ; TODO I want to pass a sort order
    (when user-uid
      (as-> (firestore) f
        (.collection f (str "users/" user-uid "/cards"))
        (if search-word
          (as-> f f
-           (.orderBy f "front")
+           (.orderBy f search-target)
            (.startAt f search-word)
            (.endAt f (str search-word "\uf8ff")))
          f)
