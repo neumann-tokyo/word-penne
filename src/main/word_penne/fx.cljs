@@ -28,7 +28,7 @@
            (.orderBy f search-target)
            (.startAt f search-word)
            (.endAt f (str search-word "\uf8ff")))
-         f)
+         (.orderBy f "updatedAt" "desc"))
        (.get f)
        (.then f
               (fn [snapshot]
