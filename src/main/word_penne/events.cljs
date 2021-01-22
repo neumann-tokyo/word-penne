@@ -169,7 +169,7 @@
 
 (re-frame/reg-event-fx
  ::set-search-word
- [(validate-args string?) ;; TODO 文字数など指定したい
+ [(validate-args [:string {:min 0 :max 140}])
   validate-db]
  (fn [{:keys [db]} [_ search-word]]
    {:db (assoc db :search-word search-word)

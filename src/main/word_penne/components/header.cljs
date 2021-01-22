@@ -105,6 +105,7 @@
                {:type "search"
                 :placeholder "Search..."
                 :name "search"
+                :maxLength 140
                 :data-testid "search-input"
                 :on-change #(re-frame/dispatch [::events/set-search-word (-> % .-target .-value)])})]]]
     [:div (use-style s-word-card-add-button)
