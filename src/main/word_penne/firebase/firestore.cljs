@@ -14,3 +14,6 @@
         (.settings -db #js {:experimentalForceLongPolling true})
         (.useEmulator -db "localhost" 8081))
       (reset! db -db))))
+
+(defn timestamp []
+  (.. firebase -firestore -Timestamp now))
