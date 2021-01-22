@@ -81,6 +81,7 @@
  ::fetch-cards
  (fn [_ _]
    {::fx/firebase-load-cards {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
+                              :search-word @(re-frame/subscribe [::subs/search-word])
                               :on-success (fn [cards] (re-frame/dispatch [::set-cards cards]))}}))
 
 (re-frame/reg-event-db
@@ -165,3 +166,11 @@
                                       :on-success (fn [_]
                                                     (re-frame/dispatch [::hide-delete-card-modal])
                                                     (re-frame/dispatch [::fetch-cards]))}}))
+
+(re-frame/reg-event-fx
+ ::set-search-word
+ [(validate-args string?) ;; TODO 文字数など指定したい
+  validate-db]
+ (fn [{:keys [db]} [_ search-word]]
+   {:db (assoc db :search-word search-word)
+    :dispatch [::fetch-cards]}))

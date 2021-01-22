@@ -20,10 +20,12 @@
     [:sequential t-card]]
    [:selected-card
     [:maybe t-card]]
-   [:show-delete-card-modal boolean?]])
+   [:show-delete-card-modal boolean?]
+   [:search-word [:maybe string?]]])
 
 (def default-db
   {:user nil
    :cards []
    :selected-card nil
-   :show-delete-card-modal false})
+   :show-delete-card-modal false
+   :search-word nil})

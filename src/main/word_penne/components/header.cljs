@@ -1,6 +1,8 @@
 (ns word-penne.components.header
   (:require [stylefy.core :as stylefy :refer [use-style]]
             [bidi.bidi :refer [path-for]]
+            [re-frame.core :as re-frame]
+            [word-penne.events :as events]
             [word-penne.routes :refer [routes]]
             [word-penne.style.vars :refer [color layout-vars z-indexs phone-width]]
             [word-penne.components.word-card-add-button :refer [WordCardAddButton]]
@@ -98,7 +100,12 @@
      [:div (use-style s-search-form)
       [:button (use-style s-search-button {:type "submit"})
        [:span {:class "material-icons-outlined"} "search"]]
-      [:input (use-style s-search-box {:type "search" :placeholder "Search..." :name "search"})]]]
+      [:input (use-style
+               s-search-box
+               {:type "search"
+                :placeholder "Search..."
+                :name "search"
+                :on-change #(re-frame/dispatch [::events/set-search-word (-> % .-target .-value)])})]]]
     [:div (use-style s-word-card-add-button)
      [WordCardAddButton]]
     [:div (use-style s-user-container)
