@@ -1,5 +1,6 @@
 (ns word-penne.events
-  (:require [re-frame.core :as re-frame]
+  (:require [clojure.string :as str]
+            [re-frame.core :as re-frame]
             [malli.core :as m]
             [cljs.pprint :refer [pprint]]
             ;; [bidi.bidi :as bidi]
@@ -43,6 +44,8 @@
 
 (defmulti on-navigate (fn [view _] view))
 (defmethod on-navigate :word-penne.pages.home/home [_ _]
+  (re-frame/dispatch [::reset-tags-error])
+  (re-frame/dispatch [::fetch-tags])
   {:dispatch [::fetch-cards]})
 (defmethod on-navigate :word-penne.pages.cards/edit [_ params]
   {:dispatch [::fetch-card-by-uid (:id params)]})
@@ -83,6 +86,7 @@
    {::fx/firebase-load-cards {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
                               :search-target @(re-frame/subscribe [::subs/search-target])
                               :search-word @(re-frame/subscribe [::subs/search-word])
+                              :search-tag @(re-frame/subscribe [::subs/search-tag])
                               :on-success (fn [cards] (re-frame/dispatch [::set-cards cards]))}}))
 
 (re-frame/reg-event-db
@@ -94,18 +98,35 @@
           :cards res
           :selected-card nil)))
 
+(re-frame/reg-event-fx
+ ::fetch-tags
+ (fn [_ _]
+   {::fx/firebase-load-tags {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
+                             :on-success (fn [tags] (re-frame/dispatch [::set-tags tags]))}}))
+
+(re-frame/reg-event-db
+ ::set-tags
+ [(validate-args [:sequential string?])
+  validate-db]
+ (fn [db [_ res]]
+   (assoc db :tags res)))
+
 (def t-create-card-arg
   [:map [:values
          [:map
           ["front" string?]
           ["back" string?]
-          ["comment" {:optional true} string?]]]])
+          ["comment" {:optional true} string?]
+          ["tags" [:sequential [:map
+                                ["name" string?]
+                                ["beforeName" string?]]]]]]])
 (re-frame/reg-event-fx
  ::create-card
  [(validate-args t-create-card-arg)]
  (fn [_ [_ {:keys [values]}]]
    {::fx/firebase-create-card {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
                                :values values
+                               :tags @(re-frame/subscribe [::subs/tags])
                                :on-success (fn [] (re-frame/dispatch [::navigate :word-penne.pages.home/home]))}}))
 
 (re-frame/reg-event-fx
@@ -130,7 +151,9 @@
           ["uid" string?]
           ["front" string?]
           ["back" string?]
-          ["comment" {:optional true} string?]]]])
+          ["comment" {:optional true} [:maybe string?]]
+          ["tags" [:sequential [:map
+                                ["name" string?]]]]]]])
 (re-frame/reg-event-fx
  ::update-card-by-uid
  [(validate-args 0 string?)
@@ -139,7 +162,26 @@
    {::fx/firebase-update-card-by-uid {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
                                       :card-uid card-uid
                                       :values values
+                                      :tags @(re-frame/subscribe [::subs/tags])
                                       :on-success (fn [] (re-frame/dispatch [::navigate :word-penne.pages.home/home]))}}))
+
+(def t-update-tags
+  [:map [:values
+         [:map
+          ["tags"
+           [:sequential
+            [:map
+             ["name" string?]
+             ["beforeName" string?]]]]]]])
+(re-frame/reg-event-fx
+ ::update-tags
+ [(validate-args t-update-tags)]
+ (fn [_ [_ {:keys [values]}]]
+   {::fx/firebase-update-tags {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
+                               :tags @(re-frame/subscribe [::subs/tags])
+                               :values values
+                               :on-success (fn [] (re-frame/dispatch [::navigate :word-penne.pages.home/home]))
+                               :on-failure (fn [error] (re-frame/dispatch [::set-tags-error error]))}}))
 
 (re-frame/reg-event-db
  ::show-delete-card-modal
@@ -183,3 +225,24 @@
  (fn [{:keys [db]} [_ search-word]]
    {:db (assoc db :search-word search-word)
     :dispatch [::fetch-cards]}))
+
+(re-frame/reg-event-fx
+ ::set-search-tag
+ [(validate-args [:maybe :string])
+  validate-db]
+ (fn [{:keys [db]} [_ search-tag]]
+   {:db (assoc db :search-tag search-tag)
+    :dispatch [::fetch-cards]}))
+
+(re-frame/reg-event-db
+ ::reset-tags-error
+ [validate-db]
+ (fn [db [_ _]]
+   (assoc db :tags-error nil)))
+
+(re-frame/reg-event-db
+ ::set-tags-error
+ [(validate-args [:maybe :string])
+  validate-db]
+ (fn [db [_ error]]
+   (assoc db :tags-error error)))

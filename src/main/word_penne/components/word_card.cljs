@@ -3,7 +3,8 @@
             [stylefy.core :as stylefy :refer [use-style]]
             [word-penne.events :as events]
             [word-penne.style.vars :refer [color layout-vars phone-width]]
-            [word-penne.style.share :as share]))
+            [word-penne.style.share :as share]
+            [word-penne.components.tag-badges :refer [TagBadges]]))
 
 (def s-card
   {:display "inline-block"})
@@ -37,17 +38,19 @@
           ::stylefy/mode {:hover {:box-shadow (str "0 2px 4px 0 " (:assort-border color))}}
           ::stylefy/media {phone-width {:width "85vw"}}}))
 (def s-flip-card-front
-  (merge m-flip-card {:background-color (:main-background color)
-                      :font-size "2rem"
-                      :font-weight "bold"
-                      :text-align "center"}))
+  (merge m-flip-card {:background-color (:main-background color)}))
 (def s-flip-card-back
   (merge m-flip-card {:background-color (:assort-background color)
                       :transform "rotateY(180deg)"
                       :display "flex"
                       :flex-direction "column"}))
 (def s-flip-card-front-title
-  {:margin-top ".5rem"})
+  {:margin-top ".5rem"
+   :font-size "2rem"
+   :font-weight "bold"
+   :text-align "center"})
+(def s-tags-container
+  {:text-align "right"})
 (def s-flip-card-back-title-container
   {:flex "1"})
 (def s-flip-card-back-title
@@ -72,12 +75,16 @@
    [:button (use-style s-flip-card)
     [:div.flipcard_inner (use-style s-flip-card-inner)
      [:div (use-style s-flip-card-front)
-      [:div (use-style s-flip-card-front-title) (:front attrs)]]
+      [:div (use-style s-flip-card-front-title) (:front attrs)]
+      [:div (use-style s-tags-container)
+       [TagBadges (:tags attrs)]]]
      [:div (use-style s-flip-card-back)
       [:div (use-style s-flip-card-back-title-container)
        [:div (use-style s-flip-card-back-title) (:back attrs)]
        (when (:comment attrs)
          [:p (:comment attrs)])]
+      [:div (use-style s-tags-container)
+       [TagBadges (:tags attrs)]]
       [:div (use-style s-flip-card-buttons)
        [:div
         [:a (use-style s-flip-card-button {:href "#" :title "pin"})

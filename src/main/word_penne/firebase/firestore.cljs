@@ -17,3 +17,9 @@
 
 (defn timestamp []
   (.. firebase -firestore -Timestamp now))
+
+(defn array-union [value]
+  ((.. firebase -firestore -FieldValue -arrayUnion) value))
+
+(defn array-remove [value]
+  ((.. firebase -firestore -FieldValue -arrayRemove) value))

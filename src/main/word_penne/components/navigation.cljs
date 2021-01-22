@@ -1,6 +1,11 @@
 (ns word-penne.components.navigation
-  (:require [stylefy.core :as stylefy :refer [use-style]]
-            [word-penne.style.vars :refer [color layout-vars]]))
+  (:require [re-frame.core :as re-frame]
+            [bidi.bidi :refer [path-for]]
+            [stylefy.core :as stylefy :refer [use-style]]
+            [word-penne.style.vars :refer [color layout-vars]]
+            [word-penne.subs :as subs]
+            [word-penne.events :as events]
+            [word-penne.routes :refer [routes]]))
 
 (def s-navigation
   {:background (:main-background color)})
@@ -43,19 +48,23 @@
     [:span (use-style s-nav-icon {:class "material-icons-outlined"}) "menu"]]
    [:div#navigation-menu (use-style s-opened-navigation)
     [:div (use-style s-nav-close)]
-    [:a (use-style s-nav-link {:href "#"})
+    [:a (use-style s-nav-link {:href "#"
+                               :on-click (fn [e]
+                                           (.preventDefault e)
+                                           (re-frame/dispatch [::events/set-search-tag nil])
+                                           (re-frame/dispatch [::events/navigate :word-penne.pages.home/home]))})
      [:span {:class "material-icons-outlined"} "style"]
      [:span (use-style s-nav-link-text) "Cards"]]
-    [:a (use-style s-nav-link {:href "#"})
-     [:span {:class "material-icons-outlined"} "label"]
-     [:span (use-style s-nav-link-text) "tag1"]]
-    [:a (use-style s-nav-link {:href "#"})
-     [:span {:class "material-icons-outlined"} "label"]
-     [:span (use-style s-nav-link-text) "tag2"]]
-    [:a (use-style s-nav-link {:href "#"})
-     [:span {:class "material-icons-outlined"} "label"]
-     [:span (use-style s-nav-link-text) "tag3"]]
-    [:a (use-style s-nav-link {:href "#"})
+    (doall (map-indexed
+            (fn [index tag]
+              [:a (use-style s-nav-link {:href "#" :key index
+                                         :on-click (fn [e]
+                                                     (.preventDefault e)
+                                                     (re-frame/dispatch [::events/set-search-tag tag]))})
+               [:span {:class "material-icons-outlined"} "label"]
+               [:span (use-style s-nav-link-text) tag]])
+            @(re-frame/subscribe [::subs/tags])))
+    [:a (use-style s-nav-link {:href (path-for routes :word-penne.pages.tags/index)})
      [:span {:class "material-icons-outlined"} "edit"]
      [:span (use-style s-nav-link-text) "Edit tags"]]
     [:a (use-style s-nav-link {:href "#"})
