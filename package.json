@@ -20,6 +20,7 @@
     "shadow-cljs": "2.11.8"
   },
   "dependencies": {
+    "algoliasearch": "^4.8.4",
     "firebase": "^8.2.1",
     "firebaseui": "^4.7.1",
     "highlight.js": "9.18.1",

@@ -2,6 +2,7 @@
   (:require [re-frame.core :as re-frame]
             [word-penne.firebase.firestore :refer [firestore]]
             [word-penne.firebase.auth :as firebase-auth]
+            [word-penne.firebase.algolia :as algolia]
             [word-penne.routes :as routes]))
 
 (re-frame/reg-fx
