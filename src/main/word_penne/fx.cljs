@@ -1,6 +1,6 @@
 (ns word-penne.fx
   (:require [re-frame.core :as re-frame]
-            [word-penne.firebase.firestore :refer [firestore]]
+            [word-penne.firebase.firestore :refer [firestore timestamp]]
             [word-penne.firebase.auth :as firebase-auth]
             [word-penne.routes :as routes]))
 
@@ -28,7 +28,7 @@
            (.orderBy f search-target)
            (.startAt f search-word)
            (.endAt f (str search-word "\uf8ff")))
-         f)
+         (.orderBy f "updatedAt" "desc"))
        (.get f)
        (.then f
               (fn [snapshot]
@@ -45,7 +45,7 @@
  (fn [{:keys [user-uid values on-success]}]
    (-> (firestore)
        (.collection (str "users/" user-uid "/cards"))
-       (.add (clj->js values))
+       (.add (clj->js (assoc values :createdAt (timestamp) :updatedAt (timestamp))))
        (.then on-success))))
 
 (re-frame/reg-fx
@@ -67,7 +67,7 @@
      (-> (firestore)
          (.collection (str "users/" user-uid "/cards"))
          (.doc card-uid)
-         (.set (clj->js values))
+         (.set (clj->js (assoc values :updatedAt (timestamp))))
          (.then on-success)))))
 
 (re-frame/reg-fx
