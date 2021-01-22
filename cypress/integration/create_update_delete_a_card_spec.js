@@ -40,6 +40,14 @@ describe("Create and update a card", () => {
     cy.contains("創造する");
     cy.contains("新しく作る");
 
+    // search
+    cy.getBySel("search-input").type("cr");
+    cy.contains("create");
+    cy.getBySel("search-input").type("{backspace}{backspace}ma");
+    cy.contains("create").not();
+    cy.getBySel("search-input").type("{backspace}{backspace}");
+    cy.contains("create");
+
     // delete a card
     cy.contains("create").contains("delete").click({ force: true });
     cy.contains("Confirmation");

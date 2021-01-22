@@ -81,6 +81,8 @@
  ::fetch-cards
  (fn [_ _]
    {::fx/firebase-load-cards {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
+                              :search-target @(re-frame/subscribe [::subs/search-target])
+                              :search-word @(re-frame/subscribe [::subs/search-word])
                               :on-success (fn [cards] (re-frame/dispatch [::set-cards cards]))}}))
 
 (re-frame/reg-event-db
@@ -165,3 +167,19 @@
                                       :on-success (fn [_]
                                                     (re-frame/dispatch [::hide-delete-card-modal])
                                                     (re-frame/dispatch [::fetch-cards]))}}))
+
+(re-frame/reg-event-fx
+ ::set-search-target
+ [(validate-args db/t-search-target)
+  validate-db]
+ (fn [{:keys [db]} [_ search-target]]
+   {:db (assoc db :search-target search-target)
+    :dispatch [::fetch-cards]}))
+
+(re-frame/reg-event-fx
+ ::set-search-word
+ [(validate-args db/t-search-word)
+  validate-db]
+ (fn [{:keys [db]} [_ search-word]]
+   {:db (assoc db :search-word search-word)
+    :dispatch [::fetch-cards]}))

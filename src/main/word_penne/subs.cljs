@@ -25,3 +25,13 @@
  ::show-delete-card-modal
  (fn [db _]
    (:show-delete-card-modal db)))
+
+(re-frame/reg-sub
+ ::search-target
+ (fn [db _]
+   (:search-target db)))
+
+(re-frame/reg-sub
+ ::search-word
+ (fn [db _]
+   (:search-word db)))
