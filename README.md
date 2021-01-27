@@ -40,7 +40,13 @@ localhost:8080 でシステムが動作します。
 npm run emulators:test
 ```
 
-次のコマンドで Cypress によるテストを実行できます。
+Cypress による E2E テストを行うので別のターミナルでサーバーを起動します。
+
+```
+npm run dev
+```
+
+再び別のターミナル（つまり３つ目）で次のコマンドを実行して Cypress によるテストを行います。
 
 ```
 npm run cypress:open
