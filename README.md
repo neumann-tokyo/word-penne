@@ -56,8 +56,8 @@ npm run cypress:run
 
 ## Branch Rules
 
-WIP [git-flow](http://danielkummer.github.io/git-flow-cheatsheet/) を使うか検討中
-WIP https://github.com/conventional-changelog/standard-version を使いたい
+* WIP [git-flow](http://danielkummer.github.io/git-flow-cheatsheet/) を使うか検討中
+* WIP https://github.com/conventional-changelog/standard-version を使いたい
 
 現状のブランチ構成
 
