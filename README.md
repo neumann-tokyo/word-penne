@@ -53,3 +53,19 @@ npm run cypress:open
 # または
 npm run cypress:run
 ```
+
+## Branch Rules
+
+WIP [git-flow](http://danielkummer.github.io/git-flow-cheatsheet/) を使うか検討中
+WIP https://github.com/conventional-changelog/standard-version を使いたい
+
+現状のブランチ構成
+
+* production ブランチ ... 本番デプロイ用のブランチ (git-flow でいう main)
+* main ブランチ ... 開発用のHEADブランチ (git-flowでいう develop)
+* その他のトピックブランチ ... 機能追加・HOTFIXを行うブランチ。Pull Request にして main にマージする
+
+## Commit Rules
+
+* [Conventinal Commits](https://www.conventionalcommits.org/ja/v1.0.0/) に従ってください
+* VS Code の場合 [vscode-conventional-commits](https://marketplace.visualstudio.com/items?itemName=vivaxy.vscode-conventional-commits) を使うと便利です
