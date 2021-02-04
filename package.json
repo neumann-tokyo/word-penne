@@ -12,12 +12,14 @@
     "emulators": "firebase emulators:start --only firestore,auth --import=./.firebase-emulators-data --export-on-exit",
     "emulators:test": "firebase emulators:start --only firestore,auth",
     "emulators:hosting": "firebase emulators:start --only hosting",
-    "release": "rm -r public/js && shadow-cljs release app"
+    "release": "rm -r public/js && shadow-cljs release app",
+    "standard-version":"standard-version"
   },
   "devDependencies": {
     "cypress": "^6.2.0",
     "firebase-tools": "^9.1.0",
-    "shadow-cljs": "2.11.8"
+    "shadow-cljs": "2.11.8",
+    "standard-version": "^9.1.0"
   },
   "dependencies": {
     "firebase": "^8.2.1",
