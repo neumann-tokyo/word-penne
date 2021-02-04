@@ -1,6 +1,6 @@
 {
   "name": "word-penne",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "scripts": {
     "dev": "shadow-cljs watch app",
@@ -13,7 +13,7 @@
     "emulators:test": "firebase emulators:start --only firestore,auth",
     "emulators:hosting": "firebase emulators:start --only hosting",
     "release": "rm -r public/js && shadow-cljs release app",
-    "standard-version":"standard-version"
+    "standard-version": "standard-version"
   },
   "devDependencies": {
     "cypress": "^6.2.0",
