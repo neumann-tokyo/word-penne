@@ -1,26 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Word Penne</title>
-    <link href="/css/normalize.css" rel="stylesheet" type="text/css">
-    <link href="/css/react-carousel.cjs.css" rel="stylesheet" type="text/css">
-    <link href="/css/firebaseui.css" rel="stylesheet" type="text/css">
-    <link href="/css/style.css" rel="stylesheet" type="text/css">
-    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
-    <style id="_stylefy-constant-styles_"></style>
-    <style id="_stylefy-styles_"></style>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script src="/js/main.js" type="text/javascript"></script>
-    <script>
-      word_penne.core.init();
-    </script>
-  </body>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Word Penne</title>
+  <link href="/css/normalize.css" rel="stylesheet" type="text/css">
+  <link href="/css/react-carousel.cjs.css" rel="stylesheet" type="text/css">
+  <link href="/css/firebaseui.css" rel="stylesheet" type="text/css">
+  <link href="/css/style.css" rel="stylesheet" type="text/css">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <style id="_stylefy-constant-styles_"></style>
+  <style id="_stylefy-styles_"></style>
+  <!-- iOS端末向けPWA -->
+  <!-- アドレスバー等のブラウザのUIを非表示 -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <!-- default（Safariと同じ） / black（黒） / black-translucent（ステータスバーをコンテンツに含める） -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <!-- ホーム画面に表示されるアプリ名 -->
+  <meta name="apple-mobile-web-app-title" content="TAP10">
+  <!-- ホーム画面に表示されるアプリアイコン -->
+  <link rel="apple-touch-icon" href="./images/icons/icon-152x152.png">
+
+  <!-- Android端末向けPWA -->
+  <!-- ウェブアプリマニフェストの読み込み -->
+  <link rel="manifest" href="manifest.json">
+  <!-- ServiceWorkerの登録 -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./js/sw.js')
+        .then((reg) => {
+          console.log('Service worker registered.', reg);
+        });
+    }
+  </script>
+
+
+</head>
+
+<body>
+  <div id="app"></div>
+  <script src="/js/main.js" type="text/javascript"></script>
+  <script>
+    word_penne.core.init();
+  </script>
+</body>
+
 </html>
