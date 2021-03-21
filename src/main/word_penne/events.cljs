@@ -1,6 +1,5 @@
 (ns word-penne.events
-  (:require [clojure.string :as str]
-            [re-frame.core :as re-frame]
+  (:require [re-frame.core :as re-frame]
             [malli.core :as m]
             [cljs.pprint :refer [pprint]]
             ;; [bidi.bidi :as bidi]
@@ -87,6 +86,7 @@
                               :search-target @(re-frame/subscribe [::subs/search-target])
                               :search-word @(re-frame/subscribe [::subs/search-word])
                               :search-tag @(re-frame/subscribe [::subs/search-tag])
+                              :search-archive @(re-frame/subscribe [::subs/search-archive])
                               :on-success (fn [cards] (re-frame/dispatch [::set-cards cards]))}}))
 
 (re-frame/reg-event-db
@@ -164,6 +164,14 @@
                                       :values values
                                       :tags @(re-frame/subscribe [::subs/tags])
                                       :on-success (fn [] (re-frame/dispatch [::navigate :word-penne.pages.home/home]))}}))
+
+(re-frame/reg-event-fx
+ ::archive-card
+ (fn [_ [_ card-uid archive]]
+   {::fx/firebase-archive-card-by-uid {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
+                                       :card-uid card-uid
+                                       :archive archive
+                                       :on-success (fn [] (re-frame/dispatch [::navigate :word-penne.pages.home/home]))}}))
 
 (def t-update-tags
   [:map [:values
@@ -246,3 +254,11 @@
   validate-db]
  (fn [db [_ error]]
    (assoc db :tags-error error)))
+
+(re-frame/reg-event-fx
+ ::set-search-archive
+ [(validate-args [boolean?])
+  validate-db]
+ (fn [{:keys [db]} [_ search-archive]]
+   {:db (assoc db :search-archive search-archive)
+    :dispatch [::fetch-cards]}))

@@ -15,8 +15,9 @@
    [:back string?]
    [:comment {:optional true} [:maybe string?]]
    [:tags t-tags]
-   ;; TODO  [:createAt]
-   ])
+   [:createdAt {:optional true} [:maybe any?]]
+   [:updatedAt {:optional true} [:maybe any?]]
+   [:archive boolean?]])
 (def t-search-target
   [:enum "front" "back" "comment"])
 (def t-search-word
@@ -34,7 +35,8 @@
    [:tags-error [:maybe string?]]
    [:search-target t-search-target]
    [:search-word [:maybe t-search-word]]
-   [:search-tag [:maybe string?]]])
+   [:search-tag [:maybe string?]]
+   [:search-archive boolean?]])
 
 (def default-db
   {:user nil
@@ -45,4 +47,5 @@
    :tags-error nil
    :search-target "front"
    :search-word nil
-   :search-tag nil})
+   :search-tag nil
+   :search-archive false})

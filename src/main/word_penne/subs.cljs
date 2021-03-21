@@ -50,3 +50,8 @@
  ::tags-error
  (fn [db _]
    (:tags-error db)))
+
+(re-frame/reg-sub
+ ::search-archive
+ (fn [db _]
+   (:search-archive db)))

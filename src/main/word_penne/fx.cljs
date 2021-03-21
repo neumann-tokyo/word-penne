@@ -23,11 +23,12 @@
 
 (re-frame/reg-fx
  ::firebase-load-cards
- (fn [{:keys [user-uid search-target search-word search-tag on-success]}] ; TODO I want to pass a sort order
+ (fn [{:keys [user-uid search-target search-word search-tag search-archive on-success]}] ; TODO I want to pass a sort order
    (when user-uid
      (go
        (let [snapshot (<p! (as-> (firestore) f
                              (.collection f (str "users/" user-uid "/cards"))
+                             (.where f "archive" "==" (boolean search-archive))
                              (if search-tag
                                (.where f "tags" "array-contains-any" #js[search-tag])
                                f)
@@ -67,7 +68,7 @@
                   "tags" (mapv #(str/trim (% "name")) (remove #(= % {"name" "" "beforeName" ""}) (values "tags"))))]
      (-> (firestore)
          (.collection (str "users/" user-uid "/cards"))
-         (.add (clj->js (assoc v :createdAt (timestamp) :updatedAt (timestamp))))
+         (.add (clj->js (assoc v :archive false :createdAt (timestamp) :updatedAt (timestamp))))
          (.then (fn []
                   (-> (firestore)
                       (.collection "users")
@@ -101,7 +102,7 @@
                users-ref (-> (firestore)
                              (.collection "users")
                              (.doc user-uid))]
-           (.set batch cards-ref (clj->js (assoc v :updatedAt (timestamp))))
+           (.update batch cards-ref (clj->js (assoc v :updatedAt (timestamp))))
            (.set batch users-ref (clj->js {:tags (distinct (concat tags (v "tags")))}))
            (<p! (.commit batch))
            (on-success)))))))
@@ -114,6 +115,16 @@
          (.collection (str "users/" user-uid "/cards"))
          (.doc card-uid)
          (.delete)
+         (.then on-success)))))
+
+(re-frame/reg-fx
+ ::firebase-archive-card-by-uid
+ (fn [{:keys [user-uid card-uid archive on-success]}]
+   (when user-uid
+     (-> (firestore)
+         (.collection (str "users/" user-uid "/cards"))
+         (.doc card-uid)
+         (.update #js {:archive archive :updatedAt (timestamp)})
          (.then on-success)))))
 
 (re-frame/reg-fx
