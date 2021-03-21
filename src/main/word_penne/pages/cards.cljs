@@ -1,6 +1,5 @@
 (ns word-penne.pages.cards
-  (:require #_[stylefy.core :as stylefy :refer [use-style]]
-            [re-frame.core :as re-frame]
+  (:require [re-frame.core :as re-frame]
             [word-penne.events :as events]
             [word-penne.subs :as subs]
             [word-penne.views :as v]
@@ -13,11 +12,12 @@
 
 (defmethod v/view ::edit [_]
   [:div
-   (when-let [{:keys [uid front back comment]} @(re-frame/subscribe [::subs/selected-card])]
+   (when-let [{:keys [uid front back comment tags]} @(re-frame/subscribe [::subs/selected-card])]
      [WordCardForm {:initial-values {"uid" uid
                                      "front" front
                                      "back" back
-                                     "comment" comment}
+                                     "comment" comment
+                                     "tags" (mapv (fn [t] {"name" t "beforeName" t}) tags)}
                     :on-submit #(re-frame/dispatch [::events/update-card-by-uid uid %])}])])
 
 (defmethod v/view ::quiz [_]

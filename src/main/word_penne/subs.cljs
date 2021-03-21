@@ -35,3 +35,18 @@
  ::search-word
  (fn [db _]
    (:search-word db)))
+
+(re-frame/reg-sub
+ ::search-tag
+ (fn [db _]
+   (:search-tag db)))
+
+(re-frame/reg-sub
+ ::tags
+ (fn [db _]
+   (:tags db)))
+
+(re-frame/reg-sub
+ ::tags-error
+ (fn [db _]
+   (:tags-error db)))

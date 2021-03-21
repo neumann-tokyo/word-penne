@@ -7,7 +7,8 @@
         "auth/" {"" :word-penne.pages.auth/signin}
         "cards/" {"new" :word-penne.pages.cards/new
                   [:id "/edit"] :word-penne.pages.cards/edit
-                  "quiz" :word-penne.pages.cards/quiz}}])
+                  "quiz" :word-penne.pages.cards/quiz}
+        "tags/" {"" :word-penne.pages.tags/index}}])
 
 (defn navigate
   ([view] (navigate view {}))

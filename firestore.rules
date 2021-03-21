@@ -7,7 +7,12 @@ service cloud.firestore {
   function isValidCard(card) {
     return ('front' in card && card.front is string && card.front.size() < 140) 
       && ('back' in card && card.back is string && card.back.size() < 140) 
-      || (card.keys.hasAll(['comment']) && card.comment is string && card.comment.size() < 140);
+      || (card.keys.hasAll(['comment']) && card.comment is string && card.comment.size() < 140)
+      || (card.keys.hasAll(['tags']) && card.tags is list && card.tags.size() < 8);
+  }
+
+  function isValidTags(tags) {
+    return ('tags' in tags && tags.tags is list && tags.tags.size() < 10)
   }
 
   match /databases/{database}/documents {
@@ -16,6 +21,12 @@ service cloud.firestore {
       allow create: if isMySelf(request, user_uid) && isValidCard(request.resource.data);
       allow update: if isMySelf(request, user_uid) && isValidCard(request.resource.data);
       allow delete: if isMySelf(request, user_uid);
+    }
+
+    match /users/{user_uid} {
+      allow read: if isMySelf(request, user_uid);
+      allow create: if isMySelf(request, user_uid) && isValidTags(request.resource.data);
+      allow update: if isMySelf(request, user_uid) && isValidTags(request.resource.data);
     }
   }
 }

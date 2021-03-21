@@ -10,7 +10,8 @@
             [word-penne.components.signouted-header :refer [SignoutedHeader]]
             [word-penne.pages.home]
             [word-penne.pages.cards]
-            [word-penne.pages.auth]))
+            [word-penne.pages.auth]
+            [word-penne.pages.tags]))
 
 (def s-main-panel
   {:background-color (:main-background color)
