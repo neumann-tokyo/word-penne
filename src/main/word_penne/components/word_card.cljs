@@ -87,7 +87,11 @@
        [TagBadges (:tags attrs)]]
       [:div (use-style s-flip-card-buttons)
        [:div
-        [:a (use-style s-flip-card-button {:href "#" :title "pin"})
+        [:a (use-style s-flip-card-button {:href "#"
+                                           :on-click (fn [e]
+                                                       (.preventDefault e)
+                                                       (re-frame/dispatch [::events/lock-card (:uid attrs) (not (:lock attrs))]))
+                                           :title "pin"})
          [:span {:class "material-icons-outlined"} "push_pin"]]
         [:a (use-style s-flip-card-button {:href "#"
                                            :on-click (fn [e]

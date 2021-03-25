@@ -15,5 +15,7 @@
     [Button {:kind "secondary" :href (path-for routes :word-penne.pages.cards/quiz)} "Quiz"]]
    (when-let [tag @(re-frame/subscribe [::subs/search-tag])]
      [:p (str "Tag: " tag)])
+   (when @(re-frame/subscribe [::subs/search-archive])
+     [:p "Archive"])
    [WordCardsWrap]
    [DeleteCardModal]])
