@@ -69,6 +69,7 @@
      [:span {:class "material-icons-outlined"} "edit"]
      [:span (use-style s-nav-link-text) "Edit tags"]]
     [:a (use-style s-nav-link {:href "#"
+                               :data-testid "navigation__archive"
                                :on-click (fn [e]
                                            (.preventDefault e)
                                            (re-frame/dispatch [::events/set-search-archive true]))})
