@@ -49,6 +49,7 @@
    [:div#navigation-menu (use-style s-opened-navigation)
     [:div (use-style s-nav-close)]
     [:a (use-style s-nav-link {:href "#"
+                               :data-testid "navigation__cards"
                                :on-click (fn [e]
                                            (.preventDefault e)
                                            (re-frame/dispatch [::events/set-search-tag nil])
@@ -59,6 +60,7 @@
     (doall (map-indexed
             (fn [index tag]
               [:a (use-style s-nav-link {:href "#" :key index
+                                         :data-testid (str "navigation__tags-" index)
                                          :on-click (fn [e]
                                                      (.preventDefault e)
                                                      (re-frame/dispatch [::events/set-search-tag tag]))})
