@@ -167,11 +167,23 @@
 
 (re-frame/reg-event-fx
  ::archive-card
+ [(validate-args 0 string?)
+  (validate-args 1 boolean?)]
  (fn [_ [_ card-uid archive]]
    {::fx/firebase-archive-card-by-uid {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
                                        :card-uid card-uid
                                        :archive archive
                                        :on-success (fn [] (re-frame/dispatch [::navigate :word-penne.pages.home/home]))}}))
+
+(re-frame/reg-event-fx
+ ::lock-card
+ [(validate-args 0 string?)
+  (validate-args 1 boolean?)]
+ (fn [_ [_ card-uid lock]]
+   {::fx/firebase-lock-card-by-uid {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
+                                    :card-uid card-uid
+                                    :lock lock
+                                    :on-success (fn [] (re-frame/dispatch [::navigate :word-penne.pages.home/home]))}}))
 
 (def t-update-tags
   [:map [:values

@@ -17,7 +17,8 @@
    [:tags t-tags]
    [:createdAt {:optional true} [:maybe any?]]
    [:updatedAt {:optional true} [:maybe any?]]
-   [:archive boolean?]])
+   [:archive boolean?]
+   [:lock boolean?]])
 (def t-search-target
   [:enum "front" "back" "comment"])
 (def t-search-word
