@@ -49,15 +49,18 @@
    [:div#navigation-menu (use-style s-opened-navigation)
     [:div (use-style s-nav-close)]
     [:a (use-style s-nav-link {:href "#"
+                               :data-testid "navigation__cards"
                                :on-click (fn [e]
                                            (.preventDefault e)
                                            (re-frame/dispatch [::events/set-search-tag nil])
+                                           (re-frame/dispatch [::events/set-search-archive false])
                                            (re-frame/dispatch [::events/navigate :word-penne.pages.home/home]))})
      [:span {:class "material-icons-outlined"} "style"]
      [:span (use-style s-nav-link-text) "Cards"]]
     (doall (map-indexed
             (fn [index tag]
               [:a (use-style s-nav-link {:href "#" :key index
+                                         :data-testid (str "navigation__tags-" index)
                                          :on-click (fn [e]
                                                      (.preventDefault e)
                                                      (re-frame/dispatch [::events/set-search-tag tag]))})
@@ -67,6 +70,10 @@
     [:a (use-style s-nav-link {:href (path-for routes :word-penne.pages.tags/index)})
      [:span {:class "material-icons-outlined"} "edit"]
      [:span (use-style s-nav-link-text) "Edit tags"]]
-    [:a (use-style s-nav-link {:href "#"})
+    [:a (use-style s-nav-link {:href "#"
+                               :data-testid "navigation__archive"
+                               :on-click (fn [e]
+                                           (.preventDefault e)
+                                           (re-frame/dispatch [::events/set-search-archive true]))})
      [:span {:class "material-icons-outlined"} "archive"]
      [:span (use-style s-nav-link-text) "Archive"]]]])

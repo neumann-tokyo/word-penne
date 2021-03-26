@@ -96,8 +96,13 @@
                                            :title "edit"})
          [:span {:class "material-icons-outlined"} "edit"]]]
        [:div
-        [:a (use-style s-flip-card-button {:href "#" :title "archive"})
-         [:span {:class "material-icons-outlined"} "archive"]]
+        (let [title (if (:archive attrs) "unarchive" "archive")]
+          [:a (use-style s-flip-card-button {:href "#"
+                                             :on-click (fn [e]
+                                                         (.preventDefault e)
+                                                         (re-frame/dispatch [::events/archive-card (:uid attrs) (not (:archive attrs))]))
+                                             :title title})
+           [:span {:class "material-icons-outlined"} title]])
         [:a (use-style s-flip-card-button {:href "#"
                                            :title "delete"
                                            :on-click (fn [e]
