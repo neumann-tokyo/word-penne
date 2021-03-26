@@ -6,7 +6,7 @@
             [word-penne.subs :as subs]
             [word-penne.events :as events]
             [word-penne.routes :refer [routes]]
-            ["gettext.js" :as i18n]))
+            [word-penne.i18n :as i18n]))
 
 (def s-navigation
   {:background (:main-background color)})
@@ -43,10 +43,9 @@
 ;; Pure CSS Hamburger menu
 ;; https://codepen.io/erikterwan/pen/EVzeRP
 (defn Navigation []
-  (let [n (i18n)]
-    (.setMessages n "messages" "jp" #js {"Cards" "カード"})
-    (.setLocale n "jp")
-    (js/console.log (.gettext n "Cards"))
+  (let [n (i18n/i18n)]
+    (i18n/set-locale n "ja")
+    (js/console.log (.gettext n "Cards")) ;; TODO あとで消す
     [:nav (use-style s-navigation)
      [:input (use-style s-navigation-checkbox {:type "checkbox" :id "navigation-menu-checkbox" :name "navigation-menu-checkbox"})]
      [:label {:for "navigation-menu-checkbox"}

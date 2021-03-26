@@ -47,6 +47,10 @@
       [:img (use-style s-avatar {:src photo-url :alt email})]
       [:div#avatar-menu (use-style s-menu-content)
        [:a (use-style s-menu-link) email]
+       [:a (use-style s-menu-link {:href "#"
+                                   :on-click (fn [e]
+                                               (.preventDefault e)
+                                               (re-frame/dispatch [::events/navigate :word-penne.pages.user/edit]))}) "Settings"]
        [:a (use-style s-menu-link {:href "#" :on-click (fn [e]
                                                          (.preventDefault e)
                                                          (re-frame/dispatch [::events/signout]))}) "Logout"]]]]))

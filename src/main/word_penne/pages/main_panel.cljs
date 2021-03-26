@@ -11,7 +11,8 @@
             [word-penne.pages.home]
             [word-penne.pages.cards]
             [word-penne.pages.auth]
-            [word-penne.pages.tags]))
+            [word-penne.pages.tags]
+            [word-penne.pages.user]))
 
 (def s-main-panel
   {:background-color (:main-background color)

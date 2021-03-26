@@ -6,6 +6,8 @@
    [:uid string?]
    [:email string?]
    [:photo-url string?]])
+(def t-locale
+  [:enum "en" "ja"])
 (def t-tags
   [:sequential string?])
 (def t-card
@@ -26,6 +28,7 @@
   [:map
    [:user
     [:maybe t-user]]
+   [:locale t-locale]
    [:cards
     [:sequential t-card]]
    [:selected-card
@@ -40,6 +43,7 @@
 
 (def default-db
   {:user nil
+   :locale "en"
    :cards []
    :selected-card nil
    :show-delete-card-modal false
