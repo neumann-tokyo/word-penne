@@ -55,3 +55,8 @@
  ::search-archive
  (fn [db _]
    (:search-archive db)))
+
+(re-frame/reg-sub
+ ::locale
+ (fn [db _]
+   (:locale db)))

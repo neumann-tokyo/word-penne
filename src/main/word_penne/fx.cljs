@@ -128,6 +128,29 @@
          (.then on-success)))))
 
 (re-frame/reg-fx
+ ::firebase-load-user-setting
+ (fn [{:keys [user-uid on-success]}]
+   (when user-uid
+     (-> (firestore)
+         (.collection "users")
+         (.doc user-uid)
+         (.get)
+         (.then
+          (fn [doc]
+            (when (.-exists doc)
+              (on-success (js->clj (.data doc) :keywordize-keys true)))))))))
+
+(re-frame/reg-fx
+ ::firebase-update-user-setting
+ (fn [{:keys [user-uid values on-success]}]
+   (when user-uid
+     (-> (firestore)
+         (.collection "users")
+         (.doc user-uid)
+         (.update #js {:locale (values "locale")})
+         (.then on-success)))))
+
+(re-frame/reg-fx
  ::firebase-update-tags
  (fn [{:keys [user-uid tags values on-success on-failure]}]
    (let [input-tags (remove #(= % {"name" "" "beforeName" ""}) (values "tags"))

@@ -2,18 +2,34 @@
   (:require [stylefy.core :as stylefy :refer [use-style]]
             [bidi.bidi :refer [path-for]]
             [fork.reagent :as fork]
+            [re-frame.core :as re-frame]
+            [word-penne.db :as db]
             [word-penne.views :as v]
+            [word-penne.validator :as va]
+            [word-penne.subs :as subs]
+            [word-penne.events :as events]
             [word-penne.routes :refer [routes]]
             [word-penne.style.form :as sf]
             [word-penne.components.button :refer [Button]]))
+
+(def ^:private t-user-setting-form
+  [:map
+   [:locale db/t-locale]])
+
+;; TODO コードの重複 (word_card_form.cljs)
+(defn- ErrorMessange [touched errors target]
+  (when (touched target)
+    (when-let [message (first (get errors (list target)))]
+      [:div (use-style sf/s-error-message) message])))
 
 (defmethod v/view ::edit [_]
   [:div (use-style sf/s-form-container)
    [fork/form {:path [:form]
                :prevent-default? true
                :clean-on-unmount? true
-                      ;:validation (v/validator-for-humans t-card-form)
-               }
+               :validation (va/validator-for-humans t-user-setting-form)
+               :initial-values {"locale" @(re-frame/subscribe [::subs/locale])}
+               :on-submit #(re-frame/dispatch [::events/update-user-setting %])}
     (fn [{:keys [values
                  errors
                  touched
@@ -26,9 +42,10 @@
                                    :on-submit handle-submit})
        [:div
         [:label {:for "locale"} "Locale"]
-        [:select (use-style sf/s-text {:name "locale" :id "locale" :on-change handle-change :on-blur handle-blur :required true :data-testid "user-setting__locale"})
+        [:select (use-style sf/s-text {:value (or (values "locale") "en") :name "locale" :id "locale" :on-change handle-change :on-blur handle-blur :required true :data-testid "user-setting__locale"})
          [:option {:value "en"} "English"]
          [:option {:value "ja"} "日本語"]]
-        [:div (use-style sf/s-buttons-container)
-         [:button (use-style sf/s-submit {:type "submit" :data-testid "user-setting__submit" :disabled submitting?}) "Submit"]
-         [Button {:href (path-for routes :word-penne.pages.home/home)} "Cancel"]]]])]])
+        (ErrorMessange touched errors "locale")]
+       [:div (use-style sf/s-buttons-container)
+        [:button (use-style sf/s-submit {:type "submit" :data-testid "user-setting__submit" :disabled submitting?}) "Submit"]
+        [Button {:href (path-for routes :word-penne.pages.home/home)} "Cancel"]]])]])
