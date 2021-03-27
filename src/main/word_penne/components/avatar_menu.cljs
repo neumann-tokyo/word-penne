@@ -3,7 +3,8 @@
             [re-frame.core :as re-frame]
             [word-penne.subs :as subs]
             [word-penne.events :as events]
-            [word-penne.style.vars :refer [color z-indexs]]))
+            [word-penne.style.vars :refer [color z-indexs]]
+            [word-penne.i18n :refer [i18n]]))
 
 (def s-menu
   {:position "relative"})
@@ -41,6 +42,9 @@
    ::stylefy/mode {:hover {:background (:assort-background color)}}})
 
 (defn AvatarMenu []
+  ;; FIXME ここで locale を呼ばないと日本語をロードできない
+  (prn @(re-frame/subscribe [::subs/locale]))
+  (prn (.gettext (i18n) "Settings"))
   (let [{:keys [photo-url email]} @(re-frame/subscribe [::subs/current-user])]
     [:div (use-style s-menu)
      [:button (use-style s-menu-button)
@@ -50,7 +54,9 @@
        [:a (use-style s-menu-link {:href "#"
                                    :on-click (fn [e]
                                                (.preventDefault e)
-                                               (re-frame/dispatch [::events/navigate :word-penne.pages.user/edit]))}) "Settings"]
+                                               (re-frame/dispatch [::events/navigate :word-penne.pages.user/edit]))})
+        (.gettext (i18n) "Settings")]
        [:a (use-style s-menu-link {:href "#" :on-click (fn [e]
                                                          (.preventDefault e)
-                                                         (re-frame/dispatch [::events/signout]))}) "Logout"]]]]))
+                                                         (re-frame/dispatch [::events/signout]))})
+        (.gettext (i18n) "Logout")]]]]))

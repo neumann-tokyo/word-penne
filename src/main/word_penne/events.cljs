@@ -42,7 +42,6 @@
 (defmethod on-navigate :word-penne.pages.home/home [_ _]
   (re-frame/dispatch [::reset-tags-error])
   (re-frame/dispatch [::fetch-tags])
-  (re-frame/dispatch [::fetch-user-setting])
   {:dispatch [::fetch-cards]})
 (defmethod on-navigate :word-penne.pages.cards/edit [_ params]
   {:dispatch [::fetch-card-by-uid (:id params)]})
@@ -268,12 +267,12 @@
    {:db (assoc db :search-archive search-archive)
     :dispatch [::fetch-cards]}))
 
-(re-frame/reg-event-db
+(re-frame/reg-event-fx
  ::set-locale
- [(validate-args db/t-locale)
-  validate-db]
- (fn [db [_ locale]]
-   (assoc db :locale locale)))
+ [(validate-args db/t-locale)]
+ (fn [{:keys [db]} [_ locale]]
+   {::fx/i18n-set-locale {:locale locale}
+    :db (assoc db :locale locale)}))
 
 (def t-update-user-setting-arg
   [:map [:values
@@ -287,4 +286,5 @@
                                        :values values
                                        :on-success (fn []
                                                      (re-frame/dispatch [::set-locale (values "locale")])
-                                                     (re-frame/dispatch [::navigate :word-penne.pages.home/home]))}}))
+                                                     ;; NOTE Because enable i18n setting
+                                                     (js/location.reload))}}))

@@ -6,7 +6,8 @@
             [re-frame.core :as re-frame]
             [word-penne.firebase.firestore :refer [firestore timestamp] :as fs]
             [word-penne.firebase.auth :as firebase-auth]
-            [word-penne.routes :as routes]))
+            [word-penne.routes :as routes]
+            [word-penne.i18n :as i18n]))
 
 (re-frame/reg-fx
  ::navigate
@@ -149,6 +150,11 @@
          (.doc user-uid)
          (.update #js {:locale (values "locale")})
          (.then on-success)))))
+
+(re-frame/reg-fx
+ ::i18n-set-locale
+ (fn [{:keys [locale]}]
+   (i18n/set-locale (i18n/i18n) locale)))
 
 (re-frame/reg-fx
  ::firebase-update-tags
