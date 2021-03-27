@@ -69,7 +69,7 @@
                   "tags" (mapv #(str/trim (% "name")) (remove #(= % {"name" "" "beforeName" ""}) (values "tags"))))]
      (-> (firestore)
          (.collection (str "users/" user-uid "/cards"))
-         (.add (clj->js (assoc v :archive false :createdAt (timestamp) :updatedAt (timestamp))))
+         (.add (clj->js (assoc v :archive false :lock false :createdAt (timestamp) :updatedAt (timestamp))))
          (.then (fn []
                   (-> (firestore)
                       (.collection "users")
@@ -155,6 +155,16 @@
  ::i18n-set-locale
  (fn [{:keys [locale]}]
    (i18n/set-locale locale)))
+
+(re-frame/reg-fx
+ ::firebase-lock-card-by-uid
+ (fn [{:keys [user-uid card-uid lock on-success]}]
+   (when user-uid
+     (-> (firestore)
+         (.collection (str "users/" user-uid "/cards"))
+         (.doc card-uid)
+         (.update #js {:lock lock :updatedAt (timestamp)})
+         (.then on-success)))))
 
 (re-frame/reg-fx
  ::firebase-update-tags

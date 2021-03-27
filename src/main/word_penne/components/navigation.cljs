@@ -66,7 +66,9 @@
                                          :data-testid (str "navigation__tags-" index)
                                          :on-click (fn [e]
                                                      (.preventDefault e)
-                                                     (re-frame/dispatch [::events/set-search-tag tag]))})
+                                                     (re-frame/dispatch [::events/set-search-tag tag])
+                                                     (re-frame/dispatch [::events/set-search-archive false])
+                                                     (re-frame/dispatch [::events/navigate :word-penne.pages.home/home]))})
                [:span {:class "material-icons-outlined"} "label"]
                [:span (use-style s-nav-link-text) tag]])
             @(re-frame/subscribe [::subs/tags])))
@@ -77,6 +79,8 @@
                                :data-testid "navigation__archive"
                                :on-click (fn [e]
                                            (.preventDefault e)
-                                           (re-frame/dispatch [::events/set-search-archive true]))})
+                                           (re-frame/dispatch [::events/set-search-tag nil])
+                                           (re-frame/dispatch [::events/set-search-archive true])
+                                           (re-frame/dispatch [::events/navigate :word-penne.pages.home/home]))})
      [:span {:class "material-icons-outlined"} "archive"]
      [:span (use-style s-nav-link-text) (tr "Archive")]]]])

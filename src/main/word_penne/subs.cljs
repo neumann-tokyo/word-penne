@@ -17,6 +17,16 @@
    (:cards db)))
 
 (re-frame/reg-sub
+ ::locked-cards
+ (fn [db _]
+   (filter (fn [c] (= (:lock c) true)) (:cards db))))
+
+(re-frame/reg-sub
+ ::unlocked-cards
+ (fn [db _]
+   (filter (fn [c] (= (:lock c) false)) (:cards db))))
+
+(re-frame/reg-sub
  ::selected-card
  (fn [db _]
    (:selected-card db)))
