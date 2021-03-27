@@ -74,7 +74,7 @@
                   (-> (firestore)
                       (.collection "users")
                       (.doc user-uid)
-                      (.set (clj->js {:tags (distinct (concat tags (v "tags")))}))
+                      (.set (clj->js {:tags (distinct (concat tags (v "tags")))}) #js {:merge true})
                       (.then on-success))))))))
 
 (re-frame/reg-fx
@@ -154,7 +154,7 @@
 (re-frame/reg-fx
  ::i18n-set-locale
  (fn [{:keys [locale]}]
-   (i18n/set-locale (i18n/i18n) locale)))
+   (i18n/set-locale locale)))
 
 (re-frame/reg-fx
  ::firebase-update-tags
@@ -176,10 +176,10 @@
      (when user-uid
        (go
          (when (seq duplicated-tags)
-           (swap! error-messages conj (str "Duplicate tags: " (str/join ", " duplicated-tags))))
+           (swap! error-messages conj (str (i18n/tr "Duplicate tags: ") (str/join ", " duplicated-tags))))
 
          (when (seq learge-tags)
-           (swap! error-messages conj (str "Max length is 10: " (str/join "," learge-tags))))
+           (swap! error-messages conj (str (i18n/tr "Max length is 10: ") (str/join "," learge-tags))))
 
          ;; 削除対象のタグを消す。使用中の場合はエラーにする
          (when (seq deleted-tags)
@@ -188,7 +188,7 @@
                                    (.where "tags" "array-contains-any" (clj->js deleted-tags))
                                    (.get)))]
              (when-not (.-empty snapshot)
-               (swap! error-messages conj (str "The tags are used: " (str/join ", " deleted-tags))))))
+               (swap! error-messages conj (str (i18n/tr "The tags are used: ") (str/join ", " deleted-tags))))))
 
          (if (seq @error-messages)
            (on-failure (str/join ". " @error-messages))

@@ -3,10 +3,12 @@
             [bidi.bidi :refer [path-for]]
             [re-frame.core :as re-frame]
             [word-penne.events :as events]
+            [word-penne.subs :as subs]
             [word-penne.routes :refer [routes]]
             [word-penne.style.vars :refer [color layout-vars z-indexs phone-width]]
             [word-penne.components.word-card-add-button :refer [WordCardAddButton]]
-            [word-penne.components.avatar-menu :refer [AvatarMenu]]))
+            [word-penne.components.avatar-menu :refer [AvatarMenu]]
+            [word-penne.i18n :refer [tr]]))
 
 (def s-topnav
   {:position "sticky"
@@ -95,6 +97,7 @@
 
 ;; https://stijndewitt.com/2018/06/12/pure-css-drop-shadow-on-scroll/
 (defn Header []
+  @(re-frame/subscribe [::subs/locale])
   [:header (use-style s-topnav)
    [:div (use-style s-topnav-container)
     [:a (use-style s-title {:href (path-for routes :word-penne.pages.home/home)})
@@ -109,13 +112,13 @@
                 {:name "search-target"
                  :id "search-target"
                  :on-change #(re-frame/dispatch [::events/set-search-target (-> % .-target .-value)])})
-       [:option {:value "front"} "Front"]
-       [:option {:value "back"} "Back"]
-       [:option {:value "comment"} "Comment"]]
+       [:option {:value "front"} (tr "Front")]
+       [:option {:value "back"} (tr "Back")]
+       [:option {:value "comment"} (tr "Comment")]]
       [:input (use-style
                s-search-box
                {:type "search"
-                :placeholder "Search..."
+                :placeholder (tr "Search...")
                 :name "search"
                 :maxLength 140
                 :data-testid "search-input"

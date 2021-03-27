@@ -72,7 +72,6 @@
  (fn [_ _]
    {::fx/firabase-signout {:on-success (fn []
                                          (re-frame/dispatch [::set-current-user nil])
-                                         (re-frame/dispatch [::set-locale "en"])
                                          (re-frame/dispatch [::navigate :word-penne.pages.auth/signin]))
                            :on-failure (fn [_]
                                          (re-frame/dispatch [::navigate :word-penne.pages.home/home]))}}))
@@ -286,5 +285,4 @@
                                        :values values
                                        :on-success (fn []
                                                      (re-frame/dispatch [::set-locale (values "locale")])
-                                                     ;; NOTE Because enable i18n setting
-                                                     (js/location.reload))}}))
+                                                     (re-frame/dispatch [::navigate :word-penne.pages.home/home]))}}))

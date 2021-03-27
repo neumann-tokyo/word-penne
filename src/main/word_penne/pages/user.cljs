@@ -10,19 +10,16 @@
             [word-penne.events :as events]
             [word-penne.routes :refer [routes]]
             [word-penne.style.form :as sf]
-            [word-penne.components.button :refer [Button]]))
+            [word-penne.components.button :refer [Button]]
+            [word-penne.components.error-message :refer [ErrorMessange]]
+            [word-penne.i18n :refer [tr]]))
 
 (def ^:private t-user-setting-form
   [:map
    [:locale db/t-locale]])
 
-;; TODO コードの重複 (word_card_form.cljs)
-(defn- ErrorMessange [touched errors target]
-  (when (touched target)
-    (when-let [message (first (get errors (list target)))]
-      [:div (use-style sf/s-error-message) message])))
-
 (defmethod v/view ::edit [_]
+  @(re-frame/subscribe [::subs/locale])
   [:div (use-style sf/s-form-container)
    [fork/form {:path [:form]
                :prevent-default? true
@@ -41,11 +38,11 @@
       [:form (use-style sf/s-form {:id form-id
                                    :on-submit handle-submit})
        [:div
-        [:label {:for "locale"} "Locale"]
+        [:label {:for "locale"} (tr "Locale")]
         [:select (use-style sf/s-text {:value (or (values "locale") "en") :name "locale" :id "locale" :on-change handle-change :on-blur handle-blur :required true :data-testid "user-setting__locale"})
          [:option {:value "en"} "English"]
          [:option {:value "ja"} "日本語"]]
-        (ErrorMessange touched errors "locale")]
+        [ErrorMessange touched errors "locale"]]
        [:div (use-style sf/s-buttons-container)
-        [:button (use-style sf/s-submit {:type "submit" :data-testid "user-setting__submit" :disabled submitting?}) "Submit"]
-        [Button {:href (path-for routes :word-penne.pages.home/home)} "Cancel"]]])]])
+        [:button (use-style sf/s-submit {:type "submit" :data-testid "user-setting__submit" :disabled submitting?}) (tr "Submit")] ;; FIXME double submit
+        [Button {:href (path-for routes :word-penne.pages.home/home)} (tr "Cancel")]]])]])
