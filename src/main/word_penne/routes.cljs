@@ -5,6 +5,7 @@
 (def routes
   ["/" {"" :word-penne.pages.home/home
         "auth/" {"" :word-penne.pages.auth/signin}
+        "user/" {"edit" :word-penne.pages.user/edit}
         "cards/" {"new" :word-penne.pages.cards/new
                   [:id "/edit"] :word-penne.pages.cards/edit
                   "quiz" :word-penne.pages.cards/quiz}

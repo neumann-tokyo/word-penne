@@ -2,13 +2,10 @@
   (:require [re-frame.core :as re-frame]
             [malli.core :as m]
             [cljs.pprint :refer [pprint]]
-            ;; [bidi.bidi :as bidi]
             [word-penne.db :as db]
             [word-penne.fx :as fx]
             [word-penne.subs :as subs]
-            [word-penne.config :as config]
-            ;; [word-penne.routes :refer [routes]]
-            ))
+            [word-penne.config :as config]))
 
 (def check-asserts? config/debug?)
 
@@ -103,6 +100,12 @@
  (fn [_ _]
    {::fx/firebase-load-tags {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
                              :on-success (fn [tags] (re-frame/dispatch [::set-tags tags]))}}))
+
+(re-frame/reg-event-fx
+ ::fetch-user-setting
+ (fn [_ _]
+   {::fx/firebase-load-user-setting {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
+                                     :on-success (fn [setting] (re-frame/dispatch [::set-locale (:locale setting)]))}}))
 
 (re-frame/reg-event-db
  ::set-tags
@@ -274,3 +277,24 @@
  (fn [{:keys [db]} [_ search-archive]]
    {:db (assoc db :search-archive search-archive)
     :dispatch [::fetch-cards]}))
+
+(re-frame/reg-event-fx
+ ::set-locale
+ [(validate-args db/t-locale)]
+ (fn [{:keys [db]} [_ locale]]
+   {::fx/i18n-set-locale {:locale locale}
+    :db (assoc db :locale locale)}))
+
+(def t-update-user-setting-arg
+  [:map [:values
+         [:map
+          ["locale" db/t-locale]]]])
+(re-frame/reg-event-fx
+ ::update-user-setting
+ [(validate-args t-update-user-setting-arg)]
+ (fn [_ [_ {:keys [values]}]]
+   {::fx/firebase-update-user-setting {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
+                                       :values values
+                                       :on-success (fn []
+                                                     (re-frame/dispatch [::set-locale (values "locale")])
+                                                     (re-frame/dispatch [::navigate :word-penne.pages.home/home]))}}))

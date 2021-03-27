@@ -34,6 +34,7 @@
                                     {:uid (.-uid user)
                                      :email (.-email user)
                                      :photo-url (or (.-photoURL user) "/images/account_circle-24px.svg")}])
+           (re-frame/dispatch-sync [::events/fetch-user-setting])
            (re-frame/dispatch-sync [::events/navigate :word-penne.pages.home/home]))))))
 
 (defn ^:export init []

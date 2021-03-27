@@ -24,6 +24,7 @@
   "dependencies": {
     "firebase": "^8.2.1",
     "firebaseui": "^4.7.1",
+    "gettext.js": "^1.0.0",
     "highlight.js": "9.18.1",
     "pure-react-carousel": "^1.27.6",
     "react": "16.13.0",

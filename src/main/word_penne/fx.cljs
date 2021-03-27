@@ -6,7 +6,8 @@
             [re-frame.core :as re-frame]
             [word-penne.firebase.firestore :refer [firestore timestamp] :as fs]
             [word-penne.firebase.auth :as firebase-auth]
-            [word-penne.routes :as routes]))
+            [word-penne.routes :as routes]
+            [word-penne.i18n :as i18n]))
 
 (re-frame/reg-fx
  ::navigate
@@ -58,7 +59,7 @@
          (.then
           (fn [doc]
             (when (.-exists doc)
-              (let [tags (:tags (js->clj (.data doc) :keywordize-keys true))]
+              (when-let [tags (:tags (js->clj (.data doc) :keywordize-keys true))]
                 (on-success tags)))))))))
 
 (re-frame/reg-fx
@@ -73,7 +74,7 @@
                   (-> (firestore)
                       (.collection "users")
                       (.doc user-uid)
-                      (.set (clj->js {:tags (distinct (concat tags (v "tags")))}))
+                      (.set (clj->js {:tags (distinct (concat tags (v "tags")))}) #js {:merge true})
                       (.then on-success))))))))
 
 (re-frame/reg-fx
@@ -128,6 +129,34 @@
          (.then on-success)))))
 
 (re-frame/reg-fx
+ ::firebase-load-user-setting
+ (fn [{:keys [user-uid on-success]}]
+   (when user-uid
+     (-> (firestore)
+         (.collection "users")
+         (.doc user-uid)
+         (.get)
+         (.then
+          (fn [doc]
+            (when (.-exists doc)
+              (on-success (js->clj (.data doc) :keywordize-keys true)))))))))
+
+(re-frame/reg-fx
+ ::firebase-update-user-setting
+ (fn [{:keys [user-uid values on-success]}]
+   (when user-uid
+     (-> (firestore)
+         (.collection "users")
+         (.doc user-uid)
+         (.set #js {:locale (values "locale")} #js {:merge true})
+         (.then on-success)))))
+
+(re-frame/reg-fx
+ ::i18n-set-locale
+ (fn [{:keys [locale]}]
+   (i18n/set-locale locale)))
+
+(re-frame/reg-fx
  ::firebase-lock-card-by-uid
  (fn [{:keys [user-uid card-uid lock on-success]}]
    (when user-uid
@@ -157,10 +186,10 @@
      (when user-uid
        (go
          (when (seq duplicated-tags)
-           (swap! error-messages conj (str "Duplicate tags: " (str/join ", " duplicated-tags))))
+           (swap! error-messages conj (str (i18n/tr "Duplicate tags: ") (str/join ", " duplicated-tags))))
 
          (when (seq learge-tags)
-           (swap! error-messages conj (str "Max length is 10: " (str/join "," learge-tags))))
+           (swap! error-messages conj (str (i18n/tr "Max length is 10: ") (str/join "," learge-tags))))
 
          ;; 削除対象のタグを消す。使用中の場合はエラーにする
          (when (seq deleted-tags)
@@ -169,7 +198,7 @@
                                    (.where "tags" "array-contains-any" (clj->js deleted-tags))
                                    (.get)))]
              (when-not (.-empty snapshot)
-               (swap! error-messages conj (str "The tags are used: " (str/join ", " deleted-tags))))))
+               (swap! error-messages conj (str (i18n/tr "The tags are used: ") (str/join ", " deleted-tags))))))
 
          (if (seq @error-messages)
            (on-failure (str/join ". " @error-messages))
@@ -201,6 +230,6 @@
              (let [update-tags-ref (-> (firestore)
                                        (.collection "users")
                                        (.doc user-uid))]
-               (.set batch update-tags-ref (clj->js v)))
+               (.set batch update-tags-ref (clj->js v) #js {:merge true}))
              (<p! (.commit batch))
              (on-success))))))))
