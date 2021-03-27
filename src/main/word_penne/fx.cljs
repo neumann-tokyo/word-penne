@@ -59,7 +59,7 @@
          (.then
           (fn [doc]
             (when (.-exists doc)
-              (let [tags (:tags (js->clj (.data doc) :keywordize-keys true))]
+              (when-let [tags (:tags (js->clj (.data doc) :keywordize-keys true))]
                 (on-success tags)))))))))
 
 (re-frame/reg-fx
@@ -148,7 +148,7 @@
      (-> (firestore)
          (.collection "users")
          (.doc user-uid)
-         (.update #js {:locale (values "locale")})
+         (.set #js {:locale (values "locale")} #js {:merge true})
          (.then on-success)))))
 
 (re-frame/reg-fx
@@ -220,6 +220,6 @@
              (let [update-tags-ref (-> (firestore)
                                        (.collection "users")
                                        (.doc user-uid))]
-               (.set batch update-tags-ref (clj->js v)))
+               (.set batch update-tags-ref (clj->js v) #js {:merge true}))
              (<p! (.commit batch))
              (on-success))))))))
