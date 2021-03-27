@@ -12,7 +12,11 @@ service cloud.firestore {
   }
 
   function isValidTags(tags) {
-    return ('tags' in tags && tags.tags is list && tags.tags.size() < 10)
+    return ('tags' in tags && tags.tags is list && tags.tags.size() < 10);
+  }
+
+  function isValidSetting(setting) {
+    return ('locale' in setting && setting.locale is string && setting.locale.matches('(en|ja)'));
   }
 
   match /databases/{database}/documents {
@@ -25,8 +29,8 @@ service cloud.firestore {
 
     match /users/{user_uid} {
       allow read: if isMySelf(request, user_uid);
-      allow create: if isMySelf(request, user_uid) && isValidTags(request.resource.data);
-      allow update: if isMySelf(request, user_uid) && isValidTags(request.resource.data);
+      allow create: if isMySelf(request, user_uid) && (isValidTags(request.resource.data) || isValidSetting(request.resource.data));
+      allow update: if isMySelf(request, user_uid) && (isValidTags(request.resource.data) || isValidSetting(request.resource.data));
     }
   }
 }
