@@ -4,7 +4,8 @@
             [word-penne.subs :as subs]
             [word-penne.style.vars :refer [z-indexs color phone-width]]
             [word-penne.events :as events]
-            [word-penne.components.button :refer [Button]]))
+            [word-penne.components.button :refer [Button]]
+            [word-penne.i18n :refer [tr]]))
 
 (def s-modal
   {:position "fixed"
@@ -29,21 +30,22 @@
   {:text-align "right"})
 
 (defn DeleteCardModal []
+  @(re-frame/subscribe [::subs/locale])
   [:div
    (when @(re-frame/subscribe [::subs/show-delete-card-modal])
      [:div (use-style s-modal)
       [:div (use-style s-modal-content)
-       [:h3 "Confirmation"]
-       [:p "Do you want to delete, really? This action don't return"]
+       [:h3 (tr "Confirmation")]
+       [:p (tr "Do you want to delete, really? This action don't return")]
        [:div (use-style s-button-container)
         [Button {:href "#"
                  :kind "primary"
                  :on-click (fn [e]
                              (.preventDefault e)
                              (re-frame/dispatch [::events/delete-card-by-uid (:uid @(re-frame/subscribe [::subs/selected-card]))]))
-                 :data-testid "delete-card-modal__ok"} "OK"]
+                 :data-testid "delete-card-modal__ok"} (tr "OK")]
         [Button {:href "#"
                  :kind "secondary"
                  :on-click (fn [e]
                              (.preventDefault e)
-                             (re-frame/dispatch [::events/hide-delete-card-modal]))} "Cancel"]]]])])
+                             (re-frame/dispatch [::events/hide-delete-card-modal]))} (tr "Cancel")]]]])])

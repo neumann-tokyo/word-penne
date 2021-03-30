@@ -36,7 +36,12 @@
        ;; Tags form
        "Duplicate tags: " "重複したタグがあります: "
        "Max length is 10: " "10文字以下にしてください: "
-       "The tags are used: " "使用中のタグです: "})
+       "The tags are used: " "使用中のタグです: "
+
+       ;; Delete card modal
+       "Confirmation" "確認"
+       "Do you want to delete, really? This action don't return" "本当に削除しますか？この操作は戻せません"
+       "OK" "実行"})
 
 (def ^:private gettext-object (atom nil))
 
