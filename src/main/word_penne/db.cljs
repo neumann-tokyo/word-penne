@@ -53,4 +53,5 @@
    :search-target "front"
    :search-word nil
    :search-tag nil
-   :search-archive false})
+   :search-archive false
+   :quiz-cards []})

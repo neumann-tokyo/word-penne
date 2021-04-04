@@ -14,6 +14,7 @@
   [:div
    [:div
     ;; TODO mobile では bottom navigation で quiz を出したい
+    ;; TODO Quizを押したらテスト10問をセットしたい
     [Button {:kind "secondary" :href (path-for routes :word-penne.pages.cards/quiz)} (tr "Quiz")]]
    (when-let [tag @(re-frame/subscribe [::subs/search-tag])]
      [:p (str (tr "Tag: ") tag)])

@@ -10,6 +10,7 @@ public/js
 /src/gen
 /cypress/videos/
 /cypress/screenshots/
+/build/
 
 pom.xml
 pom.xml.asc
@@ -26,3 +27,4 @@ pom.xml.asc
 .hg/
 
 .envrc
+word-penne-firebase-adminsdk-*.json

@@ -16,6 +16,9 @@
                                                        :totalSlides "3"
                                                        :touchEnabled false
                                                        :dragEnabled false})
+   ;; TODO 単語10語セットを作る。
+   ;; テストに回答したら次の問題に行くボタンを表示する
+   ;; QuizSlide内にはロジックを入れないほうが良さそう
    [:> Slider (use-style s-slider)
     [:> Slide (use-style s-slide {:index "0"})
      [QuizSlide {:front "make"
@@ -24,4 +27,5 @@
      [:> ButtonNext "Next"]]
     [:> Slide (use-style s-slide {:index "1"}) [QuizSlide {:index "1"}]]
     [:> Slide (use-style s-slide {:index "2"}) [QuizSlide {:index "2"}]]]
+  　;; TODO あとで消す
    [:> ButtonNext "Next"]])
