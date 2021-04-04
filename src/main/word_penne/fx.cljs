@@ -10,7 +10,7 @@
             [word-penne.i18n :as i18n]))
 
 (def ^:private rand-range 10000000)
-(def ^:private quiz-count 10)
+(def ^:private quiz-count 5)
 
 (re-frame/reg-fx
  ::navigate

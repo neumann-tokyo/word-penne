@@ -41,7 +41,12 @@
        ;; Delete card modal
        "Confirmation" "確認"
        "Do you want to delete, really? This action don't return" "本当に削除しますか？この操作は戻せません"
-       "OK" "実行"})
+       "OK" "実行"
+
+       ;; Quiz
+       "Correct" "正解"
+       "Wrong" "誤答"
+       "Next" "次へ"})
 
 (def ^:private gettext-object (atom nil))
 

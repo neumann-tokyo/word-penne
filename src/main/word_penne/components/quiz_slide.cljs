@@ -1,6 +1,8 @@
 (ns word-penne.components.quiz-slide
   (:require [re-frame.core :as re-frame]
+            [clojure.string :as str]
             [stylefy.core :as stylefy :refer [use-style]]
+            ["pure-react-carousel" :refer [ButtonNext]]
             [word-penne.style.vars :refer [color phone-width]]
             [word-penne.style.share :as share]
             [word-penne.components.button :refer [Button]]
@@ -63,30 +65,43 @@
 (def s-buttons-wrap
   {:margin-left ".5rem"})
 
-(defn QuizSlide [{:keys [values handle-change handle-blur]} attrs]
+(defn QuizSlide [{:keys [values handle-change handle-blur set-values]} attrs]
   @(re-frame/subscribe [::subs/locale])
-  (let [identifier (str "text-" (:index attrs))]
+  (let [answer-id (str "answer-" (:index attrs))
+        judgement-id (str "judgement-" (:index attrs))]
     [:div (use-style s-container)
      [:div (use-style s-card)
-    ;; TODO js で .turned-flip をつける
-      [:div (use-style s-card-inner)
+      [:div (use-style s-card-inner (if (str/blank? (values judgement-id)) {} {:class "turned-flip"}))
        [:div (use-style s-card-front) (:front attrs)]
        [:div (use-style s-card-back) (:back attrs)]]]
      [:div (use-style s-input)
       [:div
        [:input (use-style s-text {:type "text"
-                                  :id identifier
-                                  :name identifier
-                                  :value (values identifier)
+                                  :id answer-id
+                                  :name answer-id
+                                  :value (values answer-id)
                                   :on-change handle-change
-                                  :on-blur handle-blur})]]
+                                  :on-blur handle-blur
+                                  :disabled (not (str/blank? (values judgement-id)))})]
+       [:input {:type "hidden"
+                :id judgement-id
+                :name judgement-id
+                :value (values judgement-id)
+                :on-change handle-change
+                :on-blur handle-blur}]]
       [:div (use-style s-buttons-container)
-     ;;[:span (use-style s-buttons-wrap) [Button {:href "#"} "I don't know"]]
-       [:span (use-style s-buttons-wrap)
-        [Button {:href "#"
-                 :kind "secondary"
-                 :on-click (fn [e]
-                             ;; TODO (values identifier) と (:back attrs) を比べて一致すれば正解、不一致なら不正解
-                             ;; 正誤とカードの表示のロジックをどうするか
-                             (prn (values identifier))
-                             (.preventDefault e))} (tr "OK")]]]]]))
+       (if (str/blank? (values judgement-id))
+         [:span (use-style s-buttons-wrap)
+          [Button {:href "#"
+                   :kind "secondary"
+                   :on-click (fn [e]
+                               (.preventDefault e)
+                               (let [judgement (cond
+                                                 (nil? (values answer-id)) "Wrong"
+                                                 (= (str/trim (values answer-id)) (:back attrs)) "Correct"
+                                                 :else "Wrong")]
+                                 (set-values {judgement-id judgement})))} (tr "OK")]]
+         [:<>
+          [:span (use-style s-buttons-wrap) (tr (values judgement-id))]
+          [:span (use-style s-buttons-wrap)
+           [:> ButtonNext (use-style share/m-button) (tr "Next")]]])]]]))

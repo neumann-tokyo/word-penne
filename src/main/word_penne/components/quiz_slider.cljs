@@ -9,10 +9,13 @@
 (def s-carousel-provider
   {::stylefy/manual ["~" [:* {:outline "none !important"}]]})
 (def s-slider
-  {:height "70vh"})
+  {:height "80vh"})
 (def s-slide
   {})
 
+;; TODO 問題が終わったら正誤の一覧を出したい
+;; TODO 正誤率を単語に反映したい
+;; TODO 
 (defn QuizSlider []
   [:> CarouselProvider (use-style s-carousel-provider {:naturalSlideWidth "100"
                                                        :naturalSlideHeight "100"
@@ -34,11 +37,9 @@
        [:> Slider (use-style s-slider)
         (doall (map-indexed
                 (fn [index card]
-                  ^{:key index} [:> Slide (use-style s-slide {:index index}) [QuizSlide 
+                  ^{:key index} [:> Slide (use-style s-slide {:index index}) [QuizSlide
                                                                               f-props
                                                                               {:front (:front card)
                                                                                :back (:back card)
                                                                                :index index}]])
-                @(re-frame/subscribe [::subs/quiz-cards])))]])]
-  　;; TODO あとで消す
-   [:> ButtonNext "Next"]])
+                @(re-frame/subscribe [::subs/quiz-cards])))]])]])
