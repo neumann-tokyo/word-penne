@@ -1,8 +1,11 @@
 (ns word-penne.components.quiz-slide
-  (:require [stylefy.core :as stylefy :refer [use-style]]
+  (:require [re-frame.core :as re-frame]
+            [stylefy.core :as stylefy :refer [use-style]]
             [word-penne.style.vars :refer [color phone-width]]
             [word-penne.style.share :as share]
-            [word-penne.components.button :refer [Button]]))
+            [word-penne.components.button :refer [Button]]
+            [word-penne.subs :as subs]
+            [word-penne.i18n :refer [tr]]))
 
 (def s-container
   {})
@@ -60,16 +63,30 @@
 (def s-buttons-wrap
   {:margin-left ".5rem"})
 
-(defn QuizSlide [attrs]
-  [:div (use-style s-container)
-   [:div (use-style s-card)
+(defn QuizSlide [{:keys [values handle-change handle-blur]} attrs]
+  @(re-frame/subscribe [::subs/locale])
+  (let [identifier (str "text-" (:index attrs))]
+    [:div (use-style s-container)
+     [:div (use-style s-card)
     ;; TODO js で .turned-flip をつける
-    [:div (use-style s-card-inner)
-     [:div (use-style s-card-front) (:front attrs)]
-     [:div (use-style s-card-back) (:back attrs)]]]
-   [:div (use-style s-input)
-    [:div
-     [:input (use-style s-text {:type "text" :id (str "text-" (:index attrs)) :name (str "text-" (:index attrs))})]]
-    [:div (use-style s-buttons-container)
-     [:span (use-style s-buttons-wrap) [Button {:href "#"} "I don't know"]]
-     [:span (use-style s-buttons-wrap) [Button {:href "#" :kind "secondary"} "OK"]]]]])
+      [:div (use-style s-card-inner)
+       [:div (use-style s-card-front) (:front attrs)]
+       [:div (use-style s-card-back) (:back attrs)]]]
+     [:div (use-style s-input)
+      [:div
+       [:input (use-style s-text {:type "text"
+                                  :id identifier
+                                  :name identifier
+                                  :value (values identifier)
+                                  :on-change handle-change
+                                  :on-blur handle-blur})]]
+      [:div (use-style s-buttons-container)
+     ;;[:span (use-style s-buttons-wrap) [Button {:href "#"} "I don't know"]]
+       [:span (use-style s-buttons-wrap)
+        [Button {:href "#"
+                 :kind "secondary"
+                 :on-click (fn [e]
+                             ;; TODO (values identifier) と (:back attrs) を比べて一致すれば正解、不一致なら不正解
+                             ;; 正誤とカードの表示のロジックをどうするか
+                             (prn (values identifier))
+                             (.preventDefault e))} (tr "OK")]]]]]))
