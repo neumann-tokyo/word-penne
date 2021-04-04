@@ -70,3 +70,8 @@
  ::locale
  (fn [db _]
    (:locale db)))
+
+(re-frame/reg-sub
+ ::quiz-cards
+ (fn [db _]
+   (:quiz-cards db)))

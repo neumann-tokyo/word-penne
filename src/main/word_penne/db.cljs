@@ -40,7 +40,9 @@
    [:search-target t-search-target]
    [:search-word [:maybe t-search-word]]
    [:search-tag [:maybe string?]]
-   [:search-archive boolean?]])
+   [:search-archive boolean?]
+   [:quiz-cards
+    [:sequential t-card]]])
 
 (def default-db
   {:user nil

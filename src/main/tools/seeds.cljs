@@ -6,6 +6,8 @@
   {:databaseURL "http://localhost:9100/firestore"
    :user-uid "otJZ0cYxPtQlYnFYfJFSUHRlIJF4"})
 
+(def ^:private rand-range 10000000)
+
 (defn- initialize-firebase []
   (.initializeApp admin #js {:credential (-> admin .-credential .applicationDefault)
                              :databaseURL (:databaseURL config)}))
@@ -28,6 +30,7 @@
                      :back (d "description")
                      :archive false
                      :lock false
+                     :random (rand-int rand-range)
                      :tags #js []
                      :createdAt (timestamp)
                      :updatedAt (timestamp)})

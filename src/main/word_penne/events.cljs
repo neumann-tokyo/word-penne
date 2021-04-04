@@ -298,3 +298,18 @@
                                        :on-success (fn []
                                                      (re-frame/dispatch [::set-locale (values "locale")])
                                                      (re-frame/dispatch [::navigate :word-penne.pages.home/home]))}}))
+
+(re-frame/reg-event-db
+ ::set-quiz-cards
+;;  [(validate-args [:maybe :string])
+;;   validate-db]
+ (fn [db [_ cards]]
+   (assoc db :quiz-cards cards)))
+
+(re-frame/reg-event-fx
+ ::setup-quiz
+ (fn [_ _]
+   {::fx/firebase-setup-quiz {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
+                              :on-success (fn [cards]
+                                            (re-frame/dispatch [::set-quiz-cards cards])
+                                            (re-frame/dispatch [::navigate :word-penne.pages.cards/quiz]))}}))

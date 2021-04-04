@@ -9,6 +9,9 @@
             [word-penne.routes :as routes]
             [word-penne.i18n :as i18n]))
 
+(def ^:private rand-range 10000000)
+(def ^:private quiz-count 10)
+
 (re-frame/reg-fx
  ::navigate
  (fn [{:keys [view params]}]
@@ -66,10 +69,15 @@
  ::firebase-create-card
  (fn [{:keys [user-uid tags values on-success]}]
    (let [v (assoc (select-keys values ["front" "back" "comment"])
-                  "tags" (mapv #(str/trim (% "name")) (remove #(= % {"name" "" "beforeName" ""}) (values "tags"))))]
+                  "tags" (mapv #(str/trim (% "name")) (remove #(= % {"name" "" "beforeName" ""}) (values "tags"))))
+         initial-data {:archive false
+                       :lock false
+                       :random (rand-int rand-range)
+                       :createdAt (timestamp)
+                       :updatedAt (timestamp)}]
      (-> (firestore)
          (.collection (str "users/" user-uid "/cards"))
-         (.add (clj->js (assoc v :archive false :lock false :createdAt (timestamp) :updatedAt (timestamp))))
+         (.add (clj->js (merge initial-data v)))
          (.then (fn []
                   (-> (firestore)
                       (.collection "users")
@@ -233,3 +241,27 @@
                (.set batch update-tags-ref (clj->js v) #js {:merge true}))
              (<p! (.commit batch))
              (on-success))))))))
+
+
+;; TODO データが少ないときに動くかどうか確かめる
+(re-frame/reg-fx
+ ::firebase-setup-quiz
+ (fn [{:keys [user-uid on-success]}]
+   (when user-uid
+     (go
+       (let [start-at (rand-int rand-range)
+             quiz-snap (<p! (-> (firestore)
+                                (.collection (str "users/" user-uid "/cards"))
+                                (.orderBy "random")
+                                (.where "random" ">=" start-at)
+                                (.limit quiz-count)
+                                (.get)))
+             result (atom [])]
+         (.forEach quiz-snap
+                   (fn [doc]
+                     (swap! result conj (conj {:uid (.-id doc)} (js->clj (.data doc) :keywordize-keys true)))))
+         (on-success @result))))))
+;; cards-snap (<p! (-> (firestore)
+;;                     (.collection (str "users/" user-uid "/cards"))
+;;                     (.get)))
+;; cards-size (.-size cards-snap)
