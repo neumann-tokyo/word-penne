@@ -8,13 +8,14 @@
             [word-penne.style.vars :refer [color phone-width]]
             [word-penne.style.share :as share]
             [word-penne.components.button :refer [Button]]
+            [word-penne.components.judgement-mark :refer [JudgementMark]]
             [word-penne.subs :as subs]
             [word-penne.style.vars :refer [color]]
             [word-penne.i18n :refer [tr]]))
 
 (def s-container
   (merge share/m-card
-         {:width "40%"
+         {:width "85%"
           :margin "1rem auto"
           :height "max-content"}))
 (def s-table
@@ -27,7 +28,9 @@
 (def s-table-row
   {:padding ".5rem 0"
    :border-bottom (str "solid 1px " (:assort-border color))})
-
+(def s-judgement
+  {:display "flex"
+   :align-items "center"})
 (def s-buttons-container
   {:text-align "right"
    :margin-top "1rem"})
@@ -46,7 +49,13 @@
               ^{:index i} [:tr
                            [:td (use-style s-table-row) (:front card)]
                            [:td (use-style s-table-row) (:back card)]
-                           [:td (use-style s-table-row) (tr "Currect")]])
+                           [:td (use-style s-table-row)
+                            (let [judgement (some-> (str "judgement-" i)
+                                                    values
+                                                    tr)]
+                              [:div (use-style s-judgement)
+                               [JudgementMark judgement]
+                               [:span judgement]])]])
             cards))]
    [:div (use-style s-buttons-container)
     [Button {:kind "secondary" :href (path-for routes :word-penne.pages.home/home)} (tr "Finish")]]])

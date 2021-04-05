@@ -6,6 +6,7 @@
             [word-penne.style.vars :refer [color phone-width]]
             [word-penne.style.share :as share]
             [word-penne.components.button :refer [Button]]
+            [word-penne.components.judgement-mark :refer [JudgementMark]]
             [word-penne.subs :as subs]
             [word-penne.i18n :refer [tr]]))
 
@@ -38,7 +39,7 @@
    :font-size "2rem"
    :grid-column 1
    :grid-row 1
-   :line-height "10rem"
+   :padding-top "4rem"
    :font-weight "bold"})
 (def s-card-front
   (merge share/m-card
@@ -61,7 +62,9 @@
    :border (str "solid 1px " (:assort-border color))
    :border-radius ".5rem"})
 (def s-buttons-container
-  {:text-align "right"})
+  {:display "flex"
+   :align-items "center"
+   :justify-content "flex-end"})
 (def s-buttons-wrap
   {:margin-left ".5rem"})
 
@@ -102,6 +105,7 @@
                                                  :else "Wrong")]
                                  (set-values {judgement-id judgement})))} (tr "OK")]]
          [:<>
-          [:span (use-style s-buttons-wrap) (tr (values judgement-id))]
+          [JudgementMark (values judgement-id)]
+          [:span (tr (values judgement-id))]
           [:span (use-style s-buttons-wrap)
            [:> ButtonNext (use-style share/m-button) (tr "Next")]]])]]]))
