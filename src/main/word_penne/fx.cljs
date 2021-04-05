@@ -10,7 +10,7 @@
             [word-penne.i18n :as i18n]))
 
 (def ^:private rand-range 10000000)
-(def ^:private quiz-count 5)
+(def ^:private quiz-count 1) ;; TODO 5 にする
 
 (re-frame/reg-fx
  ::navigate

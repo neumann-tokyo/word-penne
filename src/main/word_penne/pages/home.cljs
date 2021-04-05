@@ -1,7 +1,5 @@
 (ns word-penne.pages.home
   (:require [re-frame.core :as re-frame]
-            [bidi.bidi :refer [path-for]]
-            [word-penne.routes :refer [routes]]
             [word-penne.views :as v]
             [word-penne.subs :as subs]
             [word-penne.i18n :refer [tr]]

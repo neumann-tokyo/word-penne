@@ -46,7 +46,10 @@
        ;; Quiz
        "Correct" "正解"
        "Wrong" "誤答"
-       "Next" "次へ"})
+       "Next" "次へ"
+       "Result" "結果"
+       "Answer" "正解"
+       "Finish" "終了"})
 
 (def ^:private gettext-object (atom nil))
 
