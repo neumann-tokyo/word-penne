@@ -254,13 +254,15 @@
                                 (.collection (str "users/" user-uid "/cards"))
                                 (.orderBy "random")
                                 (.where "random" ">=" start-at)
+                                (.where "archive" "==" false)
                                 (.limit quiz-count)
                                 (.get)))
-             result (atom [])]
+             cards (atom [])]
          (.forEach quiz-snap
                    (fn [doc]
-                     (swap! result conj (conj {:uid (.-id doc)} (js->clj (.data doc) :keywordize-keys true)))))
-         (on-success @result))))))
+                     (let [card (js->clj (.data doc) :keywordize-keys true)]
+                       (swap! cards conj {:front (:front card) :back (:back card)} {:front (:back card) :back (:front card)}))))
+         (on-success (shuffle @cards)))))))
 ;; cards-snap (<p! (-> (firestore)
 ;;                     (.collection (str "users/" user-uid "/cards"))
 ;;                     (.get)))

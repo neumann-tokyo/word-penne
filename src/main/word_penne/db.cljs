@@ -25,6 +25,10 @@
   [:enum "front" "back" "comment"])
 (def t-search-word
   [:string {:min 0 :max 140}])
+(def t-quiz-card
+  [:map
+   [:front string?]
+   [:back string?]])
 (def t-db
   [:map
    [:user
@@ -42,7 +46,7 @@
    [:search-tag [:maybe string?]]
    [:search-archive boolean?]
    [:quiz-cards
-    [:sequential t-card]]])
+    [:sequential t-quiz-card]]])
 
 (def default-db
   {:user nil
