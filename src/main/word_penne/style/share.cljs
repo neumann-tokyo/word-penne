@@ -11,6 +11,7 @@
    :text-decoration "none"
    :display "inline-block"
    :border-radius "10px"
+   :cursor "pointer"
    ::stylefy/mode {:hover {:filter "brightness(90%)"}}})
 
 (def m-card

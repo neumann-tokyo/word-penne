@@ -18,7 +18,6 @@
           :background (:accent-background color)
           :border (str "solid 1px " (:accent-border color))
           :color (:accent-text color)
-          :cursor "pointer"
           ::stylefy/mode {:hover {:background-color (:accent-border color)}}}))
 (defn button-design [kind]
   (case kind

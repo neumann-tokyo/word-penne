@@ -23,3 +23,6 @@
 
 (defn array-remove [value]
   ((.. firebase -firestore -FieldValue -arrayRemove) value))
+
+(defn document-id []
+  (.. firebase -firestore -FieldPath documentId))

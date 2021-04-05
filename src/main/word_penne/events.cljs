@@ -313,3 +313,10 @@
                               :on-success (fn [cards]
                                             (re-frame/dispatch [::set-quiz-cards cards])
                                             (re-frame/dispatch [::navigate :word-penne.pages.cards/quiz]))}}))
+
+(re-frame/reg-event-fx
+ ::answer-quiz
+ (fn [_ [_ {:keys [values]}]]
+   {::fx/firebase-answer-quiz {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
+                               :values values
+                               :on-success (fn [] (re-frame/dispatch [::navigate :word-penne.pages.home/home]))}}))

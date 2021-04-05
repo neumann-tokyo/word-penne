@@ -7,6 +7,7 @@
             [word-penne.routes :refer [routes]]
             [word-penne.style.vars :refer [color phone-width]]
             [word-penne.style.share :as share]
+            [word-penne.style.form :as sf]
             [word-penne.components.button :refer [Button]]
             [word-penne.components.judgement-mark :refer [JudgementMark]]
             [word-penne.subs :as subs]
@@ -35,28 +36,30 @@
   {:text-align "right"
    :margin-top "1rem"})
 
-(defn QuizResult [{:keys [values handle-change handle-blur set-values]} {:keys [cards]}]
+(defn QuizResult [{:keys [values submitting?]} {:keys [cards]}]
   @(re-frame/subscribe [::subs/locale])
   [:div (use-style s-container)
    [:h3 (tr "Result")]
    [:table (use-style s-table)
-    [:tr
-     [:th (use-style s-table-header) (tr "Quiz")]
-     [:th (use-style s-table-header) (tr "Answer")]
-     [:th (use-style s-table-header) (tr "Result")]]
-    (doall (map-indexed
-            (fn [i card]
-              ^{:index i} [:tr
-                           [:td (use-style s-table-row) (:front card)]
-                           [:td (use-style s-table-row) (:back card)]
-                           [:td (use-style s-table-row)
-                            (let [judgement (some-> (str "judgement-" i)
-                                                    values
-                                                    tr)]
-                              [:div (use-style s-judgement)
-                               [JudgementMark judgement]
-                               [:span judgement]])]])
-            cards))]
+    [:thead
+     [:tr
+      [:th (use-style s-table-header) (tr "Quiz")]
+      [:th (use-style s-table-header) (tr "Answer")]
+      [:th (use-style s-table-header) (tr "Result")]]]
+    [:tbody
+     (doall (map-indexed
+             (fn [i card]
+               ^{:key i} [:tr
+                          [:td (use-style s-table-row) (:front card)]
+                          [:td (use-style s-table-row) (:back card)]
+                          [:td (use-style s-table-row)
+                           (let [judgement (some-> (str "judgement-" i)
+                                                   values
+                                                   tr)]
+                             [:div (use-style s-judgement)
+                              [JudgementMark judgement]
+                              [:span judgement]])]])
+             cards))]]
    [:div (use-style s-buttons-container)
-    [Button {:kind "secondary" :href (path-for routes :word-penne.pages.home/home)} (tr "Finish")]]])
+    [:button (use-style sf/s-submit {:type "submit" :disabled submitting?}) (tr "Finish")]]])
 

@@ -4,7 +4,7 @@
 
 (def ^:private config
   {:databaseURL "http://localhost:9100/firestore"
-   :user-uid "otJZ0cYxPtQlYnFYfJFSUHRlIJF4"})
+   :user-uid "7jYxVKp0qCgH4RKT4qSomG03pXky"})
 
 (def ^:private rand-range 10000000)
 
@@ -30,6 +30,9 @@
                      :back (d "description")
                      :archive false
                      :lock false
+                     :quizCount 0
+                     :wrongCount 0
+                     :wrongRate 0.0
                      :random (rand-int rand-range)
                      :tags #js []
                      :createdAt (timestamp)

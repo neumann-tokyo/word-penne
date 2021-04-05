@@ -71,7 +71,8 @@
 (defn QuizSlide [{:keys [values handle-change handle-blur set-values]} attrs]
   @(re-frame/subscribe [::subs/locale])
   (let [answer-id (str "answer-" (:index attrs))
-        judgement-id (str "judgement-" (:index attrs))]
+        judgement-id (str "judgement-" (:index attrs))
+        card-id (str "uid-" (:index attrs))]
     [:div (use-style s-container)
      [:div (use-style s-card)
       [:div (use-style s-card-inner (if (str/blank? (values judgement-id)) {} {:class "turned-flip"}))
@@ -103,6 +104,7 @@
                                                  (nil? (values answer-id)) "Wrong"
                                                  (= (str/trim (values answer-id)) (:back attrs)) "Correct"
                                                  :else "Wrong")]
+                                 (set-values {card-id (:uid attrs)})
                                  (set-values {judgement-id judgement})))} (tr "OK")]]
          [:<>
           [JudgementMark (values judgement-id)]

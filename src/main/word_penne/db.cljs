@@ -20,13 +20,17 @@
    [:createdAt {:optional true} [:maybe any?]]
    [:updatedAt {:optional true} [:maybe any?]]
    [:archive boolean?]
-   [:lock boolean?]])
+   [:lock boolean?]
+   [:quizCount int?]
+   [:wrongCount int?]
+   [:wrongRate double?]])
 (def t-search-target
   [:enum "front" "back" "comment"])
 (def t-search-word
   [:string {:min 0 :max 140}])
 (def t-quiz-card
   [:map
+   [:uid string?]
    [:front string?]
    [:back string?]])
 (def t-db

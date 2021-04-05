@@ -1,5 +1,6 @@
 (ns word-penne.components.quiz-slider
   (:require [re-frame.core :as re-frame]
+            [word-penne.events :as events]
             [fork.reagent :as fork]
             [stylefy.core :as stylefy :refer [use-style]]
             ["pure-react-carousel" :refer [CarouselProvider Slider Slide ButtonNext ButtonBack]]
@@ -30,7 +31,8 @@
 
      [fork/form {:path [:form]
                  :prevent-default? true
-                 :clean-on-unmount? true}
+                 :clean-on-unmount? true
+                 :on-submit #(re-frame/dispatch [::events/answer-quiz %])}
       (fn [{:keys [values
                    errors
                    touched
@@ -45,8 +47,6 @@
                   (fn [index card]
                     ^{:key index} [:> Slide (use-style s-slide {:index index}) [QuizSlide
                                                                                 f-props
-                                                                                {:front (:front card)
-                                                                                 :back (:back card)
-                                                                                 :index index}]])
+                                                                                (merge card {:index index})]])
                   @(re-frame/subscribe [::subs/quiz-cards])))
           [:> Slide (use-style s-slide {:index slide-size}) [QuizResult f-props {:cards @(re-frame/subscribe [::subs/quiz-cards])}]]]])]]))
