@@ -70,9 +70,11 @@
 
 (defn QuizSlide [{:keys [values handle-change handle-blur set-values]} attrs]
   @(re-frame/subscribe [::subs/locale])
-  (let [answer-id (str "answer-" (:index attrs))
-        judgement-id (str "judgement-" (:index attrs))
-        card-id (str "uid-" (:index attrs))]
+  (let [index (:index attrs)
+        answer-id (str "answer-" index)
+        judgement-id (str "judgement-" index)
+        card-id (str "uid-" index)
+        button-id (str "quiz-slide-button-" index)]
     [:div (use-style s-container)
      [:div (use-style s-card)
       [:div (use-style s-card-inner (if (str/blank? (values judgement-id)) {} {:class "turned-flip"}))
@@ -86,7 +88,16 @@
                                   :value (values answer-id)
                                   :on-change handle-change
                                   :on-blur handle-blur
-                                  :disabled (not (str/blank? (values judgement-id)))})]
+                                  :on-key-press (fn [e]
+                                                  (when (= (.-key e) "Enter")
+                                                    (.preventDefault e)
+                                                    ;; TODO on-key-press は deplicated ?
+                                                    ;; TODO dom操作をやめてfunctionを渡すようにする
+                                                    (.click (js/document.getElementById button-id))))
+                                  :on-key-down (fn [e]
+                                                 (when (= (.-key e) "Tab")
+                                                   (.preventDefault e)))
+                                  :read-only (not (str/blank? (values judgement-id)))})]
        [:input {:type "hidden"
                 :id judgement-id
                 :name judgement-id
@@ -96,7 +107,8 @@
       [:div (use-style s-buttons-container)
        (if (str/blank? (values judgement-id))
          [:span (use-style s-buttons-wrap)
-          [Button {:href "#"
+          [Button {:id button-id
+                   :href "#"
                    :kind "secondary"
                    :on-click (fn [e]
                                (.preventDefault e)
@@ -110,4 +122,4 @@
           [JudgementMark (values judgement-id)]
           [:span (tr (values judgement-id))]
           [:span (use-style s-buttons-wrap)
-           [:> ButtonNext (use-style share/m-button) (tr "Next")]]])]]]))
+           [:> ButtonNext (use-style share/m-button {:id button-id}) (tr "Next")]]])]]]))

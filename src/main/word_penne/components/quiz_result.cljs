@@ -61,5 +61,6 @@
                               [:span judgement]])]])
              cards))]]
    [:div (use-style s-buttons-container)
-    [:button (use-style sf/s-submit {:type "submit" :disabled submitting?}) (tr "Finish")]]])
-
+    [:button (use-style sf/s-submit {:type "submit"
+                                     :tab-index (:index (count cards))
+                                     :disabled (nil? (get values (str "judgement-" (dec (count cards)))))}) (tr "Finish")]]])
