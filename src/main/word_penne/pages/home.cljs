@@ -12,9 +12,6 @@
   @(re-frame/subscribe [::subs/locale])
   [:div
    [:div
-    ;; TODO mobile では bottom navigation で quiz を出したい
-    ;; TODO Quizを押したらテスト10問をセットしたい
-    ;;     :href (path-for routes :word-penne.pages.cards/quiz)
     [Button {:kind "secondary" :on-click (fn [e]
                                            (.preventDefault e)
                                            (re-frame/dispatch [::events/setup-quiz]))} (tr "Quiz")]]

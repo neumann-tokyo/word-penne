@@ -15,8 +15,6 @@
 (def s-slide
   {})
 
-;; TODO 正誤率を単語に反映したい
-;; TODO Enterを押したらOKをクリックしたのと同じ扱いにしたい
 (defn QuizSlider []
   (let [slide-size (inc (count @(re-frame/subscribe [::subs/quiz-cards])))]
     [:> CarouselProvider (use-style s-carousel-provider {:naturalSlideWidth "100"
@@ -24,23 +22,11 @@
                                                          :totalSlides slide-size
                                                          :touchEnabled false
                                                          :dragEnabled false})
-     ;; TODO あとで消す  
-     [:div
-      [:> ButtonBack "back"]
-      [:> ButtonNext "next"]]
-
      [fork/form {:path [:form]
                  :prevent-default? true
                  :clean-on-unmount? true
                  :on-submit #(re-frame/dispatch [::events/answer-quiz %])}
-      (fn [{:keys [values
-                   errors
-                   touched
-                   form-id
-                   handle-change
-                   handle-blur
-                   submitting?
-                   handle-submit] :as f-props}]
+      (fn [{:keys [form-id handle-submit] :as f-props}]
         [:form {:id form-id :on-submit handle-submit}
          [:> Slider (use-style s-slider)
           (doall (map-indexed

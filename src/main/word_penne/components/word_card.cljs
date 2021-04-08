@@ -38,19 +38,22 @@
           ::stylefy/mode {:hover {:box-shadow (str "0 2px 4px 0 " (:assort-border color))}}
           ::stylefy/media {phone-width {:width "85vw"}}}))
 (def s-flip-card-front
-  (merge m-flip-card {:background-color (:main-background color)}))
+  (merge m-flip-card {:background-color (:main-background color)
+                      :display "flex"
+                      :flex-direction "column"
+                      :justify-content "center"
+                      :align-items "center"}))
 (def s-flip-card-back
   (merge m-flip-card {:background-color (:assort-background color)
                       :transform "rotateY(180deg)"
                       :display "flex"
                       :flex-direction "column"}))
 (def s-flip-card-front-title
-  {:margin-top ".5rem"
-   :font-size "2rem"
+  {:font-size "2rem"
    :font-weight "bold"
    :text-align "center"})
 (def s-tags-container
-  {:text-align "right"})
+  {:text-align "center"})
 (def s-flip-card-back-title-container
   {:flex "1"})
 (def s-flip-card-back-title

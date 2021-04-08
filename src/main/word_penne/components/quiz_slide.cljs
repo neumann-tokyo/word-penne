@@ -91,8 +91,9 @@
                                   :on-key-press (fn [e]
                                                   (when (= (.-key e) "Enter")
                                                     (.preventDefault e)
+                                                    ;; NOTE Nextボタンを押さないと次のページに行くアクションができないので仕方なくDOM操作をしている
                                                     ;; TODO on-key-press は deplicated ?
-                                                    ;; TODO dom操作をやめてfunctionを渡すようにする
+                                                    ;; TODO dom操作よりrefを使うほうが無難 ?
                                                     (.click (js/document.getElementById button-id))))
                                   :on-key-down (fn [e]
                                                  (when (= (.-key e) "Tab")
