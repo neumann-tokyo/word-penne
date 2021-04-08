@@ -1,9 +1,9 @@
 (ns word-penne.components.quiz-slider
   (:require [re-frame.core :as re-frame]
-            [word-penne.events :as events]
             [fork.reagent :as fork]
             [stylefy.core :as stylefy :refer [use-style]]
-            ["pure-react-carousel" :refer [CarouselProvider Slider Slide ButtonNext ButtonBack]]
+            ["pure-react-carousel" :refer [CarouselProvider Slider Slide]]
+            [word-penne.events :as events]
             [word-penne.components.quiz-slide :refer [QuizSlide]]
             [word-penne.components.quiz-result :refer [QuizResult]]
             [word-penne.subs :as subs]))
