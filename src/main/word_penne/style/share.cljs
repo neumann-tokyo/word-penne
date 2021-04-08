@@ -10,7 +10,7 @@
    :text-align "center"
    :text-decoration "none"
    :display "inline-block"
-   :border-radius "10px"
+   :border-radius "15px 20px"
    :cursor "pointer"
    ::stylefy/mode {:hover {:filter "brightness(90%)"}}})
 

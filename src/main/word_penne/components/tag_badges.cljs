@@ -3,7 +3,7 @@
             [word-penne.style.vars :refer [color]]))
 
 (def s-tag
-  {:border-radius ".5rem"
+  {:border-radius "1rem 1.5rem"
    :background-color (:assort-background color)
    :border (str "1px solid " (:assort-border color))
    :margin "0 .1rem"
