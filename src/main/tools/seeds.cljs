@@ -6,7 +6,7 @@
   {:databaseURL "http://localhost:9100/firestore"
    :user-uid "7jYxVKp0qCgH4RKT4qSomG03pXky"})
 
-(def ^:private rand-range 10000000)
+(def ^:private rand-range 99999999)
 
 (defn- initialize-firebase []
   (.initializeApp admin #js {:credential (-> admin .-credential .applicationDefault)

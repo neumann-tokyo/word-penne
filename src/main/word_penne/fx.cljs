@@ -9,7 +9,7 @@
             [word-penne.routes :as routes]
             [word-penne.i18n :as i18n]))
 
-(def ^:private rand-range 10000000)
+(def ^:private rand-range 99999999)
 (def ^:private quiz-item-count 4)
 (def ^:private quiz-count (* quiz-item-count 2))
 
