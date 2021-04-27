@@ -57,7 +57,7 @@ describe("Create and update a card", () => {
     // delete a card
     cy.contains("create").contains("delete").click({ force: true });
     cy.contains("Confirmation");
-    cy.getBySel("delete-card-modal__ok").click();
+    cy.getBySel("confirmation-modal__ok").click();
     cy.contains("create").not();
     cy.contains("創造する").not();
     cy.contains("新しく作る").not();

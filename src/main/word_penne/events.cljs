@@ -207,21 +207,21 @@
                                :on-failure (fn [error] (re-frame/dispatch [::set-tags-error error]))}}))
 
 (re-frame/reg-event-db
- ::show-delete-card-modal
+ ::show-confirmation-modal
  [(validate-args db/t-card)
   validate-db]
  (fn [db [_ res]]
    (assoc db
           :selected-card res
-          :show-delete-card-modal true)))
+          :show-confirmation-modal true)))
 
 (re-frame/reg-event-db
- ::hide-delete-card-modal
+ ::hide-confirmation-modal
  [validate-db]
  (fn [db [_ _]]
    (assoc db
           :selected-card nil
-          :show-delete-card-modal false)))
+          :show-confirmation-modal false)))
 
 (re-frame/reg-event-fx
  ::delete-card-by-uid
@@ -230,7 +230,7 @@
    {::fx/firebase-delete-card-by-uid {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
                                       :card-uid card-uid
                                       :on-success (fn [_]
-                                                    (re-frame/dispatch [::hide-delete-card-modal])
+                                                    (re-frame/dispatch [::hide-confirmation-modal])
                                                     (re-frame/dispatch [::fetch-cards]))}}))
 
 (re-frame/reg-event-fx

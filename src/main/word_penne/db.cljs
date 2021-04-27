@@ -42,7 +42,7 @@
     [:sequential t-card]]
    [:selected-card
     [:maybe t-card]]
-   [:show-delete-card-modal boolean?]
+   [:show-confirmation-modal boolean?]
    [:tags t-tags]
    [:tags-error [:maybe string?]]
    [:search-target t-search-target]
@@ -57,7 +57,7 @@
    :locale "en"
    :cards []
    :selected-card nil
-   :show-delete-card-modal false
+   :show-confirmation-modal false
    :tags []
    :tags-error nil
    :search-target "front"

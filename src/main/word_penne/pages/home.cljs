@@ -6,7 +6,7 @@
             [word-penne.events :as events]
             [word-penne.components.button :refer [Button]]
             [word-penne.components.word-cards-wrap :refer [WordCardsWrap]]
-            [word-penne.components.delete-card-modal :refer [DeleteCardModal]]))
+            [word-penne.components.confirmation-modal :refer [ConfirmationModal]]))
 
 (defmethod v/view ::home [_]
   @(re-frame/subscribe [::subs/locale])
@@ -20,4 +20,10 @@
    (when @(re-frame/subscribe [::subs/search-archive])
      [:p "Archive"])
    [WordCardsWrap]
-   [DeleteCardModal]])
+   [ConfirmationModal {:title (tr "Do you want to delete, really? This action don't return")
+                       :ok-event (fn [e]
+                                   (.preventDefault e)
+                                   (re-frame/dispatch [::events/delete-card-by-uid (:uid @(re-frame/subscribe [::subs/selected-card]))]))
+                       :cancel-event (fn [e]
+                                       (.preventDefault e)
+                                       (re-frame/dispatch [::events/hide-confirmation-modal]))}]])
