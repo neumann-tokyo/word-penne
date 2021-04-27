@@ -5,6 +5,7 @@
             [bidi.bidi :refer [path-for]]
             ["pure-react-carousel" :refer [ButtonNext]]
             [word-penne.style.vars :refer [color phone-width]]
+            [word-penne.events :as events]
             [word-penne.routes :refer [routes]]
             [word-penne.style.share :as share]
             [word-penne.components.button :refer [Button]]
@@ -79,7 +80,11 @@
   @(re-frame/subscribe [::subs/locale])
   [:div
    [:div (use-style s-header)
-    [:a (use-style s-cancel-link {:href (path-for routes :word-penne.pages.home/home)})
+    [:a (use-style s-cancel-link {:href "#"
+                                  :title "cancel"
+                                  :on-click (fn [e]
+                                              (.preventDefault e)
+                                              (re-frame/dispatch [::events/show-confirmation-modal]))})
      [:span {:class "material-icons-outlined"} "cancel"]]]
 
    (let [index (:index attrs)

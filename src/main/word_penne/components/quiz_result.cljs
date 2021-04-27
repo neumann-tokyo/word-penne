@@ -53,14 +53,14 @@
                           [:td (use-style s-table-row) (:front card)]
                           [:td (use-style s-table-row) (:back card)]
                           [:td (use-style s-table-row)
-                           (let [judgement (some-> (str "judgement-" i)
-                                                   values
-                                                   tr)]
+                           (when-let [judgement (some-> (str "judgement-" i)
+                                                        values)]
                              [:div (use-style s-judgement)
                               [JudgementMark judgement]
-                              [:span judgement]])]])
+                              [:span (tr judgement)]])]])
              cards))]]
    [:div (use-style s-buttons-container)
     [:button (use-style sf/s-submit {:type "submit"
                                      :tab-index (:index (count cards))
-                                     :disabled (nil? (get values (str "judgement-" (dec (count cards)))))}) (tr "Finish")]]])
+                                     :disabled (or (nil? (get values (str "judgement-" (dec (count cards)))))
+                                                   submitting?)}) (tr "Finish")]]])

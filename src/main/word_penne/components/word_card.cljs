@@ -114,5 +114,6 @@
                                            :title "delete"
                                            :on-click (fn [e]
                                                        (.preventDefault e)
-                                                       (re-frame/dispatch [::events/show-confirmation-modal attrs]))})
+                                                       (re-frame/dispatch [::events/set-selected-card attrs])
+                                                       (re-frame/dispatch [::events/show-confirmation-modal]))})
          [:span {:class "material-icons-outlined"} "delete"]]]]]]]])

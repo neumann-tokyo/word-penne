@@ -49,7 +49,8 @@
        "Next" "次へ"
        "Result" "結果"
        "Answer" "正解"
-       "Finish" "終了"})
+       "Finish" "終了"
+       "Do you quit? The data in the middle will be deleted." "クイズを終了しますか？途中のデータは削除されます。"})
 
 (def ^:private gettext-object (atom nil))
 

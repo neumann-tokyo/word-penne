@@ -148,6 +148,12 @@
  (fn [db [_ res]]
    (assoc db :selected-card res)))
 
+(re-frame/reg-event-db
+ ::delete-selected-card
+ [validate-db]
+ (fn [db [_ _]]
+   (assoc db :selected-card nil)))
+
 (def t-update-card-by-uid-arg
   [:map [:values
          [:map
@@ -208,20 +214,15 @@
 
 (re-frame/reg-event-db
  ::show-confirmation-modal
- [(validate-args db/t-card)
-  validate-db]
- (fn [db [_ res]]
-   (assoc db
-          :selected-card res
-          :show-confirmation-modal true)))
+ [validate-db]
+ (fn [db [_ _]]
+   (assoc db :show-confirmation-modal true)))
 
 (re-frame/reg-event-db
  ::hide-confirmation-modal
  [validate-db]
  (fn [db [_ _]]
-   (assoc db
-          :selected-card nil
-          :show-confirmation-modal false)))
+   (assoc db :show-confirmation-modal false)))
 
 (re-frame/reg-event-fx
  ::delete-card-by-uid

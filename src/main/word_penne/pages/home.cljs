@@ -23,7 +23,9 @@
    [ConfirmationModal {:title (tr "Do you want to delete, really? This action don't return")
                        :ok-event (fn [e]
                                    (.preventDefault e)
+                                   (re-frame/dispatch [::events/delete-selected-card])
                                    (re-frame/dispatch [::events/delete-card-by-uid (:uid @(re-frame/subscribe [::subs/selected-card]))]))
                        :cancel-event (fn [e]
                                        (.preventDefault e)
+                                       (re-frame/dispatch [::events/delete-selected-card])
                                        (re-frame/dispatch [::events/hide-confirmation-modal]))}]])
