@@ -20,11 +20,19 @@
    [:createdAt {:optional true} [:maybe any?]]
    [:updatedAt {:optional true} [:maybe any?]]
    [:archive boolean?]
-   [:lock boolean?]])
+   [:lock boolean?]
+   [:quizCount int?]
+   [:wrongCount int?]
+   [:wrongRate double?]])
 (def t-search-target
   [:enum "front" "back" "comment"])
 (def t-search-word
   [:string {:min 0 :max 140}])
+(def t-quiz-card
+  [:map
+   [:uid string?]
+   [:front string?]
+   [:back string?]])
 (def t-db
   [:map
    [:user
@@ -34,20 +42,22 @@
     [:sequential t-card]]
    [:selected-card
     [:maybe t-card]]
-   [:show-delete-card-modal boolean?]
+   [:show-confirmation-modal boolean?]
    [:tags t-tags]
    [:tags-error [:maybe string?]]
    [:search-target t-search-target]
    [:search-word [:maybe t-search-word]]
    [:search-tag [:maybe string?]]
-   [:search-archive boolean?]])
+   [:search-archive boolean?]
+   [:quiz-cards
+    [:sequential t-quiz-card]]])
 
 (def default-db
   {:user nil
    :locale "en"
    :cards []
    :selected-card nil
-   :show-delete-card-modal false
+   :show-confirmation-modal false
    :tags []
    :tags-error nil
    :search-target "front"

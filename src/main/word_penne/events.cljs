@@ -148,6 +148,12 @@
  (fn [db [_ res]]
    (assoc db :selected-card res)))
 
+(re-frame/reg-event-db
+ ::delete-selected-card
+ [validate-db]
+ (fn [db [_ _]]
+   (assoc db :selected-card nil)))
+
 (def t-update-card-by-uid-arg
   [:map [:values
          [:map
@@ -207,21 +213,16 @@
                                :on-failure (fn [error] (re-frame/dispatch [::set-tags-error error]))}}))
 
 (re-frame/reg-event-db
- ::show-delete-card-modal
- [(validate-args db/t-card)
-  validate-db]
- (fn [db [_ res]]
-   (assoc db
-          :selected-card res
-          :show-delete-card-modal true)))
-
-(re-frame/reg-event-db
- ::hide-delete-card-modal
+ ::show-confirmation-modal
  [validate-db]
  (fn [db [_ _]]
-   (assoc db
-          :selected-card nil
-          :show-delete-card-modal false)))
+   (assoc db :show-confirmation-modal true)))
+
+(re-frame/reg-event-db
+ ::hide-confirmation-modal
+ [validate-db]
+ (fn [db [_ _]]
+   (assoc db :show-confirmation-modal false)))
 
 (re-frame/reg-event-fx
  ::delete-card-by-uid
@@ -230,7 +231,7 @@
    {::fx/firebase-delete-card-by-uid {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
                                       :card-uid card-uid
                                       :on-success (fn [_]
-                                                    (re-frame/dispatch [::hide-delete-card-modal])
+                                                    (re-frame/dispatch [::hide-confirmation-modal])
                                                     (re-frame/dispatch [::fetch-cards]))}}))
 
 (re-frame/reg-event-fx
@@ -298,3 +299,25 @@
                                        :on-success (fn []
                                                      (re-frame/dispatch [::set-locale (values "locale")])
                                                      (re-frame/dispatch [::navigate :word-penne.pages.home/home]))}}))
+
+(re-frame/reg-event-db
+ ::set-quiz-cards
+;;  [(validate-args [:maybe :string])
+;;   validate-db]
+ (fn [db [_ cards]]
+   (assoc db :quiz-cards cards)))
+
+(re-frame/reg-event-fx
+ ::setup-quiz
+ (fn [_ _]
+   {::fx/firebase-setup-quiz {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
+                              :on-success (fn [cards]
+                                            (re-frame/dispatch [::set-quiz-cards cards])
+                                            (re-frame/dispatch [::navigate :word-penne.pages.cards/quiz]))}}))
+
+(re-frame/reg-event-fx
+ ::answer-quiz
+ (fn [_ [_ {:keys [values]}]]
+   {::fx/firebase-answer-quiz {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
+                               :values values
+                               :on-success (fn [] (re-frame/dispatch [::navigate :word-penne.pages.home/home]))}}))

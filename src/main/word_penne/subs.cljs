@@ -32,9 +32,9 @@
    (:selected-card db)))
 
 (re-frame/reg-sub
- ::show-delete-card-modal
+ ::show-confirmation-modal
  (fn [db _]
-   (:show-delete-card-modal db)))
+   (:show-confirmation-modal db)))
 
 (re-frame/reg-sub
  ::search-target
@@ -70,3 +70,8 @@
  ::locale
  (fn [db _]
    (:locale db)))
+
+(re-frame/reg-sub
+ ::quiz-cards
+ (fn [db _]
+   (:quiz-cards db)))

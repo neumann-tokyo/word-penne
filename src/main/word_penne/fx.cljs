@@ -9,6 +9,10 @@
             [word-penne.routes :as routes]
             [word-penne.i18n :as i18n]))
 
+(def ^:private rand-range 99999999)
+(def ^:private quiz-item-count 4)
+(def ^:private quiz-count (* quiz-item-count 2))
+
 (re-frame/reg-fx
  ::navigate
  (fn [{:keys [view params]}]
@@ -66,10 +70,18 @@
  ::firebase-create-card
  (fn [{:keys [user-uid tags values on-success]}]
    (let [v (assoc (select-keys values ["front" "back" "comment"])
-                  "tags" (mapv #(str/trim (% "name")) (remove #(= % {"name" "" "beforeName" ""}) (values "tags"))))]
+                  "tags" (mapv #(str/trim (% "name")) (remove #(= % {"name" "" "beforeName" ""}) (values "tags"))))
+         initial-data {:archive false
+                       :lock false
+                       :quizCount 0
+                       :wrongCount 0
+                       :wrongRate 0.0
+                       :random (rand-int rand-range)
+                       :createdAt (timestamp)
+                       :updatedAt (timestamp)}]
      (-> (firestore)
          (.collection (str "users/" user-uid "/cards"))
-         (.add (clj->js (assoc v :archive false :lock false :createdAt (timestamp) :updatedAt (timestamp))))
+         (.add (clj->js (merge initial-data v)))
          (.then (fn []
                   (-> (firestore)
                       (.collection "users")
@@ -233,3 +245,81 @@
                (.set batch update-tags-ref (clj->js v) #js {:merge true}))
              (<p! (.commit batch))
              (on-success))))))))
+
+
+(defn- get-cards [snapshot]
+  (let [cards (atom [])]
+    (.forEach
+     snapshot
+     (fn [doc]
+       (let [card (js->clj (.data doc) :keywordize-keys true)]
+         (swap! cards
+                conj
+                {:uid (.-id doc) :front (:front card) :back (:back card)}
+                {:uid (.-id doc) :front (:back card) :back (:front card)}))))
+    @cards))
+
+(re-frame/reg-fx
+ ::firebase-setup-quiz
+ (fn [{:keys [user-uid on-success]}]
+   (when user-uid
+     (go
+       (let [half-quiz-count (/ quiz-item-count 2)
+             high-wrong-snap (<p! (-> (firestore)
+                                      (.collection (str "users/" user-uid "/cards"))
+                                      (.orderBy "wrongRate" "desc")
+                                      (.where "archive" "==" false)
+                                      (.limit half-quiz-count)
+                                      (.get)))
+             start-at (rand-int rand-range)
+             quiz-snap (<p! (-> (firestore)
+                                (.collection (str "users/" user-uid "/cards"))
+                                (.orderBy "random")
+                                (.orderBy "wrongRate")
+                                (.where "random" ">=" start-at)
+                                (.where "archive" "==" false)
+                                (.limit half-quiz-count)
+                                (.get)))
+             cards (into (get-cards high-wrong-snap)
+                         (get-cards quiz-snap))]
+         (on-success (shuffle cards)))))))
+
+(defn- wrong-count-by-uid [values]
+  (let [uid-judgements (for [index (range 0 quiz-count)
+                             :let [uid (get values (str "uid-" index))
+                                   judgement (get values (str "judgement-" index))]]
+                         [uid judgement])]
+    (reduce
+     (fn [r [k v]]
+       (as-> (or (get r k) 0) count
+         (if (= v "Wrong") (inc count) count)
+         (conj r {k count})))
+     {}
+     uid-judgements)))
+
+(re-frame/reg-fx
+ ::firebase-answer-quiz
+ (fn [{:keys [user-uid values on-success]}]
+   (when user-uid
+     (go
+       (let [uid-wrong-counts (wrong-count-by-uid values)
+             uids (keys uid-wrong-counts)
+             snapshot (<p! (-> (firestore)
+                               (.collection (str "users/" user-uid "/cards"))
+                               (.where (fs/document-id) "in" (clj->js uids))
+                               (.get)))
+             batch (.batch (firestore))]
+         (.forEach
+          snapshot
+          (fn [doc]
+            (let [ref (.-ref doc)
+                  uid (.-id doc)
+                  card (js->clj (.data doc) :keywordize-keys true)
+                  wrong-count (get uid-wrong-counts uid)
+                  new-quiz-count (+ (:quizCount card) 2)
+                  new-wrong-count (+ (:wrongCount card) wrong-count)]
+              (.update batch ref #js {:quizCount new-quiz-count
+                                      :wrongCount new-wrong-count
+                                      :wrongRate (double (/ new-wrong-count new-quiz-count))}))))
+         (<p! (.commit batch))
+         (on-success))))))

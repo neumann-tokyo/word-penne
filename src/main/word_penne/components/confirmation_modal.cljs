@@ -1,9 +1,8 @@
-(ns word-penne.components.delete-card-modal
+(ns word-penne.components.confirmation-modal
   (:require [re-frame.core :as re-frame]
             [stylefy.core :as stylefy :refer [use-style]]
             [word-penne.subs :as subs]
             [word-penne.style.vars :refer [z-indexs color phone-width]]
-            [word-penne.events :as events]
             [word-penne.components.button :refer [Button]]
             [word-penne.i18n :refer [tr]]))
 
@@ -29,23 +28,19 @@
 (def s-button-container
   {:text-align "right"})
 
-(defn DeleteCardModal []
+(defn ConfirmationModal [{:keys [title ok-event cancel-event]}]
   @(re-frame/subscribe [::subs/locale])
   [:div
-   (when @(re-frame/subscribe [::subs/show-delete-card-modal])
+   (when @(re-frame/subscribe [::subs/show-confirmation-modal])
      [:div (use-style s-modal)
       [:div (use-style s-modal-content)
        [:h3 (tr "Confirmation")]
-       [:p (tr "Do you want to delete, really? This action don't return")]
+       [:p title]
        [:div (use-style s-button-container)
         [Button {:href "#"
                  :kind "primary"
-                 :on-click (fn [e]
-                             (.preventDefault e)
-                             (re-frame/dispatch [::events/delete-card-by-uid (:uid @(re-frame/subscribe [::subs/selected-card]))]))
-                 :data-testid "delete-card-modal__ok"} (tr "OK")]
+                 :on-click ok-event
+                 :data-testid "confirmation-modal__ok"} (tr "OK")]
         [Button {:href "#"
                  :kind "secondary"
-                 :on-click (fn [e]
-                             (.preventDefault e)
-                             (re-frame/dispatch [::events/hide-delete-card-modal]))} (tr "Cancel")]]]])])
+                 :on-click cancel-event} (tr "Cancel")]]]])])

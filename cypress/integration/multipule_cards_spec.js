@@ -12,7 +12,6 @@ describe("Multiple cards", () => {
         cy.getBySel("word-card-form__submit").click();
 
         // show the new card on the top page
-        cy.url().should("eq", "http://localhost:8080/");
         cy.contains("make");
         cy.contains("作る");
 
@@ -26,7 +25,6 @@ describe("Multiple cards", () => {
         cy.getBySel("tag-name-0").type("基礎");
         cy.getBySel("word-card-form__submit").click();
 
-        cy.url().should("eq", "http://localhost:8080/");
         cy.contains("have");
         cy.contains("持つ");
         cy.contains("基礎");

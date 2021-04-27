@@ -10,14 +10,15 @@
    :text-align "center"
    :text-decoration "none"
    :display "inline-block"
-   :border-radius "10px"
+   :border-radius "15px 20px"
+   :cursor "pointer"
    ::stylefy/mode {:hover {:filter "brightness(90%)"}}})
 
 (def m-card
   {:box-sizing "border-box"
    :background (:main-background color)
    :border (str "solid 1px " (:assort-border color))
-   :border-radius "1rem"
+   :border-radius "2rem 2.5rem"
    :word-wrap "break-word"
    :color (:main-text color)
    :padding ".5rem"})

@@ -33,16 +33,23 @@
                                  :z-index (:bottom-word-card-add-button z-indexs)}}})
 
 (defn main-panel []
-  [:div (use-style s-main-panel)
-   (if (and @(re-frame/subscribe [::subs/current-user]) (not= (:handler @(re-frame/subscribe [::subs/current-route])) :word-penne.pages.auth/signin))
-     [:<> ; when user signed in
-      [Header]
-      [:div (use-style s-main-container)
-       [Navigation]
-       [:main (use-style s-main {:id "main"}) [v/view @(re-frame/subscribe [::subs/current-route])]]]
-      [:div (use-style s-word-card-add-button)
-       [WordCardAddButton]]]
-     [:<> ; when user didn't sign in
-      [SignoutedHeader]
-      [:div (use-style s-main-container)
-       [:main (use-style s-main {:id "main"}) [v/view {:handler :word-penne.pages.auth/signin}]]]])])
+  (let [current-route (:handler @(re-frame/subscribe [::subs/current-route]))]
+    [:div (use-style s-main-panel)
+     (if (and @(re-frame/subscribe [::subs/current-user])
+              (not= current-route :word-penne.pages.auth/signin))
+       ;; when user signed in
+       (if (= current-route :word-penne.pages.cards/quiz)
+         [:<>
+          [:div (use-style s-main-container)
+           [:main (use-style s-main {:id "main"}) [v/view @(re-frame/subscribe [::subs/current-route])]]]]
+         [:<>
+          [Header]
+          [:div (use-style s-main-container)
+           [Navigation]
+           [:main (use-style s-main {:id "main"}) [v/view @(re-frame/subscribe [::subs/current-route])]]]
+          [:div (use-style s-word-card-add-button)
+           [WordCardAddButton]]])
+       [:<> ;; when user didn't sign in
+        [SignoutedHeader]
+        [:div (use-style s-main-container)
+         [:main (use-style s-main {:id "main"}) [v/view {:handler :word-penne.pages.auth/signin}]]]])]))

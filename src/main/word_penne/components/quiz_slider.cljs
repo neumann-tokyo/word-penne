@@ -1,31 +1,38 @@
 (ns word-penne.components.quiz-slider
-  (:require [stylefy.core :as stylefy :refer [use-style]]
-            ["pure-react-carousel" :refer [CarouselProvider Slider Slide ButtonNext]]
-            [word-penne.components.quiz-slide :refer [QuizSlide]]))
+  (:require [re-frame.core :as re-frame]
+            [fork.reagent :as fork]
+            [stylefy.core :as stylefy :refer [use-style]]
+            ["pure-react-carousel" :refer [CarouselProvider Slider Slide]]
+            [word-penne.events :as events]
+            [word-penne.components.quiz-slide :refer [QuizSlide]]
+            [word-penne.components.quiz-result :refer [QuizResult]]
+            [word-penne.subs :as subs]))
 
 (def s-carousel-provider
   {::stylefy/manual ["~" [:* {:outline "none !important"}]]})
 (def s-slider
-  {:height "70vh"})
+  {:height "80vh"})
 (def s-slide
   {})
 
 (defn QuizSlider []
-  [:> CarouselProvider (use-style s-carousel-provider {:naturalSlideWidth "100"
-                                                       :naturalSlideHeight "100"
-                                                       :totalSlides "3"
-                                                       :touchEnabled false
-                                                       :dragEnabled false})
-   ;; TODO 単語10語セットを作る。
-   ;; テストに回答したら次の問題に行くボタンを表示する
-   ;; QuizSlide内にはロジックを入れないほうが良さそう
-   [:> Slider (use-style s-slider)
-    [:> Slide (use-style s-slide {:index "0"})
-     [QuizSlide {:front "make"
-                 :back "作る"
-                 :index "0"}]
-     [:> ButtonNext "Next"]]
-    [:> Slide (use-style s-slide {:index "1"}) [QuizSlide {:index "1"}]]
-    [:> Slide (use-style s-slide {:index "2"}) [QuizSlide {:index "2"}]]]
-  　;; TODO あとで消す
-   [:> ButtonNext "Next"]])
+  (let [slide-size (inc (count @(re-frame/subscribe [::subs/quiz-cards])))]
+    [:> CarouselProvider (use-style s-carousel-provider {:naturalSlideWidth "100"
+                                                         :naturalSlideHeight "100"
+                                                         :totalSlides slide-size
+                                                         :touchEnabled false
+                                                         :dragEnabled false})
+     [fork/form {:path [:form]
+                 :prevent-default? true
+                 :clean-on-unmount? true
+                 :on-submit #(re-frame/dispatch [::events/answer-quiz %])}
+      (fn [{:keys [form-id handle-submit] :as f-props}]
+        [:form {:id form-id :on-submit handle-submit}
+         [:> Slider (use-style s-slider)
+          (doall (map-indexed
+                  (fn [index card]
+                    ^{:key index} [:> Slide (use-style s-slide {:index index}) [QuizSlide
+                                                                                f-props
+                                                                                (merge card {:index index})]])
+                  @(re-frame/subscribe [::subs/quiz-cards])))
+          [:> Slide (use-style s-slide {:index slide-size}) [QuizResult f-props {:cards @(re-frame/subscribe [::subs/quiz-cards])}]]]])]]))

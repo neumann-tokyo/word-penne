@@ -7,8 +7,16 @@ service cloud.firestore {
   function isValidCard(card) {
     return ('front' in card && card.front is string && card.front.size() < 140) 
       && ('back' in card && card.back is string && card.back.size() < 140) 
+      && ('archive' in card && card.archive is bool)
+      && ('createdAt' in card && card.createdAt is timestamp)
+      && ('updatedAt' in card && card.updatedAt is timestamp)
+      && ('lock' in card && card.lock is bool)
+      && ('random' in card && card.random is number)
+      && ('quizCount' in card && card.quizCount is number)
+      && ('wrongCount' in card && card.wrongCount is number)
+      && ('wrongRate' in card && card.wrongCount is number)
       || (card.keys.hasAll(['comment']) && card.comment is string && card.comment.size() < 140)
-      || (card.keys.hasAll(['tags']) && card.tags is list && card.tags.size() < 8);
+      || (card.keys.hasAll(['tags']) && card.tags is list && card.tags.size() < 10);
   }
 
   function isValidTags(tags) {
