@@ -50,7 +50,6 @@ describe("Create and update a card", () => {
 
     // archive
     cy.contains("create").contains("archive").click({ force: true });
-    cy.contains("create").not();
     cy.getBySel("navigation__archive").click({ force: true });
     cy.contains("create");
 
