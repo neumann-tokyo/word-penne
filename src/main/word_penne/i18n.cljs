@@ -1,5 +1,6 @@
 (ns word-penne.i18n
-  (:require ["gettext.js" :as gettext-js]))
+  (:require ["gettext.js" :as gettext-js]
+            [reagent.core :as r]))
 
 (def ^:private i18n-map
   #js {;; Navigation
@@ -52,7 +53,7 @@
        "Finish" "終了"
        "Do you quit? The data in the middle will be deleted." "クイズを終了しますか？途中のデータは削除されます。"})
 
-(def ^:private gettext-object (atom nil))
+(def ^:private gettext-object (r/atom nil))
 
 (defn i18n []
   (if @gettext-object

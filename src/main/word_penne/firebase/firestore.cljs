@@ -1,9 +1,10 @@
 (ns word-penne.firebase.firestore
   (:require ["@firebase/app" :refer (firebase)]
             ["@firebase/firestore"]
+            [reagent.core :as r]
             [word-penne.config :as config]))
 
-(def db (atom nil))
+(def db (r/atom nil))
 
 (defn firestore []
   (if @db
