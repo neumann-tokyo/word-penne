@@ -2,11 +2,12 @@
   (:require ["@firebase/app" :refer (firebase)]
             ["@firebase/auth"]
             ["firebaseui" :as firebaseui]
+            [reagent.core :as r]
             [bidi.bidi :refer [path-for]]
             [word-penne.routes :refer [routes]]
             [word-penne.config :as config]))
 
-(def auth-instance (atom nil))
+(def auth-instance (r/atom nil))
 
 (defn auth []
   (if @auth-instance

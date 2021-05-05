@@ -4,6 +4,7 @@
             [cljs.core.async :refer [go]]
             [cljs.core.async.interop :refer-macros [<p!]]
             [re-frame.core :as re-frame]
+            [reagent.core :as r]
             [word-penne.firebase.firestore :refer [firestore timestamp] :as fs]
             [word-penne.firebase.auth :as firebase-auth]
             [word-penne.routes :as routes]
@@ -44,7 +45,7 @@
                                    (.endAt (str search-word "\uf8ff")))
                                (.orderBy f "updatedAt" "desc"))
                              (.get f)))
-             result (atom [])]
+             result (r/atom [])]
          (.forEach snapshot
                    (fn [doc]
                      (swap! result conj
@@ -194,7 +195,7 @@
          learge-tags (->> input-tags
                           (map #(get % "name"))
                           (filter #(>= (count %) 10)))
-         error-messages (atom [])]
+         error-messages (r/atom [])]
      (when user-uid
        (go
          (when (seq duplicated-tags)
@@ -248,7 +249,7 @@
 
 
 (defn- get-cards [snapshot]
-  (let [cards (atom [])]
+  (let [cards (r/atom [])]
     (.forEach
      snapshot
      (fn [doc]

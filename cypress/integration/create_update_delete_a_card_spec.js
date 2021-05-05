@@ -33,12 +33,12 @@ describe("Create and update a card", () => {
     cy.getBySel("word-card-form__submit").click();
 
     // show the edited card on the top page
-    cy.url().should("eq", "http://localhost:8080/");
     cy.contains("make").not();
     cy.contains("作る").not();
     cy.contains("create");
     cy.contains("創造する");
     cy.contains("新しく作る");
+    cy.url().should("eq", "http://localhost:8080/");
 
     // search
     cy.getBySel("search-input").type("cr");
