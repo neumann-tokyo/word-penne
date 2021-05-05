@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "shadow-cljs watch app",
+    "dev-pro": "shadow-cljs watch app --config-merge '{:closure-defines {goog.DEBUG false}}'",
     "repl": "shadow-cljs clj-repl",
     "xvfb": "Xvfb :1 -screen 0 '1600x1024x16'",
     "headless-e2e": "DISPLAY=:1 cypress run",

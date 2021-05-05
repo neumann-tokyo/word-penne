@@ -111,6 +111,7 @@
                 s-search-target
                 {:name "search-target"
                  :id "search-target"
+                 :value @(re-frame/subscribe [::subs/search-target])
                  :on-change #(re-frame/dispatch [::events/set-search-target (-> % .-target .-value)])})
        [:option {:value "front"} (tr "Front")]
        [:option {:value "back"} (tr "Back")]
@@ -120,6 +121,7 @@
                {:type "search"
                 :placeholder (tr "Search...")
                 :name "search"
+                :value @(re-frame/subscribe [::subs/search-word])
                 :maxLength 140
                 :data-testid "search-input"
                 :on-change #(re-frame/dispatch [::events/set-search-word (-> % .-target .-value)])})]]]
