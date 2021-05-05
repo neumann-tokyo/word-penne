@@ -56,16 +56,37 @@ npm run cypress:run
 
 ## Branch Rules
 
-* WIP [git-flow](http://danielkummer.github.io/git-flow-cheatsheet/) を使うか検討中
-* WIP https://github.com/conventional-changelog/standard-version を使いたい
-
-現状のブランチ構成
-
-* production ブランチ ... 本番デプロイ用のブランチ (git-flow でいう main)
-* main ブランチ ... 開発用のHEADブランチ (git-flowでいう develop)
-* その他のトピックブランチ ... 機能追加・HOTFIXを行うブランチ。Pull Request にして main にマージする
+* [git-flow](http://danielkummer.github.io/git-flow-cheatsheet/) に従います
+* https://github.com/conventional-changelog/standard-version を用いてバージョンを管理します
 
 ## Commit Rules
 
 * [Conventinal Commits](https://www.conventionalcommits.org/ja/v1.0.0/) に従ってください
 * VS Code の場合 [vscode-conventional-commits](https://marketplace.visualstudio.com/items?itemName=vivaxy.vscode-conventional-commits) を使うと便利です
+
+## Deploy
+
+### 本番環境での動作確認
+
+本番デプロイ前の動作確認を次のコマンドで行ってください。
+
+```
+npm run release
+npm run emulators:hosting
+```
+
+### standard-version でバージョンを上げる
+
+リリース前にバージョンを上げてください
+
+```
+npm run standard-version
+```
+
+### firebase にデプロイ
+
+次のコマンドで firebase hosting にデプロイします
+
+```
+npm run deploy
+```

@@ -15,7 +15,8 @@
     "emulators:hosting": "firebase emulators:start --only hosting",
     "release": "rm -r public/js && shadow-cljs release app",
     "standard-version": "standard-version",
-    "seeds": "shadow-cljs compile seeds && node build/seeds.js"
+    "seeds": "shadow-cljs compile seeds && node build/seeds.js",
+    "deploy": "firebase deploy"
   },
   "devDependencies": {
     "cypress": "^6.2.0",
