@@ -44,6 +44,7 @@
                                    (.startAt search-word)
                                    (.endAt (str search-word "\uf8ff")))
                                (.orderBy f order-column order-direction))
+                             (.limit f 50)
                              (.get f)))
              result (r/atom [])]
          (.forEach snapshot
