@@ -17,6 +17,7 @@
    :height "max-content"
    :margin 0
    :padding 0
+   :tabindex 0
    ::stylefy/mode {:focus {:outline "none"}}
    ::stylefy/manual [[:&:focus-within [:.flipcard_inner {:transform "rotateY(180deg)"
                                                          :border "none"}]]]
