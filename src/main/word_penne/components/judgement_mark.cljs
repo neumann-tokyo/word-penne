@@ -1,10 +1,11 @@
 (ns word-penne.components.judgement-mark
-  (:require [stylefy.core :as stylefy :refer [use-style]]))
+  (:require [stylefy.core :as stylefy :refer [use-style]]
+            [word-penne.style.vars :refer [color]]))
 
 (def s-correct
-  {:color "#76cf4a"})
+  {:color (:good-card-text color)})
 (def s-wrong
-  {:color "#cf534a"})
+  {:color (:bad-card-text color)})
 
 (defn JudgementMark [text]
   (if (= text "Correct")
