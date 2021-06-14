@@ -9,7 +9,11 @@
    :accent-border "#ba4a42"
    :accent-text "#ffffff"
    :title-text "#444444"
-   :error-text "#cf534a"})
+   :error-text "#cf534a"
+
+   :bad-card-text "#cf534a"
+   :weak-card-text "#cfa74a"
+   :good-card-text "#76cf4a"})
 
 (def layout-vars
   {:header-height "4rem"

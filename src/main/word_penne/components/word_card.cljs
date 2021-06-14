@@ -71,6 +71,13 @@
 (def s-flip-card-button
   {:color (:main-text color)})
 
+(defn- card-color [{:keys [quizCount wrongRate]}]
+  (cond
+    (= quizCount 0) (:main-text color)
+    (< 0.60 wrongRate) (:bad-card-text color)
+    (< 0.30 wrongRate) (:weak-card-text color)
+    :else (:good-card-text color)))
+
 ;; https://www.w3schools.com/howto/howto_css_flip_card.asp
 ;; https://www.w3schools.com/tags/tag_details.asp
 (defn WordCard [attrs]
@@ -78,7 +85,8 @@
    [:button (use-style s-flip-card)
     [:div.flipcard_inner (use-style s-flip-card-inner)
      [:div (use-style s-flip-card-front)
-      [:div (use-style s-flip-card-front-title) (:front attrs)]
+      [:div (merge (use-style s-flip-card-front-title)
+                   {:style {:color (card-color attrs)}}) (:front attrs)]
       [:div (use-style s-tags-container)
        [TagBadges (:tags attrs)]]]
      [:div (use-style s-flip-card-back)
