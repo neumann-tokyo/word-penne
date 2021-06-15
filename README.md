@@ -75,18 +75,14 @@ npm run release
 npm run emulators:hosting
 ```
 
-### standard-version でバージョンを上げる
-
-リリース前にバージョンを上げてください
+### standard-version でバージョンを上げて firebase にデプロイ
 
 ```
+git checkout develop
 npm run standard-version
-```
-
-### firebase にデプロイ
-
-次のコマンドで firebase hosting にデプロイします
-
-```
+git push --follow-tags origin develop
+git checkout main
+git merge develop
 npm run deploy
+git checkout develop
 ```
