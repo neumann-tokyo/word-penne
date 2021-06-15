@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.4](https://github.com/neumann-tokyo/word-penne/compare/v0.0.3...v0.0.4) (2021-06-15)
+
+
+### Features
+
+* change color depending wrongRate ([b12b0d0](https://github.com/neumann-tokyo/word-penne/commit/b12b0d0ced51bab0d98dfe6ae1242e461bdab20c))
+
+
+### Bug Fixes
+
+* i18n memoize ([5219287](https://github.com/neumann-tokyo/word-penne/commit/5219287d1f96850cf31b5f007dab04fde36570ca))
+* production deploy ([78c3b7d](https://github.com/neumann-tokyo/word-penne/commit/78c3b7d75d8fe548f6babdd292a033491eb38885))
+
 ### 0.0.3 (2021-05-05)
 
 
