@@ -2,6 +2,10 @@
   (:require [re-frame.core :as re-frame]))
 
 (re-frame/reg-sub
+ ::debug-db
+ (fn [db _] db))
+
+(re-frame/reg-sub
  ::current-route
  (fn [db _]
    (get db :route {:handler :word-penne.pages.home/home})))
