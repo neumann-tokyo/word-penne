@@ -1,6 +1,5 @@
 (ns word-penne.i18n
-  (:require ["gettext.js" :as gettext-js]
-            [reagent.core :as r]))
+  (:require ["gettext.js" :as gettext-js]))
 
 (def ^:private i18n-map
   #js {;; Navigation
@@ -53,14 +52,9 @@
        "Finish" "終了"
        "Do you quit? The data in the middle will be deleted." "クイズを終了しますか？途中のデータは削除されます。"})
 
-(def ^:private gettext-object (r/atom nil))
-
+;; TODO キャッシュしたいがそうするとなぜかgettextオブジェクトをうまく読み込めない
 (defn i18n []
-  (if @gettext-object
-    @gettext-object
-    (let [g (gettext-js)]
-      (.setMessages g "messages" "ja" i18n-map)
-      (reset! gettext-object g))))
+  (.setMessages (gettext-js) "messages" "ja" i18n-map))
 
 ; locate is "ja" or "en"
 (defn set-locale [locale]
