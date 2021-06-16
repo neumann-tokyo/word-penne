@@ -4,7 +4,8 @@
             [word-penne.events :as events]
             [word-penne.style.vars :refer [color layout-vars phone-width]]
             [word-penne.style.share :as share]
-            [word-penne.components.tag-badges :refer [TagBadges]]))
+            [word-penne.components.tag-badges :refer [TagBadges]]
+            [word-penne.i18n :refer [tr]]))
 
 (def s-card
   {:display "inline-block"})
@@ -67,7 +68,8 @@
    :font-size ".8rem"
    :display "flex"
    :flex-direction "row"
-   :justify-content "space-between"})
+   :justify-content "space-between"
+   :align-items "center"})
 (def s-flip-card-button
   {:color (:main-text color)})
 
@@ -110,6 +112,8 @@
                                                        (re-frame/dispatch [::events/navigate :word-penne.pages.cards/edit {:id (:uid attrs)}]))
                                            :title "edit"})
          [:span {:class "material-icons-outlined"} "edit"]]]
+       [:div
+        [:span (str (tr "Wrong") ": " (int (* (:wrongRate attrs) 100)) "%")]]
        [:div
         (let [title (if (:archive attrs) "unarchive" "archive")]
           [:a (use-style s-flip-card-button {:href "#"
