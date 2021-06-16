@@ -1,5 +1,7 @@
 (ns word-penne.i18n
-  (:require ["gettext.js" :as gettext-js]))
+  (:require ["gettext.js" :as gettext-js]
+            [re-frame.core :as re-frame]
+            [word-penne.subs :as subs]))
 
 (def ^:private i18n-map
   #js {;; Navigation
@@ -54,7 +56,9 @@
 
 ;; TODO キャッシュしたいがそうするとなぜかgettextオブジェクトをうまく読み込めない
 (defn i18n []
-  (.setMessages (gettext-js) "messages" "ja" i18n-map))
+  (-> (gettext-js)
+      (.setMessages "messages" "ja" i18n-map)
+      (.setLocale @(re-frame/subscribe [::subs/locale]))))
 
 ; locate is "ja" or "en"
 (defn set-locale [locale]

@@ -1,17 +1,11 @@
 (ns word-penne.components.quiz-result
   (:require [re-frame.core :as re-frame]
-            [bidi.bidi :refer [path-for]]
-            [clojure.string :as str]
             [stylefy.core :as stylefy :refer [use-style]]
-            ["pure-react-carousel" :refer [ButtonNext]]
-            [word-penne.routes :refer [routes]]
-            [word-penne.style.vars :refer [color phone-width]]
+            [word-penne.style.vars :refer [color]]
             [word-penne.style.share :as share]
             [word-penne.style.form :as sf]
-            [word-penne.components.button :refer [Button]]
             [word-penne.components.judgement-mark :refer [JudgementMark]]
             [word-penne.subs :as subs]
-            [word-penne.style.vars :refer [color]]
             [word-penne.i18n :refer [tr]]))
 
 (def s-container
