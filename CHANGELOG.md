@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.6](https://github.com/neumann-tokyo/word-penne/compare/v0.0.4...v0.0.6) (2021-06-16)
+
+
+### Features
+
+* show wrong rate in behind of cards ([73fb2d9](https://github.com/neumann-tokyo/word-penne/commit/73fb2d95ebbce0c5395af0f1ed3b3bc6ea86c019))
+
+
+### Bug Fixes
+
+* don't take same question in once quiz ([d3e7b0e](https://github.com/neumann-tokyo/word-penne/commit/d3e7b0e8f1023b5f51b25fd1598c1565f1be4738))
+* i18n ([3840c51](https://github.com/neumann-tokyo/word-penne/commit/3840c51df1c2a865d09fbb78ae7d9ddde4b89ff8))
+
 ### [0.0.5](https://github.com/neumann-tokyo/word-penne/compare/v0.0.4...v0.0.5) (2021-06-16)
 
 ### [0.0.4](https://github.com/neumann-tokyo/word-penne/compare/v0.0.3...v0.0.4) (2021-06-15)
