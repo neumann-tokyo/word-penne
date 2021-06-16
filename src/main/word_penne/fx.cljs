@@ -281,8 +281,8 @@
                                 (.where "archive" "==" false)
                                 (.limit half-quiz-count)
                                 (.get)))
-             cards (into (get-cards high-wrong-snap)
-                         (get-cards quiz-snap))]
+             cards (distinct (into (get-cards high-wrong-snap)
+                                   (get-cards quiz-snap)))]
          (on-success (shuffle cards)))))))
 
 (defn- wrong-count-by-uid [values]
