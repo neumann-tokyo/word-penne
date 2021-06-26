@@ -134,7 +134,7 @@
                     :on-click (fn [e]
                                 (.preventDefault e)
                                 (let [judgement (cond
-                                                  (nil? (values answer-id)) "Wrong"
+                                                  (str/blank? (values answer-id)) "Wrong"
                                                   (check-answer (values answer-id) (:back attrs)) "Correct"
                                                   :else "Wrong")]
                                   (set-values {card-id (:uid attrs)})

@@ -152,7 +152,8 @@
          (.then
           (fn [doc]
             (when (.-exists doc)
-              (on-success (js->clj (.data doc) :keywordize-keys true)))))))))
+              (on-success (-> (js->clj (.data doc) :keywordize-keys true)
+                              (update :locale #(or % "en")))))))))))
 
 (re-frame/reg-fx
  ::firebase-update-user-setting
@@ -288,7 +289,8 @@
 (defn- wrong-count-by-uid [values]
   (let [uid-judgements (for [index (range 0 quiz-count)
                              :let [uid (get values (str "uid-" index))
-                                   judgement (get values (str "judgement-" index))]]
+                                   judgement (get values (str "judgement-" index))]
+                             :when (and (seq uid) (seq judgement))]
                          [uid judgement])]
     (reduce
      (fn [r [k v]]
