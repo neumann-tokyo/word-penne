@@ -12,7 +12,8 @@ describe("Create and update a card", () => {
 
     // create a new card
     cy.url().should("include", "/cards/new");
-
+ 
+    cy.wait(500)
     cy.getBySel("word-card-form__front").type("make", { force: true });
     cy.getBySel("word-card-form__back").type("作る");
     cy.getBySel("word-card-form__submit").click();
@@ -24,6 +25,7 @@ describe("Create and update a card", () => {
 
     // edit the card
     cy.contains("make").contains("edit").click({ force: true });
+    cy.wait(500)
     cy.url().should("include", "edit");
     cy.getBySel("word-card-form__front").type(
       "{backspace}{backspace}{backspace}{backspace}create"

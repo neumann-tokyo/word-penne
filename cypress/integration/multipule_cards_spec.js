@@ -7,6 +7,7 @@ describe("Multiple cards", () => {
         // create a new card
         cy.url().should("include", "/cards/new");
 
+        cy.wait(500)
         cy.getBySel("word-card-form__front").type("make", { force: true });
         cy.getBySel("word-card-form__back").type("作る");
         cy.getBySel("word-card-form__submit").click();
@@ -20,6 +21,7 @@ describe("Multiple cards", () => {
 
         cy.url().should("include", "/cards/new");
 
+        cy.wait(500)
         cy.getBySel("word-card-form__front").type("have", { force: true });
         cy.getBySel("word-card-form__back").type("持つ");
         cy.getBySel("tag-name-0").type("基礎");

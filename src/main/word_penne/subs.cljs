@@ -21,6 +21,11 @@
    (:cards db)))
 
 (re-frame/reg-sub
+ ::clicked-card-uid
+ (fn [db _]
+   (:clicked-card-uid db)))
+
+(re-frame/reg-sub
  ::locked-cards
  (fn [db _]
    (filter (fn [c] (= (:lock c) true)) (:cards db))))

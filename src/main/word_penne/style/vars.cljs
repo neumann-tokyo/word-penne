@@ -26,7 +26,8 @@
    :header-shadow 2
    :header-shadow-blind 3
    :bottom-word-card-add-button 4
-   :avatar-menu 5
+   :avatar-menu-container 5
+   :avatar-menu 6
    :delete-card-modal 100})
 
 (def phone-width
