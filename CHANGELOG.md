@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.9](https://github.com/neumann-tokyo/word-penne/compare/v0.0.8...v0.0.9) (2021-06-26)
+
+
+### Features
+
+* add toggle_switch compornent ([7eb498f](https://github.com/neumann-tokyo/word-penne/commit/7eb498f0a47a1d370f7c2b3876a03baefc5ca476))
+* judgement quiz by lower case ([1ba9c46](https://github.com/neumann-tokyo/word-penne/commit/1ba9c46e4e56fc9326a28557103c6ae53df9e157))
+* reverse all cards ([db6df59](https://github.com/neumann-tokyo/word-penne/commit/db6df593d592b87944fc61d2194cf2b05b56d4a9))
+
+
+### Bug Fixes
+
+* when quiz answers have blank, you can't answer ([732647d](https://github.com/neumann-tokyo/word-penne/commit/732647d9e8929274757542f2e1c35a04429be25f))
+
 ### [0.0.8](https://github.com/neumann-tokyo/word-penne/compare/v0.0.7...v0.0.8) (2021-06-26)
 
 ### [0.0.7](https://github.com/neumann-tokyo/word-penne/compare/v0.0.6...v0.0.7) (2021-06-26)
