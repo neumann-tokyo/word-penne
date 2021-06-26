@@ -12,6 +12,7 @@
    :border-radius "1rem"
    :box-shadow (str "0 2px 4px 0 " (:assort-border color))
    :padding "1rem"
+   :width "80%"
    ::stylefy/media {phone-width {:margin "0 .5rem"}}})
 (def s-text
   {:width "100%"
