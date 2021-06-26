@@ -22,6 +22,7 @@
        ;; Home 
        "Tag: " "タグ: "
        "Quiz" "クイズ"
+       "Reverse" "裏返す"
 
        ;; Card
        "Front" "表面"

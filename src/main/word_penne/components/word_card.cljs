@@ -81,6 +81,13 @@
     (< 0.30 wrongRate) (:weak-card-text color)
     :else (:good-card-text color)))
 
+(defn rotate-card [uid]
+  (let [reverse-cards? (if @(re-frame/subscribe [::subs/reverse-cards]) 1 0)
+        clicked-card? (if (= uid @(re-frame/subscribe [::subs/clicked-card-uid])) 1 0)]
+    (if (= (bit-xor reverse-cards? clicked-card?) 1)
+      "rotateY(180deg)"
+      nil)))
+
 ;; https://www.w3schools.com/howto/howto_css_flip_card.asp
 ;; https://www.w3schools.com/tags/tag_details.asp
 (defn WordCard [attrs]
@@ -93,7 +100,7 @@
                                                     nil
                                                     (:uid attrs))]))})
     [:div (merge (use-style s-flip-card-inner)
-                 {:style {:transform (if (= (:uid attrs) @(re-frame/subscribe [::subs/clicked-card-uid])) "rotateY(180deg)" nil)}})
+                 {:style {:transform (rotate-card (:uid attrs))}})
      [:div (use-style s-flip-card-front)
       [:div (merge (use-style s-flip-card-front-title)
                    {:style {:color (card-color attrs)}}) (:front attrs)]
