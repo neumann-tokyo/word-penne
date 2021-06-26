@@ -315,6 +315,11 @@
  (fn [db [_ cards]]
    (assoc db :quiz-cards cards)))
 
+(re-frame/reg-event-db
+ ::set-reverse-cards
+ (fn [db [_ res]]
+   (assoc db :reverse-cards res)))
+
 (re-frame/reg-event-fx
  ::setup-quiz
  (fn [_ _]

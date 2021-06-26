@@ -23,8 +23,8 @@
     [Button {:kind "secondary" :on-click (fn [e]
                                            (.preventDefault e)
                                            (re-frame/dispatch [::events/setup-quiz]))} (tr "Quiz")]
-    [ToggleSwitch {:on-change (fn [e]
-                                (js/console.log "hihihi"))} (tr "Reverse")]]
+    [ToggleSwitch {:on-change (fn [_]
+                                (re-frame/dispatch [::events/set-reverse-cards (not @(re-frame/subscribe [::subs/reverse-cards]))]))} (tr "Reverse")]]
    (when-let [tag @(re-frame/subscribe [::subs/search-tag])]
      [:p (str (tr "Tag: ") tag)])
    (when @(re-frame/subscribe [::subs/search-archive])

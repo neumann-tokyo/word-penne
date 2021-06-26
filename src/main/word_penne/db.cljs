@@ -38,6 +38,7 @@
    [:user
     [:maybe t-user]]
    [:locale t-locale]
+   [:reverse-cards boolean?]
    [:cards
     [:sequential t-card]]
    [:clicked-card-uid [:maybe string?]]
@@ -56,6 +57,7 @@
 (def default-db
   {:user nil
    :locale "en"
+   :reverse-cards false
    :cards []
    :clicked-card-uid nil
    :selected-card nil
