@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.7](https://github.com/neumann-tokyo/word-penne/compare/v0.0.6...v0.0.7) (2021-06-26)
+
+
+### Features
+
+* quit using focus-within ([5fda4cc](https://github.com/neumann-tokyo/word-penne/commit/5fda4cc587c3b67b91c3bb471a4d8d038c88d797))
+* run npm install ([e8ee2cb](https://github.com/neumann-tokyo/word-penne/commit/e8ee2cbb726da3b72397ed7a597721f1893dcbeb))
+* show menu by using js ([3faa821](https://github.com/neumann-tokyo/word-penne/commit/3faa821bdf2ac2225f49fea0fb1c1735fa8c92dc))
+* turn the card by js ([bb37ddf](https://github.com/neumann-tokyo/word-penne/commit/bb37ddfddb0ebff67b2c0092d971deb5a78a47f3))
+
+
+### Bug Fixes
+
+* focus-within works on ios ([fef0fe6](https://github.com/neumann-tokyo/word-penne/commit/fef0fe642eb55a75ab31b133ff05edaf0576fdfb))
+
+### [0.0.5](https://github.com/neumann-tokyo/word-penne/compare/v0.0.4...v0.0.5) (2021-06-16)
+
 ### [0.0.6](https://github.com/neumann-tokyo/word-penne/compare/v0.0.4...v0.0.6) (2021-06-16)
 
 
