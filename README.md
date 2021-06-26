@@ -83,6 +83,7 @@ npm run standard-version
 git push --follow-tags origin develop
 git checkout main
 git merge develop
+npm run release
 npm run deploy
 git checkout develop
 ```
