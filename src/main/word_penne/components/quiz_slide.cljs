@@ -2,11 +2,9 @@
   (:require [re-frame.core :as re-frame]
             [clojure.string :as str]
             [stylefy.core :as stylefy :refer [use-style]]
-            [bidi.bidi :refer [path-for]]
             ["pure-react-carousel" :refer [ButtonNext]]
             [word-penne.style.vars :refer [color phone-width]]
             [word-penne.events :as events]
-            [word-penne.routes :refer [routes]]
             [word-penne.style.share :as share]
             [word-penne.components.button :refer [Button]]
             [word-penne.components.judgement-mark :refer [JudgementMark]]
@@ -76,6 +74,11 @@
 (def s-buttons-wrap
   {:margin-left ".5rem"})
 
+(defn check-answer [input answer]
+  (let [input* (str/lower-case (str/trim input))
+        answer* (str/lower-case answer)]
+    (= input* answer*)))
+
 (defn QuizSlide [{:keys [values handle-change handle-blur set-values]} attrs]
   @(re-frame/subscribe [::subs/locale])
   [:div
@@ -132,7 +135,7 @@
                                 (.preventDefault e)
                                 (let [judgement (cond
                                                   (nil? (values answer-id)) "Wrong"
-                                                  (= (str/trim (values answer-id)) (:back attrs)) "Correct"
+                                                  (check-answer (values answer-id) (:back attrs)) "Correct"
                                                   :else "Wrong")]
                                   (set-values {card-id (:uid attrs)})
                                   (set-values {judgement-id judgement})))} (tr "OK")]]
