@@ -19,8 +19,7 @@
    :padding 0
    :tabindex 0
    ::stylefy/mode {:focus {:outline "none"}}
-   ::stylefy/manual [[:&:focus-within [:.flipcard_inner {:transform "rotateY(180deg)"
-                                                         :border "none"}]]]
+   ::stylefy/manual [[:&:focus-within [:.flipcard_inner {:transform "rotateY(180deg)"}]]]
    ::stylefy/media {phone-width {:width "85vw"}}})
 (def s-flip-card-inner
   {:display "grid"
@@ -28,6 +27,7 @@
    :grid-template-columns "1fr"
    :transition "transform 0.6s"
    :transform-style "preserve-3d"
+   :border "none"
    ::stylefy/media {phone-width {:width "85vw"}}})
 
 (def m-flip-card
