@@ -4,7 +4,7 @@
             [reagent.core :as r]
             [word-penne.subs :as subs]
             [word-penne.events :as events]
-            [word-penne.style.vars :refer [color z-indexs]]
+            [word-penne.style.vars :refer [color z-indexs layout-vars]]
             [word-penne.i18n :refer [tr]]))
 
 (def s-menu
@@ -22,9 +22,18 @@
    :height "2.5rem"
    :border-radius "50%"
    ::stylefy/mode {:hover {:filter "brightness(90%)"}}})
-(def s-menu-content
+(def s-menu-content-container
   {:display "none"
+   :position "fixed"
+   :top 0
+   :left 0
+   :width "100%"
+   :height "100%"
+   :z-index (:avatar-menu-container z-indexs)})
+(def s-menu-content
+  {:display "block"
    :position "absolute"
+   :top (:header-height layout-vars)
    :right 0
    :z-index (:avatar-menu z-indexs)
    :background (:main-background color)
@@ -35,14 +44,16 @@
    :min-width "7rem"
    :box-shadow (str "0 2px 4px 0 " (:assort-border color))
    :overflow "hidden"})
-(def s-menu-link
+(def s-menu-text
   {:display "block"
    :color (:main-text color)
    :text-decoration "none"
-   :padding ".5rem"
-   ::stylefy/mode {:hover {:background (:assort-background color)}}})
+   :padding ".5rem"})
+(def s-menu-link
+  (merge s-menu-text
+         {::stylefy/mode {:hover {:background (:assort-background color)}}}))
 
-(def show-menu (r/atom false))
+(defonce show-menu (r/atom false))
 
 (defn display-menu []
   (if @show-menu
@@ -55,17 +66,21 @@
     [:div (use-style s-menu)
      [:button (use-style s-menu-button {:on-click (fn [e]
                                                     (.preventDefault e)
-                                                    (swap! show-menu not))})
+                                                    (reset! show-menu true))})
       [:img (use-style s-avatar {:src photo-url :alt email})]]
-     [:div (merge (use-style s-menu-content)
-                  {:style (display-menu)})
-      [:a (use-style s-menu-link) email]
-      [:a (use-style s-menu-link {:href "#"
-                                  :on-click (fn [e]
-                                              (.preventDefault e)
-                                              (re-frame/dispatch [::events/navigate :word-penne.pages.user/edit]))})
-       (tr "Settings")]
-      [:a (use-style s-menu-link {:href "#" :on-click (fn [e]
-                                                        (.preventDefault e)
-                                                        (re-frame/dispatch [::events/signout]))})
-       (tr "Logout")]]]))
+     [:div (merge (use-style s-menu-content-container)
+                  {:style (display-menu)
+                   :on-click (fn [e]
+                               (.preventDefault e)
+                               (reset! show-menu false))})
+      [:div (use-style s-menu-content)
+       [:span (use-style s-menu-text) email]
+       [:a (use-style s-menu-link {:href "#"
+                                   :on-click (fn [e]
+                                               (.preventDefault e)
+                                               (re-frame/dispatch [::events/navigate :word-penne.pages.user/edit]))})
+        (tr "Settings")]
+       [:a (use-style s-menu-link {:href "#" :on-click (fn [e]
+                                                         (.preventDefault e)
+                                                         (re-frame/dispatch [::events/signout]))})
+        (tr "Logout")]]]]))
