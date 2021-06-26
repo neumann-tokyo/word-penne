@@ -40,6 +40,7 @@
    [:locale t-locale]
    [:cards
     [:sequential t-card]]
+   [:clicked-card-uid [:maybe string?]]
    [:selected-card
     [:maybe t-card]]
    [:show-confirmation-modal boolean?]
@@ -56,6 +57,7 @@
   {:user nil
    :locale "en"
    :cards []
+   :clicked-card-uid nil
    :selected-card nil
    :show-confirmation-modal false
    :tags []

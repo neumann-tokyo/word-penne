@@ -5,6 +5,7 @@
             [word-penne.style.vars :refer [color layout-vars phone-width]]
             [word-penne.style.share :as share]
             [word-penne.components.tag-badges :refer [TagBadges]]
+            [word-penne.subs :as subs]
             [word-penne.i18n :refer [tr]]))
 
 (def s-card
@@ -19,7 +20,7 @@
    :padding 0
    :tabindex 0
    ::stylefy/mode {:focus {:outline "none"}}
-   ::stylefy/manual [[:&:focus-within [:.flipcard_inner {:transform "rotateY(180deg)"}]]]
+  ;;  ::stylefy/manual [[:&:focus-within [:.flipcard_inner {:transform "rotateY(180deg)"}]]]
    ::stylefy/media {phone-width {:width "85vw"}}})
 (def s-flip-card-inner
   {:display "grid"
@@ -85,8 +86,15 @@
 ;; https://www.w3schools.com/tags/tag_details.asp
 (defn WordCard [attrs]
   [:div (use-style s-card)
-   [:button (use-style s-flip-card)
-    [:div.flipcard_inner (use-style s-flip-card-inner)
+   [:button (use-style s-flip-card {:on-click (fn [e]
+                                                (.preventDefault e)
+                                                (re-frame/dispatch
+                                                 [::events/set-clicked-card-uid
+                                                  (if (= (:uid attrs) @(re-frame/subscribe [::subs/clicked-card-uid]))
+                                                    nil
+                                                    (:uid attrs))]))})
+    [:div.flipcard_inner (merge (use-style s-flip-card-inner)
+                                {:style {:transform (if (= (:uid attrs) @(re-frame/subscribe [::subs/clicked-card-uid])) "rotateY(180deg)" nil)}})
      [:div (use-style s-flip-card-front)
       [:div (merge (use-style s-flip-card-front-title)
                    {:style {:color (card-color attrs)}}) (:front attrs)]

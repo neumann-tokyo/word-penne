@@ -95,6 +95,14 @@
           :cards res
           :selected-card nil)))
 
+(re-frame/reg-event-db
+ ::set-clicked-card-uid
+ [(validate-args [:maybe string?])
+  validate-db]
+ (fn [db [_ res]]
+   (assoc db
+          :clicked-card-uid res)))
+
 (re-frame/reg-event-fx
  ::fetch-tags
  (fn [_ _]
