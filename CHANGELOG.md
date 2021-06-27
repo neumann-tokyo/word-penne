@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.10](https://github.com/neumann-tokyo/word-penne/compare/v0.0.9...v0.0.10) (2021-06-27)
+
+
+### Features
+
+* change colors ([c880c21](https://github.com/neumann-tokyo/word-penne/commit/c880c21751e2c45e9c1cb472973a18c3f81f84b7))
+* change order of cards ([084ad03](https://github.com/neumann-tokyo/word-penne/commit/084ad0321a851f06bf0ffba9b3c7fa37092b599e))
+* design of sort of cards ([c1903da](https://github.com/neumann-tokyo/word-penne/commit/c1903da06d7df079ba7cd02bff369c62d746dbd4))
+* speech word ([972bb1f](https://github.com/neumann-tokyo/word-penne/commit/972bb1ffe33e5a70b25bc6dc386effd0763208ca))
+
 ### [0.0.9](https://github.com/neumann-tokyo/word-penne/compare/v0.0.8...v0.0.9) (2021-06-26)
 
 
