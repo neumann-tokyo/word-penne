@@ -12,7 +12,7 @@
    :width 0
    :height 0
    ::stylefy/manual [[:&:checked
-                      ["+ .slider" {:background-color (:accent-border color)}]
+                      ["+ .slider" {:background-color (:assort-border color)}]
                       ["+ .slider:before" {:transform "translateX(27px) rotate(-10deg)"
                                            :background-color (:main-background color)}]]]})
 (def s-slider
@@ -27,14 +27,14 @@
    :background-color (:main-background color)
    :transition ".4s"
    :border-radius "15px 26px"
-   :border (str "solid 2px" (:accent-border color))
+   :border (str "solid 2px" (:assort-border color))
    ::stylefy/mode {:before {:position "absolute"
                             :content "''"
                             :height "26px"
                             :width "20px"
                             :left "5px"
                             :bottom "2px"
-                            :background-color (:accent-border color)
+                            :background-color (:assort-border color)
                             :transition ".4s"
                             :transform "rotate(-10deg)"
                             :border-radius "15px 26px"}}})

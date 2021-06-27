@@ -23,6 +23,9 @@
        "Tag: " "タグ: "
        "Quiz" "クイズ"
        "Reverse" "裏返す"
+       "Update" "更新順"
+       "Random" "ランダム"
+       "Wrong rate" "誤答率"
 
        ;; Card
        "Front" "表面"
