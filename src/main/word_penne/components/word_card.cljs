@@ -5,6 +5,7 @@
             [word-penne.style.vars :refer [color layout-vars phone-width]]
             [word-penne.style.share :as share]
             [word-penne.components.tag-badges :refer [TagBadges]]
+            [word-penne.components.speech-mark :refer [SpeechMark]]
             [word-penne.subs :as subs]
             [word-penne.i18n :refer [tr]]))
 
@@ -103,12 +104,16 @@
                  {:style {:transform (rotate-card (:uid attrs))}})
      [:div (use-style s-flip-card-front)
       [:div (merge (use-style s-flip-card-front-title)
-                   {:style {:color (card-color attrs)}}) (:front attrs)]
+                   {:style {:color (card-color attrs)}})
+       (:front attrs)
+       [SpeechMark (:front attrs)]]
       [:div (use-style s-tags-container)
        [TagBadges (:tags attrs)]]]
      [:div (use-style s-flip-card-back)
       [:div (use-style s-flip-card-back-title-container)
-       [:div (use-style s-flip-card-back-title) (:back attrs)]
+       [:div (use-style s-flip-card-back-title)
+        (:back attrs)
+        [SpeechMark (:back attrs)]]
        (when (:comment attrs)
          [:p (:comment attrs)])]
       [:div (use-style s-tags-container)
