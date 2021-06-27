@@ -84,6 +84,7 @@
                               :search-word @(re-frame/subscribe [::subs/search-word])
                               :search-tag @(re-frame/subscribe [::subs/search-tag])
                               :search-archive @(re-frame/subscribe [::subs/search-archive])
+                              :cards-order @(re-frame/subscribe [::subs/cards-order])
                               :on-success (fn [cards] (re-frame/dispatch [::set-cards cards]))}}))
 
 (re-frame/reg-event-db
@@ -317,8 +318,18 @@
 
 (re-frame/reg-event-db
  ::set-reverse-cards
+ [(validate-args boolean?)
+  validate-db]
  (fn [db [_ res]]
    (assoc db :reverse-cards res)))
+
+(re-frame/reg-event-fx
+ ::set-cards-order
+ [(validate-args db/t-cards-order)
+  validate-db]
+ (fn [{:keys [db]} [_ res]]
+   {:db (assoc db :cards-order res)
+    :dispatch [::fetch-cards]}))
 
 (re-frame/reg-event-fx
  ::setup-quiz

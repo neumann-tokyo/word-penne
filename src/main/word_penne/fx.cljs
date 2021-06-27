@@ -29,10 +29,11 @@
 
 (re-frame/reg-fx
  ::firebase-load-cards
- (fn [{:keys [user-uid search-target search-word search-tag search-archive on-success]}] ; TODO I want to pass a sort order
+ (fn [{:keys [user-uid search-target search-word search-tag search-archive cards-order on-success]}] ; TODO I want to pass a sort order
    (when user-uid
      (go
-       (let [snapshot (<p! (as-> (firestore) f
+       (let [[order-column order-direction] (str/split cards-order #"/")
+             snapshot (<p! (as-> (firestore) f
                              (.collection f (str "users/" user-uid "/cards"))
                              (.where f "archive" "==" (boolean search-archive))
                              (if search-tag
@@ -43,7 +44,7 @@
                                    (.orderBy search-target)
                                    (.startAt search-word)
                                    (.endAt (str search-word "\uf8ff")))
-                               (.orderBy f "updatedAt" "desc"))
+                               (.orderBy f order-column order-direction))
                              (.get f)))
              result (r/atom [])]
          (.forEach snapshot

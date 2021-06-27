@@ -44,12 +44,12 @@
       [:span {:class "material-icons-outlined"} "sort"]
       [:select (use-style s-cards-order {:name "cards-order"
                                          :id "cards-order"
-                                         :value "random"
-              ;;  :on-change (fn [e] (js/console.log "hihihi"))
-                                         })
-       [:option {:value "random"} "ランダム"]
-       [:option {:value "createdAt"} "作成日時"]
-       [:option {:value "wrongRate"} "間違えやすい"]]]
+                                         :value @(re-frame/subscribe [::subs/cards-order])
+                                         :on-change #(re-frame/dispatch [::events/set-cards-order (-> % .-target .-value)])})
+      ;;  "updatedAt/desc" "random/asc" "wrongRate/desc"
+       [:option {:value "updatedAt/desc"} (tr "Update")]
+       [:option {:value "random/asc"} (tr "Random")]
+       [:option {:value "wrongRate/desc"} (tr "Wrong rate")]]]
      [ToggleSwitch {:on-change (fn [_]
                                  (re-frame/dispatch [::events/set-reverse-cards (not @(re-frame/subscribe [::subs/reverse-cards]))]))} (tr "Reverse")]]]
    (when-let [tag @(re-frame/subscribe [::subs/search-tag])]

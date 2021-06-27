@@ -33,6 +33,8 @@
    [:uid string?]
    [:front string?]
    [:back string?]])
+(def t-cards-order
+  [:enum "updatedAt/desc" "random/asc" "wrongRate/desc"])
 (def t-db
   [:map
    [:user
@@ -51,6 +53,7 @@
    [:search-word [:maybe t-search-word]]
    [:search-tag [:maybe string?]]
    [:search-archive boolean?]
+   [:cards-order t-cards-order]
    [:quiz-cards
     [:sequential t-quiz-card]]])
 
@@ -68,4 +71,5 @@
    :search-word nil
    :search-tag nil
    :search-archive false
+   :cards-order "updatedAt/desc"
    :quiz-cards []})
