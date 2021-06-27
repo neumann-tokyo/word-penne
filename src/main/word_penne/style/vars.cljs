@@ -3,8 +3,8 @@
 (def color
   {:main-background "#f9f5f1"
    :main-text "#111111"
-   :assort-background "#dddddd"
-   :assort-border "#aaaaaa"
+   :assort-background "#D6D2C4"
+   :assort-border "#5D534A"
    :accent-background "#cf534a"
    :accent-border "#ba4a42"
    :accent-text "#ffffff"
