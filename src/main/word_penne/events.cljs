@@ -310,11 +310,11 @@
                                                      (re-frame/dispatch [::navigate :word-penne.pages.home/home]))}}))
 
 (re-frame/reg-event-db
- ::set-quiz-cards
+ ::set-quiz-cards0
 ;;  [(validate-args [:maybe :string])
 ;;   validate-db]
  (fn [db [_ cards]]
-   (assoc db :quiz-cards cards)))
+   (assoc db :quiz-cards0 cards)))
 
 (re-frame/reg-event-db
  ::set-reverse-cards
@@ -332,16 +332,16 @@
     :dispatch [::fetch-cards]}))
 
 (re-frame/reg-event-fx
- ::setup-quiz
+ ::setup-quiz0
  (fn [_ _]
-   {::fx/firebase-setup-quiz {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
-                              :on-success (fn [cards]
-                                            (re-frame/dispatch [::set-quiz-cards cards])
-                                            (re-frame/dispatch [::navigate :word-penne.pages.cards/quiz]))}}))
+   {::fx/firebase-setup-quiz0 {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
+                               :on-success (fn [cards]
+                                             (re-frame/dispatch [::set-quiz-cards0 cards])
+                                             (re-frame/dispatch [::navigate :word-penne.pages.cards/quiz0]))}}))
 
 (re-frame/reg-event-fx
- ::answer-quiz
+ ::answer-quiz0
  (fn [_ [_ {:keys [values]}]]
-   {::fx/firebase-answer-quiz {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
-                               :values values
-                               :on-success (fn [] (re-frame/dispatch [::navigate :word-penne.pages.home/home]))}}))
+   {::fx/firebase-answer-quiz0 {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
+                                :values values
+                                :on-success (fn [] (re-frame/dispatch [::navigate :word-penne.pages.home/home]))}}))

@@ -22,7 +22,7 @@
                                      "tags" (mapv (fn [t] {"name" t "beforeName" t}) tags)}
                     :on-submit #(re-frame/dispatch [::events/update-card-by-uid uid %])}])])
 
-(defmethod v/view ::quiz [_]
+(defmethod v/view ::quiz0 [_]
   @(re-frame/subscribe [::subs/locale])
   [:<>
    [QuizSlider]

@@ -38,7 +38,7 @@
      (if (and @(re-frame/subscribe [::subs/current-user])
               (not= current-route :word-penne.pages.auth/signin))
        ;; when user signed in
-       (if (= current-route :word-penne.pages.cards/quiz)
+       (if (= current-route :word-penne.pages.cards/quiz0)
          [:<>
           [:div (use-style s-main-container)
            [:main (use-style s-main {:id "main"}) [v/view @(re-frame/subscribe [::subs/current-route])]]]]

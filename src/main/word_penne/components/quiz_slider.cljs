@@ -16,7 +16,7 @@
   {})
 
 (defn QuizSlider []
-  (let [slide-size (inc (count @(re-frame/subscribe [::subs/quiz-cards])))]
+  (let [slide-size (inc (count @(re-frame/subscribe [::subs/quiz-cards0])))]
     [:> CarouselProvider (use-style s-carousel-provider {:naturalSlideWidth "100"
                                                          :naturalSlideHeight "100"
                                                          :totalSlides slide-size
@@ -25,7 +25,7 @@
      [fork/form {:path [:form]
                  :prevent-default? true
                  :clean-on-unmount? true
-                 :on-submit #(re-frame/dispatch [::events/answer-quiz %])}
+                 :on-submit #(re-frame/dispatch [::events/answer-quiz0 %])}
       (fn [{:keys [form-id handle-submit] :as f-props}]
         [:form {:id form-id :on-submit handle-submit}
          [:> Slider (use-style s-slider)
@@ -34,5 +34,5 @@
                     ^{:key index} [:> Slide (use-style s-slide {:index index}) [QuizSlide
                                                                                 f-props
                                                                                 (merge card {:index index})]])
-                  @(re-frame/subscribe [::subs/quiz-cards])))
-          [:> Slide (use-style s-slide {:index slide-size}) [QuizResult f-props {:cards @(re-frame/subscribe [::subs/quiz-cards])}]]]])]]))
+                  @(re-frame/subscribe [::subs/quiz-cards0])))
+          [:> Slide (use-style s-slide {:index slide-size}) [QuizResult f-props {:cards @(re-frame/subscribe [::subs/quiz-cards0])}]]]])]]))

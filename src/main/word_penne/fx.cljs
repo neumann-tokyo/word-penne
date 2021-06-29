@@ -263,7 +263,7 @@
     @cards))
 
 (re-frame/reg-fx
- ::firebase-setup-quiz
+ ::firebase-setup-quiz0
  (fn [{:keys [user-uid on-success]}]
    (when user-uid
      (go
@@ -302,7 +302,7 @@
      uid-judgements)))
 
 (re-frame/reg-fx
- ::firebase-answer-quiz
+ ::firebase-answer-quiz0
  (fn [{:keys [user-uid values on-success]}]
    (when user-uid
      (go

@@ -86,9 +86,9 @@
    (:locale db)))
 
 (re-frame/reg-sub
- ::quiz-cards
+ ::quiz-cards0
  (fn [db _]
-   (:quiz-cards db)))
+   (:quiz-cards0 db)))
 
 (re-frame/reg-sub
  ::cards-order
