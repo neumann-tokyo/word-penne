@@ -339,6 +339,22 @@
                                              (re-frame/dispatch [::set-quiz-cards0 cards])
                                              (re-frame/dispatch [::navigate :word-penne.pages.cards/quiz0]))}}))
 
+(re-frame/reg-event-db
+ ::set-quiz-cards
+;; TODO spec
+ ;;  [(validate-args [:maybe :string])
+;;   validate-db]
+ (fn [db [_ cards]]
+   (assoc db :quiz-cards cards)))
+
+(re-frame/reg-event-fx
+ ::setup-quiz
+ (fn [_ _]
+   {::fx/firebase-setup-quiz {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
+                              :on-success (fn [cards]
+                                            (re-frame/dispatch [::set-quiz-cards cards])
+                                            (re-frame/dispatch [::navigate :word-penne.pages.cards/quiz]))}}))
+
 (re-frame/reg-event-fx
  ::answer-quiz0
  (fn [_ [_ {:keys [values]}]]

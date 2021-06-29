@@ -8,7 +8,8 @@
         "user/" {"edit" :word-penne.pages.user/edit}
         "cards/" {"new" :word-penne.pages.cards/new
                   [:id "/edit"] :word-penne.pages.cards/edit
-                  "quiz0" :word-penne.pages.cards/quiz0}
+                  "quiz0" :word-penne.pages.cards/quiz0
+                  "quiz" :word-penne.pages.cards/quiz}
         "tags/" {"" :word-penne.pages.tags/index}}])
 
 (defn navigate
