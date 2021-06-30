@@ -35,6 +35,12 @@
    [:back string?]])
 (def t-cards-order
   [:enum "updatedAt/desc" "random/asc" "wrongRate/desc"])
+(def t-quiz-card
+  [:map
+   [:uid string?]
+   [:front string?]
+   [:back string?]
+   [:judgement [:enum "Correct" "Wrong"]]])
 (def t-db
   [:map
    [:user
@@ -55,7 +61,10 @@
    [:search-archive boolean?]
    [:cards-order t-cards-order]
    [:quiz-cards0
-    [:sequential t-quiz-card0]]])
+    [:sequential t-quiz-card0]]
+   [:quiz-cards
+    [:sequential t-quiz-card]]
+   [:quiz-pointer int?]])
 
 (def default-db
   {:user nil
@@ -72,4 +81,6 @@
    :search-tag nil
    :search-archive false
    :cards-order "updatedAt/desc"
-   :quiz-cards0 []})
+   :quiz-cards0 []
+   :quiz-cards []
+   :quiz-pointer 0})

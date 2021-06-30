@@ -258,12 +258,38 @@
        (let [card (js->clj (.data doc) :keywordize-keys true)]
          (swap! cards
                 conj
+                ;; TODO comment とかも入れてもいいかも
                 {:uid (.-id doc) :front (:front card) :back (:back card)}
                 {:uid (.-id doc) :front (:back card) :back (:front card)}))))
     @cards))
 
 (re-frame/reg-fx
  ::firebase-setup-quiz0
+ (fn [{:keys [user-uid on-success]}]
+   (when user-uid
+     (go
+       (let [half-quiz-count (/ quiz-item-count 2)
+             high-wrong-snap (<p! (-> (firestore)
+                                      (.collection (str "users/" user-uid "/cards"))
+                                      (.orderBy "wrongRate" "desc")
+                                      (.where "archive" "==" false)
+                                      (.limit half-quiz-count)
+                                      (.get)))
+             start-at (rand-int rand-range)
+             quiz-snap (<p! (-> (firestore)
+                                (.collection (str "users/" user-uid "/cards"))
+                                (.orderBy "random")
+                                (.orderBy "wrongRate")
+                                (.where "random" ">=" start-at)
+                                (.where "archive" "==" false)
+                                (.limit half-quiz-count)
+                                (.get)))
+             cards (distinct (into (get-cards high-wrong-snap)
+                                   (get-cards quiz-snap)))]
+         (on-success (shuffle cards)))))))
+
+(re-frame/reg-fx
+ ::firebase-setup-quiz
  (fn [{:keys [user-uid on-success]}]
    (when user-uid
      (go

@@ -2,6 +2,7 @@
   (:require [re-frame.core :as re-frame]
             [malli.core :as m]
             [cljs.pprint :refer [pprint]]
+            [clojure.string :as str]
             [word-penne.db :as db]
             [word-penne.fx :as fx]
             [word-penne.subs :as subs]
@@ -341,8 +342,8 @@
 
 (re-frame/reg-event-db
  ::set-quiz-cards
-;; TODO spec
- ;;  [(validate-args [:maybe :string])
+;;  TODO spec
+;;  [(validate-args [:sequential db/t-quiz-card])
 ;;   validate-db]
  (fn [db [_ cards]]
    (assoc db :quiz-cards cards)))
@@ -361,3 +362,21 @@
    {::fx/firebase-answer-quiz0 {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
                                 :values values
                                 :on-success (fn [] (re-frame/dispatch [::navigate :word-penne.pages.home/home]))}}))
+
+(defn- check-answer [answer correct-text]
+  (cond
+    (str/blank? answer) false
+
+    (= (str/lower-case (str/trim answer))
+       (str/lower-case correct-text)) true
+
+    :else false))
+
+(re-frame/reg-event-db
+ ::answer-quiz
+ (fn [db [_ {:keys [values]}]]
+   (let [answer (values "answer")
+         correct-text (values "correct-text")
+         judgement (if (check-answer answer correct-text) "Correct" "Wrong")
+         index @(re-frame/subscribe [::subs/quiz-pointer])]
+     (assoc-in db [:quiz-cards index :judgement] judgement))))

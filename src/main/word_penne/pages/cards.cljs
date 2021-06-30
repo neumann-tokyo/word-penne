@@ -6,6 +6,7 @@
             [word-penne.views :as v]
             [word-penne.components.word-card-form :refer [WordCardForm]]
             [word-penne.components.quiz-slider :refer [QuizSlider]]
+            [word-penne.components.quiz-form :refer [QuizForm]]
             [word-penne.components.confirmation-modal :refer [ConfirmationModal]]))
 
 (defmethod v/view ::new [_]
@@ -24,7 +25,16 @@
 
 (defmethod v/view ::quiz [_]
   @(re-frame/subscribe [::subs/locale])
-  [:div "quiz"])
+  [:<>
+   [QuizForm]
+   [ConfirmationModal {:title (tr "Do you quit? The data in the middle will be deleted.")
+                       :ok-event (fn [e]
+                                   (.preventDefault e)
+                                   (re-frame/dispatch [::events/navigate :word-penne.pages.home/home])
+                                   (re-frame/dispatch [::events/hide-confirmation-modal]))
+                       :cancel-event (fn [e]
+                                       (.preventDefault e)
+                                       (re-frame/dispatch [::events/hide-confirmation-modal]))}]])
 
 (defmethod v/view ::quiz0 [_]
   @(re-frame/subscribe [::subs/locale])
