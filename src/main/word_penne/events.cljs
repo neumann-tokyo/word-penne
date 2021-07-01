@@ -374,9 +374,13 @@
 
 (re-frame/reg-event-db
  ::answer-quiz
- (fn [db [_ {:keys [values]}]]
-   (let [answer (values "answer")
-         correct-text (values "correct-text")
-         judgement (if (check-answer answer correct-text) "Correct" "Wrong")
+ (fn [db [_ values]]
+   (let [judgement (if (check-answer (values "answer") (values "correct-text")) "Correct" "Wrong")
          index @(re-frame/subscribe [::subs/quiz-pointer])]
      (assoc-in db [:quiz-cards index :judgement] judgement))))
+
+(re-frame/reg-event-db
+ ::increment-quiz-pointer
+ (fn [db [_ _]]
+   ;; TODO quiz-pointer が (count quiz-cards) より大きくなったときの処理が必要
+   (update db :quiz-pointer inc)))

@@ -30,6 +30,16 @@
 (stylefy/class "turned-flip"
                {:transform "rotateY(180deg)"
                 :border "none"})
+(stylefy/class "fadein"
+               {:animation-name "fadein"
+                :animation-duration "2s"})
+(stylefy/keyframes "fadein"
+                   [:from
+                    {:opacity 0
+                     :transform "translateY(20px)"}]
+                   [:to
+                    {:opacity 1
+                     :transform "translateY(0)"}])
 (def s-card-inner
   {:display "grid"
    :width "100%"
@@ -78,8 +88,6 @@
 (defn QuizForm []
   @(re-frame/subscribe [::subs/locale])
   (let [card @(re-frame/subscribe [::subs/quiz-card])]
-    (prn card)
-    (prn @(re-frame/subscribe [::subs/quiz-cards]))
     [:div
      [:div (use-style s-header)
       [:a (use-style s-cancel-link {:href "#"
@@ -91,7 +99,7 @@
 
      [:div (use-style s-container)
       [:div (use-style s-card)
-       [:div (use-style s-card-inner (if (str/blank? (:judgement card)) {} {:class "turned-flip"}))
+       [:div (use-style s-card-inner (if (str/blank? (:judgement card)) {:class "fadein"} {:class "turned-flip"}))
         [:div (use-style s-card-front) (:front card)]
         [:div (use-style s-card-back) (:back card)]]]
       [fork/form {:path [:form]
@@ -117,7 +125,7 @@
                                        :on-change handle-change
                                        :on-blur handle-blur
                                        :read-only submitting?})]
-            [:input {:type "hidden"
+            [:input {:type "text" ;"hidden"
                      :id "correct-text"
                      :name "correct-text"
                      :value (values "correct-text")
@@ -130,4 +138,11 @@
                [JudgementMark (:judgement card)]
                [:span (tr (:judgement card))]
                [:span (use-style s-buttons-wrap)
-                [Button {} (tr "Next")]]])]]])]]]))
+                ;; TODO ここも submit にしておいて submit の fn が変わるようにしたほうがいいかも
+                [Button {:kind "secondary"
+                         :href "#"
+                         :on-click (fn [e]
+                                     (.preventDefault e)
+                                     (re-frame/dispatch [::events/increment-quiz-pointer])
+                                     ;; TODO formの初期化処理が必要
+                                     )}(tr "Next")]]])]]])]]]))
