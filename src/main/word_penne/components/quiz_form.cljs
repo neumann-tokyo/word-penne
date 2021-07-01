@@ -87,7 +87,8 @@
 
 (defn QuizForm []
   @(re-frame/subscribe [::subs/locale])
-  (let [card @(re-frame/subscribe [::subs/quiz-card])]
+  (let [card @(re-frame/subscribe [::subs/quiz-card])
+        before-answer? (str/blank? (:judgement card))]
     [:div
      [:div (use-style s-header)
       [:a (use-style s-cancel-link {:href "#"
@@ -99,7 +100,7 @@
 
      [:div (use-style s-container)
       [:div (use-style s-card)
-       [:div (use-style s-card-inner (if (str/blank? (:judgement card)) {:class "fadein"} {:class "turned-flip"}))
+       [:div (use-style s-card-inner {:class (if before-answer? "fadein" "turned-flip")})
         [:div (use-style s-card-front) (:front card)]
         [:div (use-style s-card-back) (:back card)]]]
       [fork/form {:path [:form]
@@ -111,6 +112,7 @@
                   :on-submit #(re-frame/dispatch [::events/answer-quiz %])}
        (fn [{:keys [values
                     form-id
+                    set-values
                     handle-change
                     handle-blur
                     submitting?
@@ -125,24 +127,26 @@
                                        :on-change handle-change
                                        :on-blur handle-blur
                                        :read-only submitting?})]
-            [:input {:type "text" ;"hidden"
+            [:input {:type "hidden"
                      :id "correct-text"
                      :name "correct-text"
                      :value (values "correct-text")
                      :read-only true}]]
            [:div (use-style s-buttons-container)
-            (if (str/blank? (:judgement card))
+            (if before-answer?
               [:span (use-style s-buttons-wrap)
                [:button (use-style sf/s-submit {:type "submit" :disabled submitting?}) (tr "OK")]]
               [:<>
                [JudgementMark (:judgement card)]
                [:span (tr (:judgement card))]
                [:span (use-style s-buttons-wrap)
-                ;; TODO ここも submit にしておいて submit の fn が変わるようにしたほうがいいかも
-                [Button {:kind "secondary"
-                         :href "#"
-                         :on-click (fn [e]
-                                     (.preventDefault e)
-                                     (re-frame/dispatch [::events/increment-quiz-pointer])
-                                     ;; TODO formの初期化処理が必要
-                                     )}(tr "Next")]]])]]])]]]))
+                [Button
+                 {:kind "secondary"
+                  :href "#"
+                  :on-click (fn [e]
+                              (.preventDefault e)
+                              (re-frame/dispatch-sync [::events/increment-quiz-pointer])
+                              (set-values {"answer" nil
+                                           ;; NOTE card 変数を使うと更新が間に合わないので subscribe する
+                                           "correct-text" (:back @(re-frame/subscribe [::subs/quiz-card]))}))}
+                 (tr "Next")]]])]]])]]]))

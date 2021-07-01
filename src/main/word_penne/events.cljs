@@ -374,7 +374,7 @@
 
 (re-frame/reg-event-db
  ::answer-quiz
- (fn [db [_ values]]
+ (fn [db [_ {:keys [values]}]]
    (let [judgement (if (check-answer (values "answer") (values "correct-text")) "Correct" "Wrong")
          index @(re-frame/subscribe [::subs/quiz-pointer])]
      (assoc-in db [:quiz-cards index :judgement] judgement))))
