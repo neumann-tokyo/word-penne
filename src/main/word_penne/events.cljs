@@ -379,6 +379,7 @@
 
     :else false))
 
+;; TODO ここで誤答率とかを計算して firebase を更新する処理が必要
 (re-frame/reg-event-db
  ::answer-quiz
  (fn [db [_ {:keys [values]}]]
@@ -389,5 +390,4 @@
 (re-frame/reg-event-db
  ::increment-quiz-pointer
  (fn [db [_ _]]
-   ;; TODO quiz-pointer が (count quiz-cards) より大きくなったときの処理が必要
    (update db :quiz-pointer inc)))

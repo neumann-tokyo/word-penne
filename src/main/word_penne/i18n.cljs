@@ -56,6 +56,7 @@
        "Result" "結果"
        "Answer" "正解"
        "Finish" "終了"
+       "Edit" "編集"
        "Do you quit? The data in the middle will be deleted." "クイズを終了しますか？途中のデータは削除されます。"})
 
 ;; TODO キャッシュしたいがそうするとなぜかgettextオブジェクトをうまく読み込めない
