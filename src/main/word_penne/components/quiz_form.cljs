@@ -85,6 +85,12 @@
 (def s-buttons-wrap
   {:margin-left ".5rem"})
 
+(defn- next-page-action [set-values]
+  (re-frame/dispatch-sync [::events/increment-quiz-pointer])
+  (set-values {"answer" nil
+               ;; NOTE card 変数を使うと更新が間に合わないので subscribe する
+               "correct-text" (:back @(re-frame/subscribe [::subs/quiz-card]))}))
+
 (defn QuizForm []
   @(re-frame/subscribe [::subs/locale])
   (let [card @(re-frame/subscribe [::subs/quiz-card])
@@ -127,7 +133,11 @@
                                        :autoFocus true
                                        :on-change handle-change
                                        :on-blur handle-blur
-                                       :read-only submitting?})]
+                                       :on-key-press (fn [e]
+                                                       (when (and (not before-answer?) (= (.-key e) "Enter"))
+                                                         (.preventDefault e)
+                                                         (next-page-action set-values)))
+                                       :read-only (not before-answer?)})]
             [:input {:type "hidden"
                      :id "correct-text"
                      :name "correct-text"
@@ -147,8 +157,5 @@
                   :href "#"
                   :on-click (fn [e]
                               (.preventDefault e)
-                              (re-frame/dispatch-sync [::events/increment-quiz-pointer])
-                              (set-values {"answer" nil
-                                           ;; NOTE card 変数を使うと更新が間に合わないので subscribe する
-                                           "correct-text" (:back @(re-frame/subscribe [::subs/quiz-card]))}))}
+                              (next-page-action set-values))}
                  (tr "Next")]]])]]])]]]))
