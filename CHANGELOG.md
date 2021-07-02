@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.12](https://github.com/neumann-tokyo/word-penne/compare/v0.0.11...v0.0.12) (2021-07-02)
+
+
+### Bug Fixes
+
+* design of quiz ([#60](https://github.com/neumann-tokyo/word-penne/issues/60)) ([e517df3](https://github.com/neumann-tokyo/word-penne/commit/e517df3408e9d061a1e34c13725e713e32dc9de8))
+
 ### [0.0.11](https://github.com/neumann-tokyo/word-penne/compare/v0.0.10...v0.0.11) (2021-07-03)
 
 ### [0.0.10](https://github.com/neumann-tokyo/word-penne/compare/v0.0.9...v0.0.10) (2021-06-27)
