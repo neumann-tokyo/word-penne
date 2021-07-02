@@ -124,6 +124,7 @@
                                        :id "answer"
                                        :name "answer"
                                        :value (values "answer")
+                                       :autoFocus true
                                        :on-change handle-change
                                        :on-blur handle-blur
                                        :read-only submitting?})]
@@ -140,6 +141,7 @@
                [JudgementMark (:judgement card)]
                [:span (tr (:judgement card))]
                [:span (use-style s-buttons-wrap)
+                ;; TODO Enter で反応するようにする
                 [Button
                  {:kind "secondary"
                   :href "#"

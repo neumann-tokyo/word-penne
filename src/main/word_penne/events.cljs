@@ -41,6 +41,7 @@
 
 (defmulti on-navigate (fn [view _] view))
 (defmethod on-navigate :word-penne.pages.home/home [_ _]
+  (re-frame/dispatch [::reset-quiz-pointer])
   (re-frame/dispatch [::reset-tags-error])
   (re-frame/dispatch [::fetch-tags])
   {:dispatch [::fetch-cards]})
@@ -267,6 +268,12 @@
  (fn [{:keys [db]} [_ search-tag]]
    {:db (assoc db :search-tag search-tag)
     :dispatch [::fetch-cards]}))
+
+(re-frame/reg-event-db
+ ::reset-quiz-pointer
+ [validate-db]
+ (fn [db [_ _]]
+   (assoc db :quiz-pointer 0)))
 
 (re-frame/reg-event-db
  ::reset-tags-error
