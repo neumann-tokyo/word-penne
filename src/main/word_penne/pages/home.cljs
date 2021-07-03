@@ -38,9 +38,6 @@
    [:div (use-style s-container)
     [Button {:kind "secondary" :on-click (fn [e]
                                            (.preventDefault e)
-                                           (re-frame/dispatch [::events/setup-quiz0]))} "Quiz Old"]
-    [Button {:kind "secondary" :on-click (fn [e]
-                                           (.preventDefault e)
                                            (re-frame/dispatch [::events/setup-quiz]))} (tr "Quiz")]
     [:div (use-style s-top-right)
      [:span (use-style s-cards-order-container)
