@@ -113,8 +113,10 @@
        [:div (use-style s-card-inner {:class (if before-answer? "fadein" "turned-flip")})
         [:div (use-style s-card-front) (:front card)]
         [:div (use-style s-card-back)
-         [:div (use-style s-card-back-title) (:back card)]
-         [:p (:comment card)]]]]
+         (when (not before-answer?)
+           [:<>
+            [:div (use-style s-card-back-title) (:back card)]
+            [:p (:comment card)]])]]]
       [fork/form {:path [:form]
                   :form-id "quiz-answer-form"
                   :prevent-default? true
