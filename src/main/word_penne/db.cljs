@@ -28,11 +28,6 @@
   [:enum "front" "back" "comment"])
 (def t-search-word
   [:string {:min 0 :max 140}])
-(def t-quiz-card0
-  [:map
-   [:uid string?]
-   [:front string?]
-   [:back string?]])
 (def t-cards-order
   [:enum "updatedAt/desc" "random/asc" "wrongRate/desc"])
 (def t-judgement

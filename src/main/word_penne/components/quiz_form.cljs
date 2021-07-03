@@ -53,18 +53,21 @@
    :-webkit-backface-visibility "hidden"
    :backface-visibility "hidden"
    :text-align "center"
-   :font-size "2rem"
    :grid-column 1
    :grid-row 1
-   :padding-top "4rem"
-   :font-weight "bold"})
+   :padding-top "4rem"})
 (def s-card-front
   (merge share/m-card
-         m-card-design))
+         m-card-design
+         {:font-size "2rem"
+          :font-weight "bold"}))
 (def s-card-back
   (merge share/m-card
          m-card-design
          {:transform "rotateY(180deg)"}))
+(def s-card-back-title
+  {:font-size "2rem"
+   :font-weight "bold"})
 (def s-input
   {:width "40%"
    :margin "1rem auto"
@@ -109,7 +112,9 @@
       [:div (use-style s-card)
        [:div (use-style s-card-inner {:class (if before-answer? "fadein" "turned-flip")})
         [:div (use-style s-card-front) (:front card)]
-        [:div (use-style s-card-back) (:back card)]]]
+        [:div (use-style s-card-back)
+         [:div (use-style s-card-back-title) (:back card)]
+         [:p (:comment card)]]]]
       [fork/form {:path [:form]
                   :form-id "quiz-answer-form"
                   :prevent-default? true

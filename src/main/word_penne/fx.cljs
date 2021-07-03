@@ -257,9 +257,8 @@
        (let [card (js->clj (.data doc) :keywordize-keys true)]
          (swap! cards
                 conj
-                ;; TODO comment とかも入れてもいいかも
-                {:uid (.-id doc) :front (:front card) :back (:back card)}
-                {:uid (.-id doc) :front (:back card) :back (:front card)}))))
+                {:uid (.-id doc) :front (:front card) :back (:back card) :comment (:comment card)}
+                {:uid (.-id doc) :front (:back card) :back (:front card) :comment (:comment card)}))))
     @cards))
 
 (re-frame/reg-fx
