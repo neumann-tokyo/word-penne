@@ -16,6 +16,7 @@
     "release": "rm -r public/js && shadow-cljs release app",
     "standard-version": "standard-version",
     "seeds": "shadow-cljs compile seeds && node build/seeds.js",
+    "channel:deploy:ios": "firebase hosting:channel:deploy ios",
     "deploy": "firebase deploy"
   },
   "devDependencies": {
