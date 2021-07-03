@@ -39,9 +39,12 @@
               (not= current-route :word-penne.pages.auth/signin))
        ;; when user signed in
        (if (= current-route :word-penne.pages.cards/quiz)
+         ;; NOTE quizのときは Header などを外す
          [:<>
           [:div (use-style s-main-container)
            [:main (use-style s-main {:id "main"}) [v/view @(re-frame/subscribe [::subs/current-route])]]]]
+
+         ;; NOTE 通常のページの処理
          [:<>
           [Header]
           [:div (use-style s-main-container)

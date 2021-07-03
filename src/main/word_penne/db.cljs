@@ -28,13 +28,16 @@
   [:enum "front" "back" "comment"])
 (def t-search-word
   [:string {:min 0 :max 140}])
+(def t-cards-order
+  [:enum "updatedAt/desc" "random/asc" "wrongRate/desc"])
+(def t-judgement
+  [:enum "Correct" "Wrong"])
 (def t-quiz-card
   [:map
    [:uid string?]
    [:front string?]
-   [:back string?]])
-(def t-cards-order
-  [:enum "updatedAt/desc" "random/asc" "wrongRate/desc"])
+   [:back string?]
+   [:judgement {:optional true} t-judgement]])
 (def t-db
   [:map
    [:user
@@ -55,7 +58,8 @@
    [:search-archive boolean?]
    [:cards-order t-cards-order]
    [:quiz-cards
-    [:sequential t-quiz-card]]])
+    [:sequential t-quiz-card]]
+   [:quiz-pointer int?]])
 
 (def default-db
   {:user nil
@@ -72,4 +76,5 @@
    :search-tag nil
    :search-archive false
    :cards-order "updatedAt/desc"
-   :quiz-cards []})
+   :quiz-cards []
+   :quiz-pointer 0})

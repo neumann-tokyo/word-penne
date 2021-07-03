@@ -86,9 +86,24 @@
    (:locale db)))
 
 (re-frame/reg-sub
+ ::quiz-cards0
+ (fn [db _]
+   (:quiz-cards0 db)))
+
+(re-frame/reg-sub
  ::quiz-cards
  (fn [db _]
    (:quiz-cards db)))
+
+(re-frame/reg-sub
+ ::quiz-card
+ (fn [db _]
+   (nth (:quiz-cards db) (:quiz-pointer db))))
+
+(re-frame/reg-sub
+ ::quiz-pointer
+ (fn [db _]
+   (:quiz-pointer db)))
 
 (re-frame/reg-sub
  ::cards-order

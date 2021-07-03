@@ -40,6 +40,7 @@
 
 (defmulti on-navigate (fn [view _] view))
 (defmethod on-navigate :word-penne.pages.home/home [_ _]
+  (re-frame/dispatch [::reset-quiz-pointer])
   (re-frame/dispatch [::reset-tags-error])
   (re-frame/dispatch [::fetch-tags])
   {:dispatch [::fetch-cards]})
@@ -268,6 +269,12 @@
     :dispatch [::fetch-cards]}))
 
 (re-frame/reg-event-db
+ ::reset-quiz-pointer
+ [validate-db]
+ (fn [db [_ _]]
+   (assoc db :quiz-pointer 0)))
+
+(re-frame/reg-event-db
  ::reset-tags-error
  [validate-db]
  (fn [db [_ _]]
@@ -310,13 +317,6 @@
                                                      (re-frame/dispatch [::navigate :word-penne.pages.home/home]))}}))
 
 (re-frame/reg-event-db
- ::set-quiz-cards
-;;  [(validate-args [:maybe :string])
-;;   validate-db]
- (fn [db [_ cards]]
-   (assoc db :quiz-cards cards)))
-
-(re-frame/reg-event-db
  ::set-reverse-cards
  [(validate-args boolean?)
   validate-db]
@@ -331,6 +331,13 @@
    {:db (assoc db :cards-order res)
     :dispatch [::fetch-cards]}))
 
+(re-frame/reg-event-db
+ ::set-quiz-cards
+ [(validate-args [:sequential db/t-quiz-card])
+  validate-db]
+ (fn [db [_ cards]]
+   (assoc db :quiz-cards cards)))
+
 (re-frame/reg-event-fx
  ::setup-quiz
  (fn [_ _]
@@ -341,7 +348,30 @@
 
 (re-frame/reg-event-fx
  ::answer-quiz
+ [(validate-args [:map
+                  [:values
+                   [:map
+                    ["answer" [:or nil? string?]]
+                    ["correct-text" string?]
+                    ["uid" string?]]]])]
  (fn [_ [_ {:keys [values]}]]
    {::fx/firebase-answer-quiz {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
                                :values values
-                               :on-success (fn [] (re-frame/dispatch [::navigate :word-penne.pages.home/home]))}}))
+                               :on-success (fn [judgement]
+                                             (re-frame/dispatch [::set-quiz-judgement
+                                                                 @(re-frame/subscribe [::subs/quiz-pointer])
+                                                                 judgement]))}}))
+
+(re-frame/reg-event-db
+ ::set-quiz-judgement
+ [(validate-args 0 number?)
+  (validate-args 1 db/t-judgement)
+  validate-db]
+ (fn [db [_ index judgement]]
+   (assoc-in db [:quiz-cards index :judgement] judgement)))
+
+(re-frame/reg-event-db
+ ::increment-quiz-pointer
+ [validate-db]
+ (fn [db [_ _]]
+   (update db :quiz-pointer inc)))
