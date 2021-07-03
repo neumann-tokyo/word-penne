@@ -2,7 +2,6 @@
   (:require [re-frame.core :as re-frame]
             [malli.core :as m]
             [cljs.pprint :refer [pprint]]
-            [clojure.string :as str]
             [word-penne.db :as db]
             [word-penne.fx :as fx]
             [word-penne.subs :as subs]
@@ -370,22 +369,20 @@
                                 :values values
                                 :on-success (fn [] (re-frame/dispatch [::navigate :word-penne.pages.home/home]))}}))
 
-(defn- check-answer [answer correct-text]
-  (cond
-    (str/blank? answer) false
-
-    (= (str/lower-case (str/trim answer))
-       (str/lower-case correct-text)) true
-
-    :else false))
-
-;; TODO ここで誤答率とかを計算して firebase を更新する処理が必要
-(re-frame/reg-event-db
+(re-frame/reg-event-fx
  ::answer-quiz
- (fn [db [_ {:keys [values]}]]
-   (let [judgement (if (check-answer (values "answer") (values "correct-text")) "Correct" "Wrong")
-         index @(re-frame/subscribe [::subs/quiz-pointer])]
-     (assoc-in db [:quiz-cards index :judgement] judgement))))
+ (fn [_ [_ {:keys [values]}]]
+   {::fx/firebase-answer-quiz {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
+                               :values values
+                               :on-success (fn [judgement]
+                                             (re-frame/dispatch [::set-quiz-judgement
+                                                                 @(re-frame/subscribe [::subs/quiz-pointer])
+                                                                 judgement]))}}))
+
+(re-frame/reg-event-db
+ ::set-quiz-judgement
+ (fn [db [_ index judgement]]
+   (assoc-in db [:quiz-cards index :judgement] judgement)))
 
 (re-frame/reg-event-db
  ::increment-quiz-pointer

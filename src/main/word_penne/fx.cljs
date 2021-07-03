@@ -313,43 +313,39 @@
                                    (get-cards quiz-snap)))]
          (on-success (shuffle cards)))))))
 
-(defn- wrong-count-by-uid [values]
-  (let [uid-judgements (for [index (range 0 quiz-count)
-                             :let [uid (get values (str "uid-" index))
-                                   judgement (get values (str "judgement-" index))]
-                             :when (and (seq uid) (seq judgement))]
-                         [uid judgement])]
-    (reduce
-     (fn [r [k v]]
-       (as-> (or (get r k) 0) count
-         (if (= v "Wrong") (inc count) count)
-         (conj r {k count})))
-     {}
-     uid-judgements)))
+(defn- check-answer [answer correct-text]
+  (cond
+    (str/blank? answer) false
+
+    (= (str/lower-case (str/trim answer))
+       (str/lower-case correct-text)) true
+
+    :else false))
 
 (re-frame/reg-fx
- ::firebase-answer-quiz0
+ ::firebase-answer-quiz
  (fn [{:keys [user-uid values on-success]}]
    (when user-uid
-     (go
-       (let [uid-wrong-counts (wrong-count-by-uid values)
-             uids (keys uid-wrong-counts)
-             snapshot (<p! (-> (firestore)
-                               (.collection (str "users/" user-uid "/cards"))
-                               (.where (fs/document-id) "in" (clj->js uids))
-                               (.get)))
-             batch (.batch (firestore))]
-         (.forEach
-          snapshot
-          (fn [doc]
-            (let [ref (.-ref doc)
-                  uid (.-id doc)
-                  card (js->clj (.data doc) :keywordize-keys true)
-                  wrong-count (get uid-wrong-counts uid)
-                  new-quiz-count (+ (:quizCount card) 2)
-                  new-wrong-count (+ (:wrongCount card) wrong-count)]
-              (.update batch ref #js {:quizCount new-quiz-count
-                                      :wrongCount new-wrong-count
-                                      :wrongRate (double (/ new-wrong-count new-quiz-count))}))))
-         (<p! (.commit batch))
-         (on-success))))))
+     (let [judgement (if (check-answer (values "answer") (values "correct-text")) "Correct" "Wrong")
+           card-ref (-> (firestore)
+                        (.collection (str "users/" user-uid "/cards"))
+                        (.doc (values "uid")))]
+       (-> (firestore)
+           (.runTransaction
+            (fn [transaction]
+              (-> transaction
+                  (.get card-ref)
+                  (.then (fn [doc]
+                           (when (.-exists doc)
+                             (let [card (js->clj (.data doc) :keywordize-keys true)
+                                   new-quiz-count (inc (:quizCount card))
+                                   wrong-count (:wrongCount card)
+                                   new-wrong-count (if (= judgement "Correct")
+                                                     wrong-count
+                                                     (inc wrong-count))
+                                   new-wrong-rate (double (/ new-wrong-count new-quiz-count))]
+                               (-> transaction
+                                   (.update card-ref #js {:quizCount new-quiz-count
+                                                          :wrongCount new-wrong-count
+                                                          :wrongRate new-wrong-rate})))))))))
+           (.then (fn [] (on-success judgement))))))))

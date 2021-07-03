@@ -87,9 +87,10 @@
 
 (defn- next-page-action [set-values]
   (re-frame/dispatch-sync [::events/increment-quiz-pointer])
-  (set-values {"answer" nil
-               ;; NOTE card 変数を使うと更新が間に合わないので subscribe する
-               "correct-text" (:back @(re-frame/subscribe [::subs/quiz-card]))}))
+  (let [card @(re-frame/subscribe [::subs/quiz-card])]
+    (set-values {"answer" nil
+                 "correct-text" (:back card)
+                 "uid" (:uid card)})))
 
 (defn QuizForm []
   @(re-frame/subscribe [::subs/locale])
@@ -114,7 +115,8 @@
                   :prevent-default? true
                   :clean-on-unmount? true
                   :initial-values {"answer" nil
-                                   "correct-text" (:back card)}
+                                   "correct-text" (:back card)
+                                   "uid" (:uid card)}
                   :on-submit #(re-frame/dispatch [::events/answer-quiz %])}
        (fn [{:keys [values
                     form-id
@@ -139,6 +141,11 @@
                                                          (next-page-action set-values)))
                                        :read-only (not before-answer?)})]
             [:input {:type "hidden"
+                     :id "uid"
+                     :name "uid"
+                     :value (values "uid")
+                     :read-only true}]
+            [:input {:type "hidden"
                      :id "correct-text"
                      :name "correct-text"
                      :value (values "correct-text")
@@ -151,7 +158,6 @@
                [JudgementMark (:judgement card)]
                [:span (tr (:judgement card))]
                [:span (use-style s-buttons-wrap)
-                ;; TODO Enter で反応するようにする
                 [Button
                  {:kind "secondary"
                   :href "#"
