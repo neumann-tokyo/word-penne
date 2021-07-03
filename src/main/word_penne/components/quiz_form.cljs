@@ -12,21 +12,21 @@
             [word-penne.components.judgement-mark :refer [JudgementMark]]
             [word-penne.components.button :refer [Button]]))
 
-(def s-header
-  {:text-align "right"
-   :margin "2rem"})
-(def s-cancel-link
-  {:color (:title-text color)})
 (def s-container
   {})
+(def s-header
+  {:text-align "right"
+   :margin "2rem"
+   ::stylefy/media {phone-width {:margin "1rem 2rem"}}})
+(def s-cancel-link
+  {:color (:title-text color)})
 (def s-card
   {:background-color "transparent"
    :width "40%"
    :margin "1rem auto"
    :height "max-content"
    :perspective "1000px"
-   ::stylefy/media {phone-width {:width "85vw"
-                                 :margin "1rem 0"}}})
+   ::stylefy/media {phone-width {:width "85vw"}}})
 (stylefy/class "turned-flip"
                {:transform "rotateY(180deg)"
                 :border "none"})
@@ -71,8 +71,7 @@
 (def s-input
   {:width "40%"
    :margin "1rem auto"
-   ::stylefy/media {phone-width {:width "85vw"
-                                 :margin "1rem 0"}}})
+   ::stylefy/media {phone-width {:width "85vw"}}})
 (def s-text
   {:width "100%"
    :padding ".5rem"
@@ -99,7 +98,7 @@
   @(re-frame/subscribe [::subs/locale])
   (let [card @(re-frame/subscribe [::subs/quiz-card])
         before-answer? (str/blank? (:judgement card))]
-    [:div
+    [:div (use-style s-container)
      [:div (use-style s-header)
       [:a (use-style s-cancel-link {:href "#"
                                     :title "cancel"
@@ -108,7 +107,7 @@
                                                 (re-frame/dispatch [::events/show-confirmation-modal]))})
        [:span {:class "material-icons-outlined"} "cancel"]]]
 
-     [:div (use-style s-container)
+     [:div
       [:div (use-style s-card)
        [:div (use-style s-card-inner {:class (if before-answer? "fadein" "turned-flip")})
         [:div (use-style s-card-front) (:front card)]
