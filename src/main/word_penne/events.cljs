@@ -115,7 +115,9 @@
  ::fetch-user-setting
  (fn [_ _]
    {::fx/firebase-load-user-setting {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
-                                     :on-success (fn [setting] (re-frame/dispatch [::set-locale (:locale setting)]))}}))
+                                     :on-success (fn [setting]
+                                                   (re-frame/dispatch [::set-locale (:locale setting)]))
+                                     :on-failure (fn [] (re-frame/dispatch [::navigate :word-penne.pages.user/edit]))}}))
 
 (re-frame/reg-event-db
  ::set-tags
@@ -342,6 +344,7 @@
  (fn [_ _]
    {::fx/firebase-setup-quiz {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
                               :on-success (fn [cards]
+                                            (re-frame/dispatch [::reset-quiz-pointer])
                                             (re-frame/dispatch [::set-quiz-cards cards])
                                             (re-frame/dispatch [::navigate :word-penne.pages.cards/quiz]))}}))
 

@@ -8,12 +8,18 @@ describe("Create and update a card", () => {
   it("Create, update and delete a new card", () => {
     cy.visit("/");
 
+    // language setting
+    cy.wait(1000)
+    cy.getBySel("user-setting__submit").click({ force: true });
+
+    // show home page
+    cy.wait(1000)
     cy.getBySel("word-card-add-button").click({ multiple: true, force: true });
 
     // create a new card
     cy.url().should("include", "/cards/new");
  
-    cy.wait(500)
+    cy.wait(1000)
     cy.getBySel("word-card-form__front").type("make", { force: true });
     cy.getBySel("word-card-form__back").type("作る");
     cy.getBySel("word-card-form__submit").click();
@@ -25,7 +31,7 @@ describe("Create and update a card", () => {
 
     // edit the card
     cy.contains("make").contains("edit").click({ force: true });
-    cy.wait(500)
+    cy.wait(1000)
     cy.url().should("include", "edit");
     cy.getBySel("word-card-form__front").type(
       "{backspace}{backspace}{backspace}{backspace}create"

@@ -7,7 +7,9 @@
    [:email string?]
    [:photo-url string?]])
 (def t-locale
-  [:enum "en" "ja"])
+  [:or
+   nil?
+   [:enum "en" "ja"]])
 (def t-tags
   [:sequential string?])
 (def t-card
@@ -63,7 +65,7 @@
 
 (def default-db
   {:user nil
-   :locale "en"
+   :locale nil
    :reverse-cards false
    :cards []
    :clicked-card-uid nil

@@ -143,7 +143,7 @@
 
 (re-frame/reg-fx
  ::firebase-load-user-setting
- (fn [{:keys [user-uid on-success]}]
+ (fn [{:keys [user-uid on-success on-failure]}]
    (when user-uid
      (-> (firestore)
          (.collection "users")
@@ -151,9 +151,16 @@
          (.get)
          (.then
           (fn [doc]
-            (when (.-exists doc)
-              (on-success (-> (js->clj (.data doc) :keywordize-keys true)
-                              (update :locale #(or % "en")))))))))))
+            (if (.-exists doc)
+              (let [setting (js->clj (.data doc) :keywordize-keys true)]
+                (if (:locale setting)
+                  (on-success setting)
+                  (on-failure)))
+              (on-failure))))
+         (.catch
+          (fn [e]
+            (js/console.error e.message)
+            (on-failure)))))))
 
 (re-frame/reg-fx
  ::firebase-update-user-setting
