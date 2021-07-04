@@ -295,12 +295,11 @@
    {:db (assoc db :search-archive search-archive)
     :dispatch [::fetch-cards]}))
 
-(re-frame/reg-event-fx
+(re-frame/reg-event-db
  ::set-locale
  [(validate-args db/t-locale)]
- (fn [{:keys [db]} [_ locale]]
-   {::fx/i18n-set-locale {:locale locale}
-    :db (assoc db :locale locale)}))
+ (fn [db [_ locale]]
+   (assoc db :locale locale)))
 
 (def t-update-user-setting-arg
   [:map [:values
