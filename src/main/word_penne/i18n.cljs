@@ -25,6 +25,7 @@
    "Update" "更新順"
    "Random" "ランダム"
    "Wrong rate" "誤答率"
+   "Let's take the quiz and review the registered words!!" "クイズに挑戦して登録した単語を復習しましょう!!"
 
    ;; Card
    "Front" "表面"

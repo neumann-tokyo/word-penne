@@ -40,10 +40,15 @@
      [:div (use-style s-container)
       (if cards-empty?
         [:span ""]
-        [Button {:kind "secondary"
-                 :on-click (fn [e]
-                             (.preventDefault e)
-                             (re-frame/dispatch [::events/setup-quiz]))} (tr "Quiz")])
+        [:div
+         [Button {:kind "secondary"
+                  :on-click (fn [e]
+                              (.preventDefault e)
+                              (re-frame/dispatch [::events/setup-quiz]))} (tr "Quiz")]
+         (when (<= (count @(re-frame/subscribe [::subs/cards])) 3)
+           [:div
+            [:span {:class "material-icons-outlined"} "arrow_upward"]
+            (tr "Let's take the quiz and review the registered words!!")])])
       [:div (use-style s-top-right)
        [:span (use-style s-cards-order-container)
         [:span {:class "material-icons-outlined"} "sort"]
