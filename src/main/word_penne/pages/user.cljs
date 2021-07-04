@@ -25,7 +25,7 @@
                :prevent-default? true
                :clean-on-unmount? true
                :validation (va/validator-for-humans t-user-setting-form)
-               :initial-values {"locale" @(re-frame/subscribe [::subs/locale])}
+               :initial-values {"locale" (or @(re-frame/subscribe [::subs/locale]) "en")}
                :on-submit #(re-frame/dispatch [::events/update-user-setting %])}
     (fn [{:keys [values
                  errors
@@ -39,7 +39,7 @@
                                    :on-submit handle-submit})
        [:div
         [:label {:for "locale"} (tr "Locale")]
-        [:select (use-style sf/s-text {:value (or (values "locale") "en") :name "locale" :id "locale" :on-change handle-change :on-blur handle-blur :required true :data-testid "user-setting__locale"})
+        [:select (use-style sf/s-text {:value (values "locale") :name "locale" :id "locale" :on-change handle-change :on-blur handle-blur :required true :data-testid "user-setting__locale"})
          [:option {:value "en"} "English"]
          [:option {:value "ja"} "日本語"]]
         [ErrorMessange touched errors "locale"]]
