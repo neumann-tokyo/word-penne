@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.13](https://github.com/neumann-tokyo/word-penne/compare/v0.0.12...v0.0.13) (2021-07-04)
+
+
+### Features
+
+* change default card order ([9905176](https://github.com/neumann-tokyo/word-penne/commit/990517660a4eee28c4e49d0da33a8ac180c0f3b5))
+* remove gettextjs and update other packages by npm audit fix ([#64](https://github.com/neumann-tokyo/word-penne/issues/64)) ([3346c13](https://github.com/neumann-tokyo/word-penne/commit/3346c13700c9d04a93a854b4037ebaf1b4c758c8))
+* When a user don't set thier locale, the system show a setting page ([#65](https://github.com/neumann-tokyo/word-penne/issues/65)) ([da07ad5](https://github.com/neumann-tokyo/word-penne/commit/da07ad5c8c7f6baaa3706dfb6349a0d7e72d68de))
+
 ### [0.0.12](https://github.com/neumann-tokyo/word-penne/compare/v0.0.11...v0.0.12) (2021-07-02)
 
 
