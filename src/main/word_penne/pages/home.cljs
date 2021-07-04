@@ -46,10 +46,9 @@
                                          :id "cards-order"
                                          :value @(re-frame/subscribe [::subs/cards-order])
                                          :on-change #(re-frame/dispatch [::events/set-cards-order (-> % .-target .-value)])})
-      ;;  "updatedAt/desc" "random/asc" "wrongRate/desc"
+       [:option {:value "wrongRate/desc"} (tr "Wrong rate")]
        [:option {:value "updatedAt/desc"} (tr "Update")]
-       [:option {:value "random/asc"} (tr "Random")]
-       [:option {:value "wrongRate/desc"} (tr "Wrong rate")]]]
+       [:option {:value "random/asc"} (tr "Random")]]]
      [ToggleSwitch {:on-change (fn [_]
                                  (re-frame/dispatch [::events/set-reverse-cards (not @(re-frame/subscribe [::subs/reverse-cards]))]))} (tr "Reverse")]]]
    (when-let [tag @(re-frame/subscribe [::subs/search-tag])]

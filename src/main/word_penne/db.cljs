@@ -29,7 +29,7 @@
 (def t-search-word
   [:string {:min 0 :max 140}])
 (def t-cards-order
-  [:enum "updatedAt/desc" "random/asc" "wrongRate/desc"])
+  [:enum "wrongRate/desc" "updatedAt/desc" "random/asc"])
 (def t-judgement
   [:enum "Correct" "Wrong"])
 (def t-quiz-card
@@ -75,6 +75,6 @@
    :search-word nil
    :search-tag nil
    :search-archive false
-   :cards-order "updatedAt/desc"
+   :cards-order "wrongRate/desc"
    :quiz-cards []
    :quiz-pointer 0})
