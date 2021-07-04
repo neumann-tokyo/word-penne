@@ -2,12 +2,18 @@ describe("Multiple cards", () => {
     it("search by tags", () => {
         cy.visit("/");
 
+        // language setting
+        cy.wait(1000)
+        cy.getBySel("user-setting__submit").click({ force: true });
+
+        // show home page
+        cy.wait(1000)
         cy.getBySel("word-card-add-button").click({ multiple: true, force: true });
 
         // create a new card
         cy.url().should("include", "/cards/new");
 
-        cy.wait(500)
+        cy.wait(1000)
         cy.getBySel("word-card-form__front").type("make", { force: true });
         cy.getBySel("word-card-form__back").type("作る");
         cy.getBySel("word-card-form__submit").click();
@@ -21,7 +27,7 @@ describe("Multiple cards", () => {
 
         cy.url().should("include", "/cards/new");
 
-        cy.wait(500)
+        cy.wait(1000)
         cy.getBySel("word-card-form__front").type("have", { force: true });
         cy.getBySel("word-card-form__back").type("持つ");
         cy.getBySel("tag-name-0").type("基礎");
