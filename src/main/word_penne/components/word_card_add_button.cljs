@@ -19,7 +19,6 @@
   {:font-size "2.5rem"
    :font-weight "bold"})
 
-
 (defn WordCardAddButton [_]
   [:a (use-style s-create-word-card-button {:href (path-for routes :word-penne.pages.cards/new)
                                             :title "New"
