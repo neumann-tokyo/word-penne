@@ -14,7 +14,7 @@ describe("Create and update a card", () => {
 
     // show home page
     cy.wait(1000)
-    cy.getBySel("word-card-add-button").click({ multiple: true, force: true });
+    cy.get("header [data-testid=word-card-add-button]").click({ multiple: true, force: true });
 
     // create a new card
     cy.url().should("include", "/cards/new");

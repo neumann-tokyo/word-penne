@@ -8,7 +8,7 @@ describe("Multiple cards", () => {
 
         // show home page
         cy.wait(1000)
-        cy.getBySel("word-card-add-button").click({ multiple: true, force: true });
+        cy.get("header [data-testid=word-card-add-button]").click({ multiple: true, force: true });
 
         // create a new card
         cy.url().should("include", "/cards/new");
@@ -23,7 +23,7 @@ describe("Multiple cards", () => {
         cy.contains("作る");
 
         // make a second card
-        cy.getBySel("word-card-add-button").click({ multiple: true, force: true });
+        cy.get("header [data-testid=word-card-add-button]").click({ multiple: true, force: true });
 
         cy.url().should("include", "/cards/new");
 
