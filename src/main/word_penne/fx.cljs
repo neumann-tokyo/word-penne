@@ -165,11 +165,6 @@
          (.set #js {:locale (values "locale")} #js {:merge true})
          (.then on-success)))))
 
-;; (re-frame/reg-fx
-;;  ::i18n-set-locale
-;;  (fn [{:keys [locale]}]
-;;    (i18n/set-locale locale)))
-
 (re-frame/reg-fx
  ::firebase-lock-card-by-uid
  (fn [{:keys [user-uid card-uid lock on-success]}]
