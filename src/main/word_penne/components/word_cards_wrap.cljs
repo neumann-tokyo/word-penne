@@ -4,7 +4,8 @@
             [word-penne.subs :as subs]
             [word-penne.events :as events]
             [word-penne.components.word-card :refer [WordCard]]
-            [word-penne.style.vars :refer [color layout-vars phone-width]]))
+            [word-penne.style.vars :refer [color layout-vars phone-width]]
+            [word-penne.components.infinite-scroll-example :refer [InfiniteScrollExample]]))
 
 (def s-cards-wrap
   {:width "100%"
@@ -29,4 +30,5 @@
 (defn WordCardsWrap []
   [:<>
    (word-card-container [::subs/locked-cards])
-   (word-card-container [::subs/unlocked-cards])])
+   (word-card-container [::subs/unlocked-cards])
+   [InfiniteScrollExample]])
