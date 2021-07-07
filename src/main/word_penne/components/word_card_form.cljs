@@ -47,7 +47,7 @@
         [ErrorMessange touched errors "back"]]
        [:div
         [:label {:for "comment"} (tr "Comment")]
-        [:input (use-style sf/s-text {:type "text" :id "comment" :name "comment" :data-testid "word-card-form__comment" :value (values "comment") :on-change handle-change :on-blur handle-blur})]
+        [:textarea (use-style sf/s-text {:id "comment" :name "comment" :data-testid "word-card-form__comment" :value (values "comment") :on-change handle-change :on-blur handle-blur :rows 3})]
         [ErrorMessange touched errors "comment"]]
        ;; TODO validate tags
        [:div
