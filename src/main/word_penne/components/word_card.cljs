@@ -1,6 +1,7 @@
 (ns word-penne.components.word-card
   (:require [re-frame.core :as re-frame]
             [stylefy.core :as stylefy :refer [use-style]]
+            [clojure.string :as str]
             [word-penne.events :as events]
             [word-penne.style.vars :refer [color layout-vars phone-width]]
             [word-penne.style.share :as share]
@@ -115,7 +116,8 @@
         (:back attrs)
         [SpeechMark (:back attrs)]]
        (when (:comment attrs)
-         [:p (:comment attrs)])]
+         [:p {:dangerouslySetInnerHTML
+              {:__html (str/replace (:comment attrs) #"\n" "<br>")}}])]
       [:div (use-style s-tags-container)
        [TagBadges (:tags attrs)]]
       [:div (use-style s-flip-card-buttons)
