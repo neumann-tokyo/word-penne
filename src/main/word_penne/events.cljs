@@ -79,13 +79,15 @@
 
 (re-frame/reg-event-fx
  ::fetch-cards
- (fn [_ _]
+ (fn [_ [_ {:keys [last-visible]}]]
    {::fx/firebase-load-cards {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
                               :search-target @(re-frame/subscribe [::subs/search-target])
                               :search-word @(re-frame/subscribe [::subs/search-word])
                               :search-tag @(re-frame/subscribe [::subs/search-tag])
                               :search-archive @(re-frame/subscribe [::subs/search-archive])
                               :cards-order @(re-frame/subscribe [::subs/cards-order])
+                              :last-visible last-visible
+                              :cards @(re-frame/subscribe [::subs/cards])
                               :on-success (fn [cards] (re-frame/dispatch [::set-cards cards]))}}))
 
 (re-frame/reg-event-db

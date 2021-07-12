@@ -31,4 +31,13 @@
   [:<>
    (word-card-container [::subs/locked-cards])
    (word-card-container [::subs/unlocked-cards])
-   [InfiniteScrollExample]])
+   [:p
+    [:a {:href "#"
+         :on-click (fn [e]
+                     (.preventDefault e)
+                     (re-frame/dispatch [::events/fetch-cards {:last-visible (last @(re-frame/subscribe [::subs/cards]))}]))}
+     "次へ"]
+    [:br]
+    [:br]]
+   ;;  [InfiniteScrollExample]
+   ])

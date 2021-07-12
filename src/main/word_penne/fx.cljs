@@ -28,7 +28,7 @@
 
 (re-frame/reg-fx
  ::firebase-load-cards
- (fn [{:keys [user-uid search-target search-word search-tag search-archive cards-order on-success]}] ; TODO I want to pass a sort order
+ (fn [{:keys [user-uid search-target search-word search-tag search-archive cards-order last-visible cards on-success]}] ; TODO I want to pass a sort order
    (when user-uid
      (go
        (let [[order-column order-direction] (str/split cards-order #"/")
@@ -44,9 +44,15 @@
                                    (.startAt search-word)
                                    (.endAt (str search-word "\uf8ff")))
                                (.orderBy f order-column order-direction))
+                             (if last-visible
+                               (.startAt f (get last-visible (keyword order-column)))
+                               f)
                              (.limit f 50)
                              (.get f)))
-             result (r/atom [])]
+             _ (prn (get last-visible (keyword order-column)))
+             result (r/atom (if last-visible
+                              cards
+                              []))]
          (.forEach snapshot
                    (fn [doc]
                      (swap! result conj
