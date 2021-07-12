@@ -26,9 +26,21 @@
        (.then on-success)
        (.catch on-failure))))
 
+(defn- distinct-by-uid [coll]
+  (let [uids (atom #{})]
+    (reduce
+     (fn [r v]
+       (if (contains? @uids (:uid v))
+         r
+         (do
+           (swap! uids conj (:uid v))
+           (conj r v))))
+     []
+     coll)))
+
 (re-frame/reg-fx
  ::firebase-load-cards
- (fn [{:keys [user-uid search-target search-word search-tag search-archive cards-order last-visible cards on-success]}] ; TODO I want to pass a sort order
+ (fn [{:keys [user-uid search-target search-word search-tag search-archive cards-order last-visible cards on-success]}]
    (when user-uid
      (go
        (let [[order-column order-direction] (str/split cards-order #"/")
@@ -43,13 +55,16 @@
                                    (.orderBy search-target)
                                    (.startAt search-word)
                                    (.endAt (str search-word "\uf8ff")))
-                               (.orderBy f order-column order-direction))
+                               (-> f
+                                   (.orderBy order-column order-direction)
+                                   (.orderBy "createdAt")))
                              (if last-visible
-                               (.startAt f (get last-visible (keyword order-column)))
+                               (.startAt f
+                                         (get last-visible (keyword order-column))
+                                         (get last-visible :createdAt))
                                f)
                              (.limit f 50)
                              (.get f)))
-             _ (prn (get last-visible (keyword order-column)))
              result (r/atom (if last-visible
                               cards
                               []))]
@@ -58,7 +73,7 @@
                      (swap! result conj
                             (conj {:uid (.-id doc)}
                                   (js->clj (.data doc) :keywordize-keys true)))))
-         (on-success @result))))))
+         (on-success (distinct-by-uid @result)))))))
 
 (re-frame/reg-fx
  ::firebase-load-tags
