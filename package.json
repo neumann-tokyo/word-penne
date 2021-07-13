@@ -32,6 +32,7 @@
     "highlight.js": "9.18.1",
     "react": "16.13.0",
     "react-dom": "16.13.0",
-    "react-highlight.js": "1.0.7"
+    "react-highlight.js": "1.0.7",
+    "react-infinite-scroll-component": "^6.1.0"
   }
 }
