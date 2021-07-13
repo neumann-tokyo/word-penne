@@ -1,11 +1,11 @@
 (ns word-penne.components.word-cards-wrap
-  (:require [stylefy.core :as stylefy :refer [use-style]]
+  (:require ["react-infinite-scroll-component" :as InfiniteScroll]
+            [stylefy.core :as stylefy :refer [use-style]]
             [re-frame.core :as re-frame]
             [word-penne.subs :as subs]
             [word-penne.events :as events]
             [word-penne.components.word-card :refer [WordCard]]
-            [word-penne.style.vars :refer [color layout-vars phone-width]]
-            [word-penne.components.infinite-scroll-example :refer [InfiniteScrollExample]]))
+            [word-penne.style.vars :refer [color layout-vars phone-width]]))
 
 (def s-cards-wrap
   {:width "100%"
@@ -28,16 +28,11 @@
                [WordCard card]]))]))
 
 (defn WordCardsWrap []
-  [:<>
+  [:> InfiniteScroll
+   {:dataLength (count @(re-frame/subscribe [::subs/unlocked-cards]))
+    :next #(re-frame/dispatch [::events/fetch-cards {:last-visible (last @(re-frame/subscribe [::subs/cards]))}])
+    :hasMore true
+    :style #js {:overflowY "hidden"}
+    :loader "Loading..."}
    (word-card-container [::subs/locked-cards])
-   (word-card-container [::subs/unlocked-cards])
-   [:p
-    [:a {:href "#"
-         :on-click (fn [e]
-                     (.preventDefault e)
-                     (re-frame/dispatch [::events/fetch-cards {:last-visible (last @(re-frame/subscribe [::subs/cards]))}]))}
-     "次へ"]
-    [:br]
-    [:br]]
-   ;;  [InfiniteScrollExample]
-   ])
+   (word-card-container [::subs/unlocked-cards])])
