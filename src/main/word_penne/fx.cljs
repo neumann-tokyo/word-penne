@@ -50,7 +50,7 @@
                              (if search-tag
                                (.where f "tags" "array-contains-any" #js[search-tag])
                                f)
-                             (if (and search-target search-word)
+                             (if (and search-target (not (str/blank? search-word)))
                                (-> f
                                    (.orderBy search-target)
                                    (.startAt search-word)
