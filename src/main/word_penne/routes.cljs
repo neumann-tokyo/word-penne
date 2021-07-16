@@ -7,6 +7,7 @@
         "auth/" {"" :word-penne.pages.auth/signin}
         "user/" {"edit" :word-penne.pages.user/edit}
         "cards/" {"new" :word-penne.pages.cards/new
+                  [:id] :word-penne.pages.cards/show
                   [:id "/edit"] :word-penne.pages.cards/edit
                   "quiz" :word-penne.pages.cards/quiz}
         "tags/" {"" :word-penne.pages.tags/index}}])

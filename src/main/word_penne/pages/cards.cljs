@@ -7,11 +7,17 @@
             [word-penne.components.word-card-form :refer [WordCardForm]]
             [word-penne.components.quiz-form :refer [QuizForm]]
             [word-penne.components.quiz-result :refer [QuizResult]]
-            [word-penne.components.confirmation-modal :refer [ConfirmationModal]]))
+            [word-penne.components.confirmation-modal :refer [ConfirmationModal]]
+            [word-penne.components.word-card-large :refer [WordCardLarge]]))
 
 (defmethod v/view ::new [_]
   [:div
    [WordCardForm {:on-submit #(re-frame/dispatch [::events/create-card %])}]])
+
+(defmethod v/view ::show []
+  [:div
+   (when-let [card @(re-frame/subscribe [::subs/selected-card])]
+     [WordCardLarge card])])
 
 (defmethod v/view ::edit [_]
   [:div

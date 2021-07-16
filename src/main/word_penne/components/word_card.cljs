@@ -132,6 +132,12 @@
         [:a (use-style s-flip-card-button {:href "#"
                                            :on-click (fn [e]
                                                        (.preventDefault e)
+                                                       (re-frame/dispatch [::events/navigate :word-penne.pages.cards/show {:id (:uid attrs)}]))
+                                           :title "open"})
+         [:span {:class "material-icons-outlined"} "open_in_new"]]
+        [:a (use-style s-flip-card-button {:href "#"
+                                           :on-click (fn [e]
+                                                       (.preventDefault e)
                                                        (re-frame/dispatch [::events/navigate :word-penne.pages.cards/edit {:id (:uid attrs)}]))
                                            :title "edit"})
          [:span {:class "material-icons-outlined"} "edit"]]]
