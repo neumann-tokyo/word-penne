@@ -22,7 +22,11 @@
 
 (defn- word-card-container [target]
   (when-let [cards (seq @(re-frame/subscribe target))]
-    [:div (use-style s-cards-wrap)
+    [:div (use-style s-cards-wrap
+                     {:on-click (fn [e]
+                                  (.preventDefault e)
+                                  (re-frame/dispatch
+                                   [::events/set-clicked-card-uid nil]))})
      (doall (for [card cards]
               [:div (use-style s-card-item {:key (:uid card)})
                [WordCard card]]))]))

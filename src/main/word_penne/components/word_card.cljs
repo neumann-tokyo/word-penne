@@ -96,6 +96,7 @@
   [:div (use-style s-card)
    [:button (use-style s-flip-card {:on-click (fn [e]
                                                 (.preventDefault e)
+                                                (.stopPropagation e)
                                                 (re-frame/dispatch
                                                  [::events/set-clicked-card-uid
                                                   (if (= (:uid attrs) @(re-frame/subscribe [::subs/clicked-card-uid]))
