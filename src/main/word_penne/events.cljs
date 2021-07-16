@@ -44,6 +44,8 @@
   (re-frame/dispatch [::reset-tags-error])
   (re-frame/dispatch [::fetch-tags])
   {:dispatch [::fetch-cards]})
+(defmethod on-navigate :word-penne.pages.cards/show [_ params]
+  {:dispatch [::fetch-card-by-uid (:id params)]})
 (defmethod on-navigate :word-penne.pages.cards/edit [_ params]
   {:dispatch [::fetch-card-by-uid (:id params)]})
 (defmethod on-navigate :default [_ _] nil)
