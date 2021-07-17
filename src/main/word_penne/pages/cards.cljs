@@ -8,7 +8,7 @@
             [word-penne.components.quiz-form :refer [QuizForm]]
             [word-penne.components.quiz-result :refer [QuizResult]]
             [word-penne.components.confirmation-modal :refer [ConfirmationModal]]
-            [word-penne.components.word-card-large :refer [WordCardLarge]]))
+            [word-penne.components.word-card-large-wrap :refer [WordCardLargeWrap]]))
 
 (defmethod v/view ::new [_]
   [:div
@@ -17,7 +17,7 @@
 (defmethod v/view ::show []
   [:div
    (when-let [card @(re-frame/subscribe [::subs/selected-card])]
-     [WordCardLarge card])])
+     [WordCardLargeWrap card])])
 
 (defmethod v/view ::edit [_]
   [:div

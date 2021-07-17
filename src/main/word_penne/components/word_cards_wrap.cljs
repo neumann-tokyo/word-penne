@@ -5,7 +5,7 @@
             [word-penne.subs :as subs]
             [word-penne.events :as events]
             [word-penne.components.word-card :refer [WordCard]]
-            [word-penne.style.vars :refer [color layout-vars phone-width]]))
+            [word-penne.style.vars :refer [color layout-vars]]))
 
 (def s-cards-wrap
   {:width "100%"
@@ -13,8 +13,7 @@
    :column-count "auto"
    :margin-bottom "2rem"
    :column-width (:word-card-width layout-vars)
-   :background (:main-background color)
-   ::stylefy/media {phone-width {:flex-direction "column"}}})
+   :background (:main-background color)})
 (def s-card-item
   {:break-inside "avoid"
    :margin ".5rem"
