@@ -93,6 +93,7 @@
 ;; https://www.w3schools.com/howto/howto_css_flip_card.asp
 ;; https://www.w3schools.com/tags/tag_details.asp
 (defn WordCard [attrs]
+  @(re-frame/subscribe [::subs/locale])
   [:div (use-style s-card)
    [:button (use-style s-flip-card {:on-click (fn [e]
                                                 (.preventDefault e)
