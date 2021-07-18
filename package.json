@@ -33,6 +33,7 @@
     "react": "16.13.0",
     "react-dom": "16.13.0",
     "react-highlight.js": "1.0.7",
-    "react-infinite-scroll-component": "^6.1.0"
+    "react-infinite-scroll-component": "^6.1.0",
+    "textarea-caret": "^3.1.0"
   }
 }

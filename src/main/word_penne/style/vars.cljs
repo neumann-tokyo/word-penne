@@ -28,6 +28,7 @@
    :bottom-word-card-add-button 4
    :avatar-menu-container 5
    :avatar-menu 6
+   :hashtag-selection 7
    :delete-card-modal 100})
 
 (def phone-width
