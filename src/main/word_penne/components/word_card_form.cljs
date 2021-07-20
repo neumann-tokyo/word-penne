@@ -3,6 +3,7 @@
             [fork.reagent :as fork]
             [bidi.bidi :refer [path-for]]
             [re-frame.core :as re-frame]
+            ["react-mentions" :refer (MentionsInput Mention)]
             [word-penne.subs :as subs]
             [word-penne.routes :refer [routes]]
             [word-penne.style.form :as sf]
@@ -49,6 +50,11 @@
         [:label {:for "comment"} (tr "Comment")]
         [:textarea (use-style sf/s-text {:id "comment" :name "comment" :data-testid "word-card-form__comment" :value (values "comment") :on-change handle-change :on-blur handle-blur :rows 3})]
         [ErrorMessange touched errors "comment"]]
+       [:> MentionsInput {:value (or (values "comment") "")
+                          :onChange handle-change
+                          :onBlur handle-blur}
+        [:> Mention {:trigger "#"
+                     :data ["apple" "apply" "alone" "air" "application"]}]]
        ;; TODO validate tags
        [:div
         [:label {:for "tags"} (tr "Tags")]
