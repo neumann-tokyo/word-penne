@@ -49,15 +49,26 @@
                                                       :cursor-position cursor-position
                                                       :text current-text})
                                  (when-let [cards-selector @!cards-selector]
-                                          ;; NOTE show-card-selector だけでは表示する前に focus を当てようとして失敗するので
-                                          ;; 強制的に一度 display を書き換えている
+                                    ;; NOTE show-card-selector だけでは表示する前に focus を当てようとして失敗するので
+                                    ;; 強制的に一度 display を書き換えている
                                    (set! (.. cards-selector -style -display) "inline-block")
                                    (reset! show-card-selector true)
                                    (.focus cards-selector)))))
                 :on-blur handle-blur
                 :rows 3})]
 
-   (let [{:keys [cursor-x cursor-y]} (cursor-position @comment-box)]
+   (let [{:keys [cursor-x cursor-y]} (cursor-position @comment-box)
+         set-comment (fn [e]
+                       (let [current-text (-> e .-target .-value)
+                             [first-half latter-half] (split-at (:cursor-position @comment-box) (:text @comment-box))
+                             new-comment (str (str/join first-half) current-text (str/join latter-half))]
+                         (set-values {"comment" new-comment})))
+         close (fn [e]
+                 (set-values {"cards-selector" ""})
+                 (reset! show-card-selector false)
+                 (set! (.. e -target -style -display) "none")
+                 (when-let [comment @!comment]
+                   (.focus comment)))]
      [:input (use-style (merge s-card-selector
                                {:top (str cursor-y "px")
                                 :left (str cursor-x "px")
@@ -75,24 +86,14 @@
                                           27 ;; Escape
                                           (do
                                             (.preventDefault e)
-                                            (reset! show-card-selector false)
-                                            (set! (.. e -target -style -display) "none")
-                                            (when-let [comment @!comment]
-                                              (.focus comment))
+                                            (close e)
                                             false)
 
                                           13 ;; return
                                           (do
                                             (.preventDefault e)
-                                            (let [current-text (-> e .-target .-value)]
-                                              (let [[first-half latter-half] (split-at (:cursor-position @comment-box) (:text @comment-box))
-                                                    new-comment (str (str/join first-half) current-text (str/join latter-half))]
-                                                (set-values {"comment" new-comment}))
-                                              (set-values {"cards-selector" ""})
-                                              (reset! show-card-selector false)
-                                              (set! (.. e -target -style -display) "none")
-                                              (when-let [comment @!comment]
-                                                (.focus comment)))
+                                            (set-comment e)
+                                            (close e)
                                             false)
 
                                           e ;; Default
@@ -101,17 +102,11 @@
                                       (let [current-text (-> e .-target .-value)]
                                         (if (str/ends-with? current-text " ")
                                           (do
-                                            (let [[first-half latter-half] (split-at (:cursor-position @comment-box) (:text @comment-box))
-                                                  new-comment (str (str/join first-half) current-text (str/join latter-half))]
-                                              (set-values {"comment" new-comment}))
-                                            (set-values {"cards-selector" ""})
-                                            (reset! show-card-selector false)
-                                            (set! (.. e -target -style -display) "none")
-                                            (when-let [comment @!comment]
-                                              (.focus comment)))
+                                            (set-comment e)
+                                            (close  e))
                                           (handle-change e))))
                          :on-blur handle-blur})])
-
+   ;; TODO 中身が変わるようにする 
    [:datalist {:id "cards-list"}
     [:option {:value "apple" :key 0}]
     [:option {:value "apply" :key 1}]
