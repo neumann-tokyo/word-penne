@@ -40,7 +40,9 @@
     [:div (:back card)]
     (when (:comment card)
       [:div {:dangerouslySetInnerHTML
-             {:__html (str/replace (:comment card) #"\n" "<br>")}}])
+             {:__html (-> (:comment card)
+                          (str/replace #"\n" "<br>")
+                          (str/replace #"#([^\W]*)" "<a href=''>#$1</a>"))}}])
     [:div (use-style s-flip-card-buttons)
      [:div
       [:a (use-style s-flip-card-button {:href "#"
