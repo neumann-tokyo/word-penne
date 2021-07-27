@@ -109,3 +109,8 @@
  ::cards-order
  (fn [db _]
    (:cards-order db)))
+
+(re-frame/reg-sub
+ ::autocomplete-cards
+ (fn [db _]
+   (:autocomplete-cards db)))

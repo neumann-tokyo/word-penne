@@ -61,7 +61,9 @@
    [:cards-order t-cards-order]
    [:quiz-cards
     [:sequential t-quiz-card]]
-   [:quiz-pointer int?]])
+   [:quiz-pointer int?]
+   [:autocomplete-cards
+    [:sequential string?]]])
 
 (def default-db
   {:user nil
@@ -79,4 +81,5 @@
    :search-archive false
    :cards-order "wrongRate/desc"
    :quiz-cards []
-   :quiz-pointer 0})
+   :quiz-pointer 0
+   :autocomplete-cards []})

@@ -1,11 +1,13 @@
 (ns word-penne.components.comment-input
   (:require [clojure.string :as str]
-            [clojure.walk :as walk]
             [reagent.core :as r]
+            [re-frame.core :as re-frame]
             [stylefy.core :as stylefy :refer [use-style]]
             ["textarea-caret" :as getCaretCoordinates]
             [word-penne.style.form :as sf]
-            [word-penne.style.vars :refer [z-indexs]]))
+            [word-penne.style.vars :refer [z-indexs]]
+            [word-penne.subs :as subs]
+            [word-penne.events :as events]))
 
 (def s-card-selector
   (merge sf/s-text
@@ -43,9 +45,9 @@
                                  (set-values {"cards-selector" ""})
                                  (reset! comment-box {:x (.-offsetLeft comment-dom)
                                                       :y (.-offsetTop comment-dom)
-                                                      :caret (walk/keywordize-keys
-                                                              (js->clj
-                                                               (getCaretCoordinates comment-dom cursor-position)))
+                                                      :caret (js->clj
+                                                              (getCaretCoordinates comment-dom cursor-position)
+                                                              :keywordize-keys true)
                                                       :cursor-position cursor-position
                                                       :text current-text})
                                  (when-let [cards-selector @!cards-selector]
@@ -104,11 +106,13 @@
                                           (do
                                             (set-comment e)
                                             (close  e))
-                                          (handle-change e))))
+                                          (do
+                                            (re-frame/dispatch [::events/fetch-autocomplete-cards {:search-word current-text}])
+                                            (handle-change e)))))
                          :on-blur handle-blur})])
-   ;; TODO 中身が変わるようにする 
+
    [:datalist {:id "cards-list"}
-    [:option {:value "apple" :key 0}]
-    [:option {:value "apply" :key 1}]
-    [:option {:value "agein" :key 2}]
-    [:option {:value "alpha" :key 3}]]])
+    (doall (map-indexed
+            (fn [index value]
+              [:option {:value value :key index}])
+            @(re-frame/subscribe [::subs/autocomplete-cards])))]])

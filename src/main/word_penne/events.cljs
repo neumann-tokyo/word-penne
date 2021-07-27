@@ -393,3 +393,18 @@
  [validate-db]
  (fn [db [_ _]]
    (update db :quiz-pointer inc)))
+
+(re-frame/reg-event-fx
+ ::fetch-autocomplete-cards
+ (fn [_ [_ {:keys [search-word]}]]
+   {::fx/firebase-load-autocomplete-cards {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
+                                           :search-word search-word
+                                           :on-success (fn [cards] (re-frame/dispatch [::set-autocomplete-cards cards]))}}))
+
+(re-frame/reg-event-db
+ ::set-autocomplete-cards
+ [(validate-args [:sequential string?])
+  validate-db]
+ (fn [db [_ res]]
+   (assoc db
+          :autocomplete-cards res)))
