@@ -19,5 +19,12 @@
     (fn []
       [:div (use-style s-signin-container)
        [:h1 "Sign In / Sign Up"]
-       ;; TODO 利用規約(TOS)
+       [:ul
+        [:li
+         [:a {:href "https://word-penne-lp.neumann.tokyo/terms_of_service_en"} "Term of service"]]
+        [:li
+         [:a {:href "https://word-penne-lp.neumann.tokyo/terms_of_service_jp"} "利用規約"]]
+        [:li
+         [:a {:href "https://word-penne-lp.neumann.tokyo/privacy"} "Privacy Policy"]]]
+
        [:div#firebaseui-auth-container]])}))
