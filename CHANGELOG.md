@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.14](https://github.com/neumann-tokyo/word-penne/compare/v0.0.13...v0.0.14) (2021-08-07)
+
+
+### Features
+
+* infinite scroll to load cards ([#36](https://github.com/neumann-tokyo/word-penne/issues/36)) ([ae82f0f](https://github.com/neumann-tokyo/word-penne/commit/ae82f0f7335210137b10c0d4469e84580e5dc1c9))
+* show usage page for beginners ([#66](https://github.com/neumann-tokyo/word-penne/issues/66)) ([06ae86b](https://github.com/neumann-tokyo/word-penne/commit/06ae86bcd9f53de8a88fc3b8c9c8ef77f6546750))
+
+
+### Bug Fixes
+
+* error of user setting ([7da1388](https://github.com/neumann-tokyo/word-penne/commit/7da1388ef82c3a794cf8c52c12e82cbbc2307dfa))
+
 ### [0.0.13](https://github.com/neumann-tokyo/word-penne/compare/v0.0.12...v0.0.13) (2021-07-04)
 
 
