@@ -23,5 +23,8 @@
   [:div (use-style s-container)
    [WordCardLarge {:focus true} card]
    [:div (use-style s-cards-wrap)
+    ;; TODO 正規表現で取り出した単語名で検索してヒットしたやつを全部出す
+    [:div
+     (map second (re-seq #"#([^\W]*)" (:comment card)))]
     [WordCardLarge {} card]
     [WordCardLarge {} card]]])
