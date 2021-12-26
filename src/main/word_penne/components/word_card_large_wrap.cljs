@@ -3,6 +3,7 @@
             [re-frame.core :as re-frame]
             [word-penne.style.vars :refer [layout-vars color phone-width]]
             [word-penne.subs :as subs]
+            [word-penne.events :as events]
             [word-penne.components.word-card-large :refer [WordCardLarge]]))
 
 ;; TODO 全体的にCSSグリッドにしたほうが簡単に揃うかも
@@ -20,11 +21,18 @@
 
 (defn WordCardLargeWrap [card]
   @(re-frame/subscribe [::subs/locale])
+  (let [search-words (if (:comment card)
+                       (map second (re-seq #"#([^\W]*)" (:comment card)))
+                       [])]
+    (re-frame/dispatch [::events/set-relational-cards []])
+    (prn "aaaaaaa")
+    (prn (:comment card))
+    (prn search-words)
+    (doall (map #(re-frame/dispatch [::events/fetch-relational-cards {:search-word %}]) search-words))
+    nil)
+
   [:div (use-style s-container)
    [WordCardLarge {:focus true} card]
    [:div (use-style s-cards-wrap)
-    ;; TODO 正規表現で取り出した単語名で検索してヒットしたやつを全部出す
-    [:div
-     (map second (re-seq #"#([^\W]*)" (:comment card)))]
-    [WordCardLarge {} card]
-    [WordCardLarge {} card]]])
+    (doall (for [relational-card @(re-frame/subscribe [::subs/relational-cards])]
+             [WordCardLarge {} relational-card]))]])

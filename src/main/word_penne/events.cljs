@@ -92,6 +92,17 @@
                               :cards @(re-frame/subscribe [::subs/cards])
                               :on-success (fn [cards] (re-frame/dispatch [::set-cards cards]))}}))
 
+(re-frame/reg-event-fx
+ ::fetch-relational-cards
+ (fn [_ [_ {:keys [search-word]}]]
+   {::fx/firebase-load-cards {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
+                              :search-target "front"
+                              :search-word search-word
+                              :on-success (fn [cards]
+                                            (prn cards)
+                                            (let [relational-cards @(re-frame/subscribe [::subs/relational-cards])]
+                                              (re-frame/dispatch [::set-relational-cards (concat relational-cards cards)])))}}))
+
 (re-frame/reg-event-db
  ::set-cards
  [(validate-args [:sequential db/t-card])
@@ -100,6 +111,13 @@
    (assoc db
           :cards res
           :selected-card nil)))
+
+(re-frame/reg-event-db
+ ::set-relational-cards
+ [(validate-args [:sequential db/t-card])
+  validate-db]
+ (fn [db [_ res]]
+   (assoc db :relational-cards res)))
 
 (re-frame/reg-event-db
  ::set-clicked-card-uid

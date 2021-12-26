@@ -114,3 +114,8 @@
  ::autocomplete-cards
  (fn [db _]
    (:autocomplete-cards db)))
+
+(re-frame/reg-sub
+ ::relational-cards
+ (fn [db _]
+   (:relational-cards db)))

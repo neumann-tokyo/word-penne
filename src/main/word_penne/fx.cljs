@@ -46,7 +46,9 @@
        (let [[order-column order-direction] (str/split cards-order #"/")
              snapshot (<p! (as-> (firestore) f
                              (.collection f (str "users/" user-uid "/cards"))
-                             (.where f "archive" "==" (boolean search-archive))
+                             (if-not (nil? search-archive)
+                               (.where f "archive" "==" (boolean search-archive))
+                               f)
                              (if search-tag
                                (.where f "tags" "array-contains-any" #js[search-tag])
                                f)

@@ -41,8 +41,7 @@
     (when (:comment card)
       [:div {:dangerouslySetInnerHTML
              {:__html (-> (:comment card)
-                          (str/replace #"\n" "<br>")
-                          (str/replace #"#([^\W]*)" "<a href=''>#$1</a>"))}}])
+                          (str/replace #"\n" "<br>"))}}])
     [:div (use-style s-flip-card-buttons)
      [:div
       [:a (use-style s-flip-card-button {:href "#"
