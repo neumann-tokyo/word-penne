@@ -366,6 +366,18 @@
                                                                  @(re-frame/subscribe [::subs/quiz-pointer])
                                                                  judgement]))}}))
 
+(re-frame/reg-event-fx
+ ::make-the-quiz-corrent
+ [(validate-args [:map
+                  [:uid string?]])]
+ (fn [_ [_ {:keys [uid]}]]
+   {::fx/firebase-make-the-quiz-corrent {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
+                                         :card-uid uid
+                                         :on-success (fn []
+                                                       (re-frame/dispatch [::set-quiz-judgement
+                                                                           @(re-frame/subscribe [::subs/quiz-pointer])
+                                                                           "Correct"]))}}))
+
 (re-frame/reg-event-db
  ::set-quiz-judgement
  [(validate-args 0 number?)

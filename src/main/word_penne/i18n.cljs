@@ -57,6 +57,7 @@
    "Answer" "正解"
    "Finish" "終了"
    "Edit" "編集"
+   "Make it correct" "正解にする"
    "Do you quit? The data in the middle will be deleted." "クイズを終了しますか？途中のデータは削除されます。"})
 
 (defn- gettext [word-map text]
