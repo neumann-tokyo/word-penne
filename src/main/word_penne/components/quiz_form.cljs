@@ -163,6 +163,15 @@
               [:<>
                [JudgementMark (:judgement card)]
                [:span (tr (:judgement card))]
+               (when (= (:judgement card) "Wrong")
+                 [:span (use-style s-buttons-wrap)
+                  [Button
+                   {:kind "secondary"
+                    :href "#"
+                    :on-click (fn [e]
+                                (.preventDefault e)
+                                (re-frame/dispatch [::events/make-the-quiz-corrent {:uid (:uid card)}]))}
+                   (tr "Make it correct")]])
                [:span (use-style s-buttons-wrap)
                 [Button
                  {:kind "secondary"

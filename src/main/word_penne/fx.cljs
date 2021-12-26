@@ -346,3 +346,28 @@
                                                           :wrongCount new-wrong-count
                                                           :wrongRate new-wrong-rate})))))))))
            (.then (fn [] (on-success judgement))))))))
+
+(re-frame/reg-fx
+ ::firebase-make-the-quiz-corrent
+ (fn [{:keys [user-uid card-uid on-success]}]
+   (when user-uid
+     (let [card-ref (-> (firestore)
+                        (.collection (str "users/" user-uid "/cards"))
+                        (.doc card-uid))]
+       (-> (firestore)
+           (.runTransaction
+            (fn [transaction]
+              (-> transaction
+                  (.get card-ref)
+                  (.then (fn [doc]
+                           (when (.-exists doc)
+                             (let [card (js->clj (.data doc) :keywordize-keys true)
+                                   new-quiz-count (:quizCount card)
+                                   wrong-count (:wrongCount card)
+                                   new-wrong-count (dec wrong-count)
+                                   new-wrong-rate (double (/ new-wrong-count new-quiz-count))]
+                               (-> transaction
+                                   (.update card-ref #js {:quizCount new-quiz-count
+                                                          :wrongCount new-wrong-count
+                                                          :wrongRate new-wrong-rate})))))))))
+           (.then on-success))))))
