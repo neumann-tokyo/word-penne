@@ -98,10 +98,10 @@
    {::fx/firebase-load-cards {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
                               :search-target "front"
                               :search-word search-word
+                              :cards-order "updatedAt/desc"
                               :on-success (fn [cards]
-                                            (prn cards)
                                             (let [relational-cards @(re-frame/subscribe [::subs/relational-cards])]
-                                              (re-frame/dispatch [::set-relational-cards (concat relational-cards cards)])))}}))
+                                              (re-frame/dispatch-sync [::set-relational-cards (concat relational-cards cards)])))}}))
 
 (re-frame/reg-event-db
  ::set-cards
@@ -173,7 +173,13 @@
    {:db (assoc db :selected-card nil)
     ::fx/firebase-load-card-by-uid {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
                                     :card-uid card-uid
-                                    :on-success (fn [card] (re-frame/dispatch [::set-selected-card card]))}}))
+                                    :on-success (fn [card]
+                                                  (re-frame/dispatch-sync [::set-selected-card card])
+                                                  (let [search-words (if (:comment card)
+                                                                       (map second (re-seq #"#([^\W]*)" (:comment card)))
+                                                                       [])]
+                                                    (re-frame/dispatch-sync [::set-relational-cards []])
+                                                    (doall (map #(re-frame/dispatch-sync [::fetch-relational-cards {:search-word %}]) search-words))))}}))
 
 (re-frame/reg-event-db
  ::set-selected-card

@@ -6,33 +6,27 @@
             [word-penne.events :as events]
             [word-penne.components.word-card-large :refer [WordCardLarge]]))
 
-;; TODO 全体的にCSSグリッドにしたほうが簡単に揃うかも
 (def s-container
   {:width "80%"
    :margin "0 auto"
-   ::stylefy/media {phone-width {:width "100%"}}})
+   ::stylefy/media {phone-width {:width "95%"}}})
 (def s-cards-wrap
   {:width "100%"
    :height "100%"
    :column-count "auto"
    :margin "2rem 0"
    :column-width (:word-card-width layout-vars)
-   :background (:main-background color)})
+   :background (:main-background color)
+   ::stylefy/media {phone-width {:margin-top "1rem"}}})
+(def s-card-wrap
+  {:padding-top "1rem"})
 
 (defn WordCardLargeWrap [card]
   @(re-frame/subscribe [::subs/locale])
-  (let [search-words (if (:comment card)
-                       (map second (re-seq #"#([^\W]*)" (:comment card)))
-                       [])]
-    (re-frame/dispatch [::events/set-relational-cards []])
-    (prn "aaaaaaa")
-    (prn (:comment card))
-    (prn search-words)
-    (doall (map #(re-frame/dispatch [::events/fetch-relational-cards {:search-word %}]) search-words))
-    nil)
-
   [:div (use-style s-container)
-   [WordCardLarge {:focus true} card]
+   [WordCardLarge {} card]
    [:div (use-style s-cards-wrap)
-    (doall (for [relational-card @(re-frame/subscribe [::subs/relational-cards])]
-             [WordCardLarge {} relational-card]))]])
+    (doall
+     (for [relational-card @(re-frame/subscribe [::subs/relational-cards])]
+       [:div (use-style s-card-wrap {:key (:uid relational-card)})
+        [WordCardLarge {} relational-card]]))]])
