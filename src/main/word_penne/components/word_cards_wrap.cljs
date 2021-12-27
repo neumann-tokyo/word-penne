@@ -10,14 +10,17 @@
 (def s-cards-wrap
   {:width "100%"
    :height "100%"
-   :column-count "auto"
    :margin-bottom "2rem"
-   :column-width (:word-card-width layout-vars)
+   :display "flex"
+   :flex-wrap "wrap"
+   :justify-content "space-around"
    :background (:main-background color)
    ::stylefy/media {phone-width {:flex-direction "column"}}})
 (def s-card-item
   {:break-inside "avoid"
    :margin ".5rem"
+   :width "100%"
+   :max-width (:word-card-width layout-vars)
    :display "inline-block"})
 
 (defn- word-card-container [target]
