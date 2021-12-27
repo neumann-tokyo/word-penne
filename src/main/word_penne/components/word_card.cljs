@@ -83,12 +83,16 @@
     (< 0.30 wrongRate) (:weak-card-text color)
     :else (:good-card-text color)))
 
-(defn rotate-card [uid]
+(defn- rotate-card [uid]
   (let [reverse-cards? (if @(re-frame/subscribe [::subs/reverse-cards]) 1 0)
         clicked-card? (if (= uid @(re-frame/subscribe [::subs/clicked-card-uid])) 1 0)]
     (if (= (bit-xor reverse-cards? clicked-card?) 1)
       "rotateY(180deg)"
       nil)))
+
+(defn- truncate
+  [s n]
+  (subs s 0 (min (count s) n)))
 
 ;; https://www.w3schools.com/howto/howto_css_flip_card.asp
 ;; https://www.w3schools.com/tags/tag_details.asp
@@ -119,7 +123,7 @@
         [SpeechMark (:back attrs)]]
        (when (:comment attrs)
          [:p {:dangerouslySetInnerHTML
-              {:__html (str/replace (:comment attrs) #"\n" "<br>")}}])]
+              {:__html (truncate (str/replace (:comment attrs) #"\n" "<br>") 100)}}])]
       [:div (use-style s-tags-container)
        [TagBadges (:tags attrs)]]
       [:div (use-style s-flip-card-buttons)
