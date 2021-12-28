@@ -14,6 +14,7 @@
    :display "flex"
    :flex-wrap "wrap"
    :justify-content "space-around"
+   :align-items "center"
    :background (:main-background color)
    ::stylefy/media {phone-width {:flex-direction "column"}}})
 (def s-card-item
