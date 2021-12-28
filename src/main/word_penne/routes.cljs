@@ -7,9 +7,9 @@
         "auth/" {"" :word-penne.pages.auth/signin}
         "user/" {"edit" :word-penne.pages.user/edit}
         "cards/" {"new" :word-penne.pages.cards/new
+                  "quiz" :word-penne.pages.cards/quiz
                   [:id] :word-penne.pages.cards/show
-                  [:id "/edit"] :word-penne.pages.cards/edit
-                  "quiz" :word-penne.pages.cards/quiz}
+                  [:id "/edit"] :word-penne.pages.cards/edit}
         "tags/" {"" :word-penne.pages.tags/index}}])
 
 (defn navigate
