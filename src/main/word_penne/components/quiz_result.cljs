@@ -63,6 +63,12 @@
                               [JudgementMark (:judgement card)]
                               [:span (tr (:judgement card))]]]
                             [:td (use-style s-table-row-text-center)
+                             [:a (use-style s-edit-button {:href "#"
+                                                           :on-click (fn [e]
+                                                                       (.preventDefault e)
+                                                                       (re-frame/dispatch [::events/archive-card (:uid card) true]))
+                                                           :title "archive"})
+                              [:span {:class "material-icons-outlined"} "archive"]]
                              [:a (use-style s-edit-button
                                             {:href "#"
                                              :title "edit"

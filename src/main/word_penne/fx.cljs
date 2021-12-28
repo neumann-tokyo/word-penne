@@ -46,7 +46,9 @@
        (let [[order-column order-direction] (str/split cards-order #"/")
              snapshot (<p! (as-> (firestore) f
                              (.collection f (str "users/" user-uid "/cards"))
-                             (.where f "archive" "==" (boolean search-archive))
+                             (if-not (nil? search-archive)
+                               (.where f "archive" "==" (boolean search-archive))
+                               f)
                              (if search-tag
                                (.where f "tags" "array-contains-any" #js[search-tag])
                                f)
@@ -57,7 +59,7 @@
                                    (.endAt (str search-word "\uf8ff")))
                                (-> f
                                    (.orderBy order-column order-direction)
-                                   (.orderBy "createdAt")))
+                                   (.orderBy "createdAt" "desc")))
                              (if last-visible
                                (.startAt f
                                          (get last-visible (keyword order-column))
@@ -371,3 +373,25 @@
                                                           :wrongCount new-wrong-count
                                                           :wrongRate new-wrong-rate})))))))))
            (.then on-success))))))
+
+(re-frame/reg-fx
+ ::firebase-load-autocomplete-cards
+ (fn [{:keys [user-uid search-word on-success]}]
+   (when user-uid
+     (go
+       (let [snapshot (<p! (as-> (firestore) f
+                             (.collection f (str "users/" user-uid "/cards"))
+                             (if (str/blank? search-word)
+                               (-> f
+                                   (.orderBy "updatedAt" "desc"))
+                               (-> f
+                                   (.orderBy "front")
+                                   (.startAt search-word)
+                                   (.endAt (str search-word "\uf8ff"))))
+                             (.limit f 5)
+                             (.get f)))
+             result (r/atom [])]
+         (.forEach snapshot
+                   (fn [doc]
+                     (swap! result conj (:front (js->clj (.data doc) :keywordize-keys true)))))
+         (on-success @result))))))

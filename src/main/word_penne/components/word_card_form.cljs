@@ -9,6 +9,7 @@
             [word-penne.components.button :refer [Button]]
             [word-penne.components.tags-input :refer [TagsInput]]
             [word-penne.components.error-message :refer [ErrorMessange]]
+            [word-penne.components.comment-input :refer [CommentInput]]
             [word-penne.validator :as v]
             [word-penne.i18n :refer [tr]]))
 
@@ -16,7 +17,7 @@
   [:map
    [:front [:string {:min 1 :max 140}]]
    [:back [:string {:min 1 :max 140}]]
-   [:comment {:optional true} [:maybe [:string {:min 0 :max 140}]]]])
+   [:comment {:optional true} [:maybe [:string {:min 0 :max 300}]]]])
 
 (defn WordCardForm [props]
   @(re-frame/subscribe [::subs/locale])
@@ -25,7 +26,8 @@
                       :prevent-default? true
                       :clean-on-unmount? true
                       :validation (v/validator-for-humans t-card-form)
-                      :initial-values {"tags" [{"name" "" "beforeName" ""}]}}
+                      :initial-values {"tags" [{"name" "" "beforeName" ""}]}
+                      :on-submit (fn [opts] (prn opts))}
                      props)
     (fn [{:keys [values
                  errors
@@ -47,8 +49,9 @@
         [ErrorMessange touched errors "back"]]
        [:div
         [:label {:for "comment"} (tr "Comment")]
-        [:input (use-style sf/s-text {:type "text" :id "comment" :name "comment" :data-testid "word-card-form__comment" :value (values "comment") :on-change handle-change :on-blur handle-blur})]
+        [CommentInput f-props]
         [ErrorMessange touched errors "comment"]]
+
        ;; TODO validate tags
        [:div
         [:label {:for "tags"} (tr "Tags")]
@@ -62,4 +65,6 @@
                  @(re-frame/subscribe [::subs/tags])))]]
        [:div (use-style sf/s-buttons-container)
         [:button (use-style sf/s-submit {:type "submit" :data-testid "word-card-form__submit" :disabled submitting?}) (tr "Submit")] ;; TODO FIXME double submit を回避できてない...
-        [Button {:href (path-for routes :word-penne.pages.home/home)} (tr "Cancel")]]])]])
+        [Button {:on-click (fn [e]
+                             (.preventDefault e)
+                             (js/history.back))} (tr "Cancel")]]])]])

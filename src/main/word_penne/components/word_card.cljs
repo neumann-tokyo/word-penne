@@ -1,6 +1,7 @@
 (ns word-penne.components.word-card
   (:require [re-frame.core :as re-frame]
             [stylefy.core :as stylefy :refer [use-style]]
+            [clojure.string :as str]
             [word-penne.events :as events]
             [word-penne.style.vars :refer [color layout-vars phone-width]]
             [word-penne.style.share :as share]
@@ -82,19 +83,25 @@
     (< 0.30 wrongRate) (:weak-card-text color)
     :else (:good-card-text color)))
 
-(defn rotate-card [uid]
+(defn- rotate-card [uid]
   (let [reverse-cards? (if @(re-frame/subscribe [::subs/reverse-cards]) 1 0)
         clicked-card? (if (= uid @(re-frame/subscribe [::subs/clicked-card-uid])) 1 0)]
     (if (= (bit-xor reverse-cards? clicked-card?) 1)
       "rotateY(180deg)"
       nil)))
 
+(defn- truncate
+  [s n]
+  (subs s 0 (min (count s) n)))
+
 ;; https://www.w3schools.com/howto/howto_css_flip_card.asp
 ;; https://www.w3schools.com/tags/tag_details.asp
 (defn WordCard [attrs]
+  @(re-frame/subscribe [::subs/locale])
   [:div (use-style s-card)
    [:button (use-style s-flip-card {:on-click (fn [e]
                                                 (.preventDefault e)
+                                                (.stopPropagation e)
                                                 (re-frame/dispatch
                                                  [::events/set-clicked-card-uid
                                                   (if (= (:uid attrs) @(re-frame/subscribe [::subs/clicked-card-uid]))
@@ -115,7 +122,8 @@
         (:back attrs)
         [SpeechMark (:back attrs)]]
        (when (:comment attrs)
-         [:p (:comment attrs)])]
+         [:p {:dangerouslySetInnerHTML
+              {:__html (truncate (str/replace (:comment attrs) #"\n" "<br>") 100)}}])]
       [:div (use-style s-tags-container)
        [TagBadges (:tags attrs)]]
       [:div (use-style s-flip-card-buttons)
@@ -123,9 +131,9 @@
         [:a (use-style s-flip-card-button {:href "#"
                                            :on-click (fn [e]
                                                        (.preventDefault e)
-                                                       (re-frame/dispatch [::events/lock-card (:uid attrs) (not (:lock attrs))]))
-                                           :title "pin"})
-         [:span {:class "material-icons-outlined"} "push_pin"]]
+                                                       (re-frame/dispatch [::events/navigate :word-penne.pages.cards/show {:id (:uid attrs)}]))
+                                           :title "open"})
+         [:span {:class "material-icons-outlined"} "open_in_new"]]
         [:a (use-style s-flip-card-button {:href "#"
                                            :on-click (fn [e]
                                                        (.preventDefault e)
@@ -135,6 +143,12 @@
        [:div
         [:span (str (tr "Wrong") ": " (int (* (:wrongRate attrs) 100)) "%")]]
        [:div
+        [:a (use-style s-flip-card-button {:href "#"
+                                           :on-click (fn [e]
+                                                       (.preventDefault e)
+                                                       (re-frame/dispatch [::events/lock-card (:uid attrs) (not (:lock attrs))]))
+                                           :title "pin"})
+         [:span {:class "material-icons-outlined"} "push_pin"]]
         (let [title (if (:archive attrs) "unarchive" "archive")]
           [:a (use-style s-flip-card-button {:href "#"
                                              :on-click (fn [e]

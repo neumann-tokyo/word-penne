@@ -1,5 +1,6 @@
 (ns word-penne.events
-  (:require [re-frame.core :as re-frame]
+  (:require [clojure.string :as str]
+            [re-frame.core :as re-frame]
             [malli.core :as m]
             [cljs.pprint :refer [pprint]]
             [word-penne.db :as db]
@@ -44,6 +45,8 @@
   (re-frame/dispatch [::reset-tags-error])
   (re-frame/dispatch [::fetch-tags])
   {:dispatch [::fetch-cards]})
+(defmethod on-navigate :word-penne.pages.cards/show [_ params]
+  {:dispatch [::fetch-card-by-uid (:id params)]})
 (defmethod on-navigate :word-penne.pages.cards/edit [_ params]
   {:dispatch [::fetch-card-by-uid (:id params)]})
 (defmethod on-navigate :default [_ _] nil)
@@ -90,6 +93,17 @@
                               :cards @(re-frame/subscribe [::subs/cards])
                               :on-success (fn [cards] (re-frame/dispatch [::set-cards cards]))}}))
 
+(re-frame/reg-event-fx
+ ::fetch-relational-cards
+ (fn [_ [_ {:keys [search-word]}]]
+   {::fx/firebase-load-cards {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
+                              :search-target "front"
+                              :search-word (str/replace search-word #"_" " ")
+                              :cards-order "updatedAt/desc"
+                              :on-success (fn [cards]
+                                            (let [relational-cards @(re-frame/subscribe [::subs/relational-cards])]
+                                              (re-frame/dispatch-sync [::set-relational-cards (concat relational-cards cards)])))}}))
+
 (re-frame/reg-event-db
  ::set-cards
  [(validate-args [:sequential db/t-card])
@@ -98,6 +112,13 @@
    (assoc db
           :cards res
           :selected-card nil)))
+
+(re-frame/reg-event-db
+ ::set-relational-cards
+ [(validate-args [:sequential db/t-card])
+  validate-db]
+ (fn [db [_ res]]
+   (assoc db :relational-cards res)))
 
 (re-frame/reg-event-db
  ::set-clicked-card-uid
@@ -153,7 +174,13 @@
    {:db (assoc db :selected-card nil)
     ::fx/firebase-load-card-by-uid {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
                                     :card-uid card-uid
-                                    :on-success (fn [card] (re-frame/dispatch [::set-selected-card card]))}}))
+                                    :on-success (fn [card]
+                                                  (re-frame/dispatch-sync [::set-selected-card card])
+                                                  (let [search-words (if (:comment card)
+                                                                       (map second (re-seq #"#([^\W]*)" (:comment card)))
+                                                                       [])]
+                                                    (re-frame/dispatch-sync [::set-relational-cards []])
+                                                    (doall (map #(re-frame/dispatch-sync [::fetch-relational-cards {:search-word %}]) search-words))))}}))
 
 (re-frame/reg-event-db
  ::set-selected-card
@@ -391,3 +418,18 @@
  [validate-db]
  (fn [db [_ _]]
    (update db :quiz-pointer inc)))
+
+(re-frame/reg-event-fx
+ ::fetch-autocomplete-cards
+ (fn [_ [_ {:keys [search-word]}]]
+   {::fx/firebase-load-autocomplete-cards {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
+                                           :search-word search-word
+                                           :on-success (fn [cards] (re-frame/dispatch [::set-autocomplete-cards cards]))}}))
+
+(re-frame/reg-event-db
+ ::set-autocomplete-cards
+ [(validate-args [:sequential string?])
+  validate-db]
+ (fn [db [_ res]]
+   (assoc db
+          :autocomplete-cards res)))
