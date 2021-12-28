@@ -45,6 +45,7 @@
       [:div {:dangerouslySetInnerHTML
              {:__html (-> (:comment card)
                           (str/replace #"\n" "<br>"))}}])
+    ;; TODO ボタン類もコードの重複があるので別の component にしても良さそう
     [:div (use-style s-flip-card-buttons)
      [:div
       [:a (use-style s-flip-card-button {:href "#"
