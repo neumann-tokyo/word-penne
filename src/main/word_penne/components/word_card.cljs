@@ -131,12 +131,6 @@
         [:a (use-style s-flip-card-button {:href "#"
                                            :on-click (fn [e]
                                                        (.preventDefault e)
-                                                       (re-frame/dispatch [::events/lock-card (:uid attrs) (not (:lock attrs))]))
-                                           :title "pin"})
-         [:span {:class "material-icons-outlined"} "push_pin"]]
-        [:a (use-style s-flip-card-button {:href "#"
-                                           :on-click (fn [e]
-                                                       (.preventDefault e)
                                                        (re-frame/dispatch [::events/navigate :word-penne.pages.cards/show {:id (:uid attrs)}]))
                                            :title "open"})
          [:span {:class "material-icons-outlined"} "open_in_new"]]
@@ -149,6 +143,12 @@
        [:div
         [:span (str (tr "Wrong") ": " (int (* (:wrongRate attrs) 100)) "%")]]
        [:div
+        [:a (use-style s-flip-card-button {:href "#"
+                                           :on-click (fn [e]
+                                                       (.preventDefault e)
+                                                       (re-frame/dispatch [::events/lock-card (:uid attrs) (not (:lock attrs))]))
+                                           :title "pin"})
+         [:span {:class "material-icons-outlined"} "push_pin"]]
         (let [title (if (:archive attrs) "unarchive" "archive")]
           [:a (use-style s-flip-card-button {:href "#"
                                              :on-click (fn [e]

@@ -3,7 +3,6 @@
             [re-frame.core :as re-frame]
             [word-penne.style.vars :refer [layout-vars color phone-width]]
             [word-penne.subs :as subs]
-            [word-penne.events :as events]
             [word-penne.components.word-card-large :refer [WordCardLarge]]))
 
 (def s-container

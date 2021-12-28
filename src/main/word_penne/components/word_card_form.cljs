@@ -17,7 +17,6 @@
   [:map
    [:front [:string {:min 1 :max 140}]]
    [:back [:string {:min 1 :max 140}]]
-   ;; TODO コメントの文字数何文字にしようか？
    [:comment {:optional true} [:maybe [:string {:min 0 :max 300}]]]])
 
 (defn WordCardForm [props]
@@ -66,4 +65,6 @@
                  @(re-frame/subscribe [::subs/tags])))]]
        [:div (use-style sf/s-buttons-container)
         [:button (use-style sf/s-submit {:type "submit" :data-testid "word-card-form__submit" :disabled submitting?}) (tr "Submit")] ;; TODO FIXME double submit を回避できてない...
-        [Button {:href (path-for routes :word-penne.pages.home/home)} (tr "Cancel")]]])]])
+        [Button {:on-click (fn [e]
+                             (.preventDefault e)
+                             (js/history.back))} (tr "Cancel")]]])]])

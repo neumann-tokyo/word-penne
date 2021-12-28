@@ -16,7 +16,10 @@
   {:box-shadow (str "0 2px 4px 0 " (:assort-border color))})
 (def s-card
   (merge share/m-card
-         {:text-align "center"}))
+         {:text-align "center"
+          :display "inline-block"
+          :width "100%"
+          :height "100%"}))
 (def s-front
   {:font-size "2rem"
    :font-weight "bold"})
@@ -47,6 +50,12 @@
       [:a (use-style s-flip-card-button {:href "#"
                                          :on-click (fn [e]
                                                      (.preventDefault e)
+                                                     (re-frame/dispatch [::events/navigate :word-penne.pages.cards/show {:id (:uid card)}]))
+                                         :title "open"})
+       [:span {:class "material-icons-outlined"} "open_in_new"]]
+      [:a (use-style s-flip-card-button {:href "#"
+                                         :on-click (fn [e]
+                                                     (.preventDefault e)
                                                      (re-frame/dispatch [::events/navigate :word-penne.pages.cards/edit {:id (:uid card)}]))
                                          :title "edit"})
        [:span {:class "material-icons-outlined"} "edit"]]]
@@ -54,6 +63,12 @@
       [:span (str (tr "Wrong") ": " (int (* (:wrongRate card) 100)) "%")]]
      [:div
       (let [title (if (:archive card) "unarchive" "archive")]
+        [:a (use-style s-flip-card-button {:href "#"
+                                           :on-click (fn [e]
+                                                       (.preventDefault e)
+                                                       (re-frame/dispatch [::events/lock-card (:uid card) (not (:lock card))]))
+                                           :title "pin"})
+         [:span {:class "material-icons-outlined"} "push_pin"]]
         [:a (use-style s-flip-card-button {:href "#"
                                            :on-click (fn [e]
                                                        (.preventDefault e)
