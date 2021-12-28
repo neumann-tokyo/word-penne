@@ -62,13 +62,13 @@
      [:div
       [:span (str (tr "Wrong") ": " (int (* (:wrongRate card) 100)) "%")]]
      [:div
+      [:a (use-style s-flip-card-button {:href "#"
+                                         :on-click (fn [e]
+                                                     (.preventDefault e)
+                                                     (re-frame/dispatch [::events/lock-card (:uid card) (not (:lock card))]))
+                                         :title "pin"})
+       [:span {:class "material-icons-outlined"} "push_pin"]]
       (let [title (if (:archive card) "unarchive" "archive")]
-        [:a (use-style s-flip-card-button {:href "#"
-                                           :on-click (fn [e]
-                                                       (.preventDefault e)
-                                                       (re-frame/dispatch [::events/lock-card (:uid card) (not (:lock card))]))
-                                           :title "pin"})
-         [:span {:class "material-icons-outlined"} "push_pin"]]
         [:a (use-style s-flip-card-button {:href "#"
                                            :on-click (fn [e]
                                                        (.preventDefault e)

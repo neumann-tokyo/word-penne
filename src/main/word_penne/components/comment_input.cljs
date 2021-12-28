@@ -61,7 +61,7 @@
 
    (let [{:keys [cursor-x cursor-y]} (cursor-position @comment-box)
          set-comment (fn [e]
-                       (let [current-text (-> e .-target .-value)
+                       (let [current-text (-> e .-target .-value (str/trim) (str/replace #"\s" "_"))
                              [first-half latter-half] (split-at (:cursor-position @comment-box) (:text @comment-box))
                              new-comment (str (str/join first-half) current-text (str/join latter-half))]
                          (set-values {"comment" new-comment})))

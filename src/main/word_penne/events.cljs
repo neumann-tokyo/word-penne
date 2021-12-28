@@ -1,5 +1,6 @@
 (ns word-penne.events
-  (:require [re-frame.core :as re-frame]
+  (:require [clojure.string :as str]
+            [re-frame.core :as re-frame]
             [malli.core :as m]
             [cljs.pprint :refer [pprint]]
             [word-penne.db :as db]
@@ -97,7 +98,7 @@
  (fn [_ [_ {:keys [search-word]}]]
    {::fx/firebase-load-cards {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
                               :search-target "front"
-                              :search-word search-word
+                              :search-word (str/replace search-word #"_" " ")
                               :cards-order "updatedAt/desc"
                               :on-success (fn [cards]
                                             (let [relational-cards @(re-frame/subscribe [::subs/relational-cards])]
