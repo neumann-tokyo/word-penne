@@ -119,3 +119,13 @@
  ::relational-cards
  (fn [db _]
    (:relational-cards db)))
+
+(re-frame/reg-sub
+ ::front-speak-language
+ (fn [db _]
+   (:front-speak-language db)))
+
+(re-frame/reg-sub
+ ::back-speak-language
+ (fn [db _]
+   (:back-speak-language db)))

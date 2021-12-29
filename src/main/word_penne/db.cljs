@@ -10,6 +10,17 @@
   [:or
    nil?
    [:enum "en" "ja"]])
+(def t-speak-language
+  [:enum "en-US" "ja-JP" "es-ES" "fr-FR" "it-IT" "zh-CN" "zh-TW" "ko-KR"])
+(def t-speak-language-map
+  {"en-US" "English"
+   "ja-JP" "Japanese"
+   "es-ES" "Spanish"
+   "fr-FR" "French"
+   "it-IT" "Italian"
+   "zh-CN" "Chinese (S)"
+   "zh-TW" "Chinese (T)"
+   "ko-KR" "Korean"})
 (def t-tags
   [:sequential string?])
 (def t-card
@@ -45,6 +56,8 @@
    [:user
     [:maybe t-user]]
    [:locale t-locale]
+   [:front-speak-language t-speak-language]
+   [:back-speak-language t-speak-language]
    [:reverse-cards boolean?]
    [:cards
     [:sequential t-card]]
@@ -69,7 +82,9 @@
 
 (def default-db
   {:user nil
-   :locale nil
+   :locale "en"
+   :front-speak-language "en-US"
+   :back-speak-language "en-US"
    :reverse-cards false
    :cards []
    :clicked-card-uid nil

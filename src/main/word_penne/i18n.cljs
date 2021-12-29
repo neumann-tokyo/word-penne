@@ -14,6 +14,8 @@
 
    ;; Setting
    "Locale" "言語設定"
+   "Front speak language" "表面発話言語"
+   "Back speak language" "裏面発話言語"
 
    ;; Header
    "Search..." "検索..."
