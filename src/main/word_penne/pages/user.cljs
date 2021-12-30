@@ -1,5 +1,6 @@
 (ns word-penne.pages.user
   (:require [clojure.string :as str]
+            [clojure.walk :as walk]
             [stylefy.core :as stylefy :refer [use-style]]
             [bidi.bidi :refer [path-for]]
             [fork.reagent :as fork]
@@ -86,6 +87,9 @@
    [:front-speak-language db/t-speak-language]
    [:back-speak-language db/t-speak-language]])
 
+(def ^:private s-checkbox
+  {:margin-right ".2rem"})
+
 (defmethod v/view ::quiz-settings [_]
   @(re-frame/subscribe [::subs/locale])
   [:div (use-style sf/s-form-container)
@@ -98,7 +102,8 @@
                                   "kind" (:kind quiz-settings)
                                   "face" (:face quiz-settings)
                                   "count" (:count quiz-settings)})
-               :on-submit #(re-frame/dispatch [::events/update-quiz-setting %])}
+               :on-submit (fn [a] (prn "aaa"))
+               #_(re-frame/dispatch [::events/update-quiz-setting (walk/keywordize-keys %)])}
     (fn [{:keys [values
                  errors
                  touched
@@ -116,7 +121,6 @@
                                        :id "tags"
                                        :on-change handle-change
                                        :on-blur handle-blur
-                                       :required true
                                        :data-testid "quiz-setting__tags"})
          [:option {:value ""} "なし"]
          (doall (map (fn [tag] [:option {:value tag :key tag} tag]) @(re-frame/subscribe [::subs/tags])))]
@@ -128,11 +132,12 @@
                        (let [kind-id (str "kind-" (str/replace kind #"\W" "-"))
                              checked (boolean ((set (values "kind")) kind))]
                          [:span {:key kind-id}
-                          [:input {:type "checkbox"
-                                   :id kind-id
-                                   :name kind-id
-                                   :value kind
-                                   :defaultChecked checked}]
+                          [:input (use-style s-checkbox
+                                             {:type "checkbox"
+                                              :id kind-id
+                                              :name kind-id
+                                              :value kind
+                                              :defaultChecked checked})]
                           [:label {:for kind-id}
                            (tr kind)]]))
                      db/t-quiz-setting-kind))]
@@ -157,5 +162,5 @@
                                       :on-change handle-change
                                       :on-blur handle-blur})]]
        [:div (use-style sf/s-buttons-container)
-        [:button (use-style sf/s-submit {:type "submit" :data-testid "user-setting__submit" :disabled submitting?}) (tr "Submit")] ;; FIXME double submit
+        [:button (use-style sf/s-submit {:type "submit" :data-testid "quiz-setting__submit" :disabled submitting?}) (tr "Submit")] ;; FIXME double submit
         [Button {:href (path-for routes :word-penne.pages.home/home)} (tr "Cancel")]]])]])

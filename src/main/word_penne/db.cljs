@@ -1,6 +1,6 @@
 (ns word-penne.db)
 
-(defn- enum [v]
+(defn enum [v]
   (into [] (cons :enum v)))
 
 ;; malli type: https://github.com/metosin/malli
@@ -63,7 +63,7 @@
    [:tags string?]
    [:kind [:sequential (enum t-quiz-setting-kind)]]
    [:face (enum t-quiz-setting-face)]
-   [:count {:min 1 :max 10} int?]])
+   [:count {:min 4 :max 10} int?]])
 (def t-db
   [:map
    [:user

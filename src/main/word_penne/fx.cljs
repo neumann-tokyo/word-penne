@@ -397,3 +397,13 @@
                    (fn [doc]
                      (swap! result conj (:front (js->clj (.data doc) :keywordize-keys true)))))
          (on-success @result))))))
+
+(re-frame/reg-fx
+ ::firebase-update-quiz-setting
+ (fn [{:keys [user-uid values on-success]}]
+   (when user-uid
+     (-> (firestore)
+         (.collection "users")
+         (.doc user-uid)
+         (.set #js {:quiz-settings (clj->js values)} #js {:merge true})
+         (.then on-success)))))

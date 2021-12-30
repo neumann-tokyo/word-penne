@@ -451,3 +451,23 @@
  (fn [db [_ res]]
    (assoc db
           :autocomplete-cards res)))
+
+(re-frame/reg-event-db
+ ::set-quiz-settings
+ [(validate-args db/t-quiz-settings)
+  validate-db]
+ (fn [db [_ res]]
+   (assoc db :quiz-settings res)))
+
+(def t-update-quiz-setting-arg
+  [:map [:values db/t-quiz-settings]])
+(re-frame/reg-event-fx
+ ::update-quiz-setting
+ [(validate-args t-update-quiz-setting-arg)]
+ (fn [_ [_ {:keys [values]}]]
+   (prn values)
+   {::fx/firebase-update-quiz-setting {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
+                                       :values values
+                                       :on-success (fn []
+                                                     (re-frame/dispatch [::set-quiz-settings values])
+                                                     (re-frame/dispatch [::navigate :word-penne.pages.home/home]))}}))
