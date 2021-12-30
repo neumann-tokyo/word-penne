@@ -90,6 +90,23 @@
 (def ^:private s-checkbox
   {:margin-right ".2rem"})
 
+(defn- update-kind [values]
+  (let [default (->> (:kind values)
+                     (map (fn [k] [k true]))
+                     (into {}))
+        changes (->> values
+                     (filter (fn [[k _]] (str/starts-with? (name k) "kind__")))
+                     (map (fn [[k v]] [(-> (str/replace (name k) #"kind__" "")
+                                           (str/replace #"-" " "))
+                                       v]))
+                     (into {}))]
+    (->> db/t-quiz-setting-kind
+         (map (fn [kind-name] [kind-name (if-not (nil? (changes kind-name))
+                                           (changes kind-name)
+                                           (default kind-name))]))
+         (filter (fn [[_ value]] value))
+         (map (fn [[kind-name _]] kind-name)))))
+
 (defmethod v/view ::quiz-settings [_]
   @(re-frame/subscribe [::subs/locale])
   [:div (use-style sf/s-form-container)
@@ -97,13 +114,8 @@
                :prevent-default? true
                :clean-on-unmount? true
                :validation (va/validator-for-humans t-quiz-setting-form)
-               :initial-values (let [quiz-settings @(re-frame/subscribe [::subs/quiz-settings])]
-                                 {"tags" (:tags quiz-settings)
-                                  "kind" (:kind quiz-settings)
-                                  "face" (:face quiz-settings)
-                                  "count" (:count quiz-settings)})
-               :on-submit (fn [a] (prn "aaa"))
-               #_(re-frame/dispatch [::events/update-quiz-setting (walk/keywordize-keys %)])}
+               :initial-values (walk/stringify-keys @(re-frame/subscribe [::subs/quiz-settings]))
+               :on-submit #(re-frame/dispatch [::events/update-quiz-setting (walk/keywordize-keys %)])}
     (fn [{:keys [values
                  errors
                  touched
@@ -111,9 +123,16 @@
                  handle-change
                  handle-blur
                  submitting?
-                 handle-submit]}]
+                ;;  handle-submit
+                 ]}]
       [:form (use-style sf/s-form {:id form-id
-                                   :on-submit handle-submit})
+                                   :on-submit (fn [e]
+                                                ;; TODO FIXME なぜかhandle-submitが動いてくれないので自作実装する
+                                                (.preventDefault e)
+                                                (re-frame/dispatch [::events/update-quiz-setting {:values (as-> (walk/keywordize-keys values) v
+                                                                                                            (update v :count js/parseInt)
+                                                                                                            (assoc v :kind (update-kind v)))}]))})
+
        [:div
         [:label {:for "tags"} (tr "Tags")]
         [:select (use-style sf/s-text {:value (values "tags")
@@ -129,7 +148,7 @@
         [:label (tr "Kind")]
         [:div (use-style sf/s-horizontal-list)
          (doall (map (fn [kind]
-                       (let [kind-id (str "kind-" (str/replace kind #"\W" "-"))
+                       (let [kind-id (str "kind__" (str/replace kind #"\W" "-"))
                              checked (boolean ((set (values "kind")) kind))]
                          [:span {:key kind-id}
                           [:input (use-style s-checkbox
@@ -137,7 +156,10 @@
                                               :id kind-id
                                               :name kind-id
                                               :value kind
-                                              :defaultChecked checked})]
+                                              :defaultChecked checked
+                                              :on-change handle-change
+                                              :on-blur handle-blur
+                                              :data-testid (str "quiz-setting__" kind-id)})]
                           [:label {:for kind-id}
                            (tr kind)]]))
                      db/t-quiz-setting-kind))]
@@ -149,7 +171,7 @@
                                        :id "face"
                                        :on-change handle-change
                                        :on-blur handle-blur
-                                       :required true
+                                      ;;  :required true
                                        :data-testid "quiz-setting__face"})
          (doall (map (fn [face] [:option {:value face :key face} (tr face)]) db/t-quiz-setting-face))]
         [ErrorMessange touched errors "face"]]

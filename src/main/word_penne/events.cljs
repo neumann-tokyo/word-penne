@@ -390,6 +390,7 @@
  ::setup-quiz
  (fn [_ _]
    {::fx/firebase-setup-quiz {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
+                              :quiz-settings @(re-frame/subscribe [::subs/quiz-settings])
                               :on-success (fn [cards]
                                             (re-frame/dispatch [::reset-quiz-pointer])
                                             (re-frame/dispatch [::set-quiz-cards cards])
@@ -465,7 +466,6 @@
  ::update-quiz-setting
  [(validate-args t-update-quiz-setting-arg)]
  (fn [_ [_ {:keys [values]}]]
-   (prn values)
    {::fx/firebase-update-quiz-setting {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
                                        :values values
                                        :on-success (fn []

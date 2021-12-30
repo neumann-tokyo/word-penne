@@ -11,7 +11,7 @@
             [word-penne.i18n :as i18n]))
 
 (def ^:private rand-range 99999999)
-(def ^:private quiz-item-count 4)
+;; (def ^:private quiz-item-count 4)
 
 (re-frame/reg-fx
  ::navigate
@@ -291,10 +291,11 @@
 
 (re-frame/reg-fx
  ::firebase-setup-quiz
- (fn [{:keys [user-uid on-success]}]
+ (fn [{:keys [user-uid quiz-settings on-success]}]
    (when user-uid
      (go
-       (let [half-quiz-count (/ quiz-item-count 2)
+       (let [quiz-item-count (:count quiz-settings)
+             half-quiz-count (/ quiz-item-count 2)
              high-wrong-snap (<p! (-> (firestore)
                                       (.collection (str "users/" user-uid "/cards"))
                                       (.orderBy "wrongRate" "desc")
