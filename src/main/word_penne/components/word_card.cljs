@@ -113,14 +113,16 @@
       [:div (merge (use-style s-flip-card-front-title)
                    {:style {:color (card-color attrs)}})
        (:front attrs)
-       [SpeechMark (:front attrs)]]
+       [SpeechMark {:text (:front attrs)
+                    :lang @(re-frame/subscribe [::subs/front-speak-language])}]]
       [:div (use-style s-tags-container)
        [TagBadges (:tags attrs)]]]
      [:div (use-style s-flip-card-back)
       [:div (use-style s-flip-card-back-title-container)
        [:div (use-style s-flip-card-back-title)
         (:back attrs)
-        [SpeechMark (:back attrs)]]
+        [SpeechMark {:text (:back attrs)
+                     :lang @(re-frame/subscribe [::subs/back-speak-language])}]]
        (when (:comment attrs)
          [:p {:dangerouslySetInnerHTML
               {:__html (truncate (str/replace (:comment attrs) #"\n" "<br>") 100)}}])]

@@ -193,7 +193,9 @@
      (-> (firestore)
          (.collection "users")
          (.doc user-uid)
-         (.set #js {:locale (values "locale")} #js {:merge true})
+         (.set #js {:locale (values "locale")
+                    :front-speak-language (values "front-speak-language")
+                    :back-speak-language (values "back-speak-language")} #js {:merge true})
          (.then on-success)))))
 
 (re-frame/reg-fx

@@ -139,7 +139,9 @@
  (fn [_ _]
    {::fx/firebase-load-user-setting {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
                                      :on-success (fn [setting]
-                                                   (re-frame/dispatch [::set-locale (:locale setting)]))
+                                                   (re-frame/dispatch [::set-locale (:locale setting)])
+                                                   (re-frame/dispatch [::set-front-speak-language (:front-speak-language setting)])
+                                                   (re-frame/dispatch [::set-back-speak-language (:back-speak-language setting)]))
                                      :on-failure (fn [] (re-frame/dispatch [::navigate :word-penne.pages.user/edit]))}}))
 
 (re-frame/reg-event-db
@@ -332,10 +334,24 @@
  (fn [db [_ locale]]
    (assoc db :locale locale)))
 
+(re-frame/reg-event-db
+ ::set-front-speak-language
+ [(validate-args db/t-speak-language)]
+ (fn [db [_ code]]
+   (assoc db :front-speak-language code)))
+
+(re-frame/reg-event-db
+ ::set-back-speak-language
+ [(validate-args db/t-speak-language)]
+ (fn [db [_ code]]
+   (assoc db :back-speak-language code)))
+
 (def t-update-user-setting-arg
   [:map [:values
          [:map
-          ["locale" db/t-locale]]]])
+          ["locale" db/t-locale]
+          ["front-speak-language" db/t-speak-language]
+          ["back-speak-language" db/t-speak-language]]]])
 (re-frame/reg-event-fx
  ::update-user-setting
  [(validate-args t-update-user-setting-arg)]
@@ -344,6 +360,8 @@
                                        :values values
                                        :on-success (fn []
                                                      (re-frame/dispatch [::set-locale (values "locale")])
+                                                     (re-frame/dispatch [::set-front-speak-language (values "front-speak-language")])
+                                                     (re-frame/dispatch [::set-back-speak-language (values "back-speak-language")])
                                                      (re-frame/dispatch [::navigate :word-penne.pages.home/home]))}}))
 
 (re-frame/reg-event-db
