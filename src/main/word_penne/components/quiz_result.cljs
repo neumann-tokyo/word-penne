@@ -35,8 +35,10 @@
    :align-items "center"
    :justify-content "center"})
 (def s-buttons-container
-  {:text-align "right"
-   :margin-top "1rem"})
+  {:margin-top "1rem"
+   :display "flex"
+   :justify-content "flex-end"
+   :gap ".5rem"})
 (def s-edit-button
   {:color (:main-text color)})
 
@@ -78,4 +80,8 @@
                               [:span {:class "material-icons-outlined"} "edit"]]]])
                cards))]]
      [:div (use-style s-buttons-container)
+      [Button {:kind "secondary"
+               :on-click (fn [e]
+                           (.preventDefault e)
+                           (re-frame/dispatch [::events/setup-quiz]))} (tr "Retry")]
       [Button {:kind "primary" :href (path-for routes :word-penne.pages.home/home)} (tr "Finish")]]]))
