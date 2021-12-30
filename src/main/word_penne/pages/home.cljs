@@ -1,10 +1,12 @@
 (ns word-penne.pages.home
   (:require [re-frame.core :as re-frame]
+            [bidi.bidi :refer [path-for]]
             [stylefy.core :as stylefy :refer [use-style]]
             [word-penne.views :as v]
             [word-penne.subs :as subs]
             [word-penne.i18n :refer [tr]]
             [word-penne.events :as events]
+            [word-penne.routes :refer [routes]]
             [word-penne.style.vars :refer [color]]
             [word-penne.components.button :refer [Button]]
             [word-penne.components.word-cards-wrap :refer [WordCardsWrap]]
@@ -17,6 +19,10 @@
    :justify-content "space-between"
    :align-items "center"
    :margin-right ".5rem"})
+(def s-quiz-container
+  {:display "flex"
+   :align-items "center"
+   :gap ".5rem"})
 (def s-top-right
   {:display "inline-flex"
    :justify-content "flex-end"
@@ -32,6 +38,8 @@
    :background "none"
    :outline "none"
    :margin "5px"})
+(def s-quiz-settings
+  {:color (:accent-border color)})
 
 (defmethod v/view ::home [_]
   @(re-frame/subscribe [::subs/locale])
@@ -40,11 +48,13 @@
      [:div (use-style s-container)
       (if cards-empty?
         [:span ""]
-        [:div
+        [:div (use-style s-quiz-container)
          [Button {:kind "secondary"
                   :on-click (fn [e]
                               (.preventDefault e)
                               (re-frame/dispatch [::events/setup-quiz]))} (tr "Quiz")]
+         [:a (use-style s-quiz-settings {:href (path-for routes :word-penne.pages.user/quiz-settings)})
+          [:span {:class "material-icons-outlined"} "settings"]]
          (when (<= (count @(re-frame/subscribe [::subs/cards])) 3)
            [:div
             [:span {:class "material-icons-outlined"} "arrow_upward"]
