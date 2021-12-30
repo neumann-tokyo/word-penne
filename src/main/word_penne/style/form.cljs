@@ -40,3 +40,10 @@
 (def s-error-message
   {:color (:error-text color)
    :margin-bottom "1rem"})
+(def s-horizontal-list
+  {:display "flex"
+   :justify-content "flex-start"
+   :gap ".5rem"
+   :width "100%"
+   :padding ".5rem"
+   :margin ".5rem 0"})

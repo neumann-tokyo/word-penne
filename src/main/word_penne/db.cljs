@@ -1,5 +1,8 @@
 (ns word-penne.db)
 
+(defn- enum [v]
+  (into [] (cons :enum v)))
+
 ;; malli type: https://github.com/metosin/malli
 (def t-user
   [:map
@@ -51,6 +54,16 @@
    [:front string?]
    [:back string?]
    [:judgement {:optional true} t-judgement]])
+(def t-quiz-setting-kind
+  ["Latest" "High wrong rate" "Random"])
+(def t-quiz-setting-face
+  ["Front" "Back" "Both"])
+(def t-quiz-settings
+  [:map
+   [:tags string?]
+   [:kind [:sequential (enum t-quiz-setting-kind)]]
+   [:face (enum t-quiz-setting-face)]
+   [:count {:min 1 :max 10} int?]])
 (def t-db
   [:map
    [:user
@@ -78,7 +91,8 @@
    [:autocomplete-cards
     [:sequential string?]]
    [:relational-cards
-    [:sequential t-card]]])
+    [:sequential t-card]]
+   [:quiz-settings t-quiz-settings]])
 
 (def default-db
   {:user nil
@@ -100,4 +114,8 @@
    :quiz-cards []
    :quiz-pointer 0
    :autocomplete-cards []
-   :relational-cards []})
+   :relational-cards []
+   :quiz-settings {:tags ""
+                   :kind t-quiz-setting-kind
+                   :face "Both"
+                   :count 4}})

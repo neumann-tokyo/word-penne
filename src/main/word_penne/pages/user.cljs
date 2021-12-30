@@ -1,5 +1,6 @@
 (ns word-penne.pages.user
-  (:require [stylefy.core :as stylefy :refer [use-style]]
+  (:require [clojure.string :as str]
+            [stylefy.core :as stylefy :refer [use-style]]
             [bidi.bidi :refer [path-for]]
             [fork.reagent :as fork]
             [re-frame.core :as re-frame]
@@ -63,7 +64,7 @@
                                        :required true
                                        :data-testid "user-setting__front-speak-language"})
          (doall (map (fn [[code lang]] [:option {:value code :key code} lang]) db/t-speak-language-map))]
-        [ErrorMessange touched errors "locale"]]
+        [ErrorMessange touched errors "front-speak-language"]]
        [:div
         [:label {:for "back-speak-language"} (tr "Back speak language")]
         [:select (use-style sf/s-text {:value (values "back-speak-language")
@@ -74,10 +75,87 @@
                                        :required true
                                        :data-testid "user-setting__back-speak-language"})
          (doall (map (fn [[code lang]] [:option {:value code :key code} lang]) db/t-speak-language-map))]
-        [ErrorMessange touched errors "locale"]]
+        [ErrorMessange touched errors "back-speak-language"]]
        [:div (use-style sf/s-buttons-container)
         [:button (use-style sf/s-submit {:type "submit" :data-testid "user-setting__submit" :disabled submitting?}) (tr "Submit")] ;; FIXME double submit
         [Button {:href (path-for routes :word-penne.pages.home/home)} (tr "Cancel")]]])]])
 
+(def ^:private t-quiz-setting-form
+  [:map
+   [:locale db/t-locale]
+   [:front-speak-language db/t-speak-language]
+   [:back-speak-language db/t-speak-language]])
+
 (defmethod v/view ::quiz-settings [_]
-  [:div "quiz settings"])
+  @(re-frame/subscribe [::subs/locale])
+  [:div (use-style sf/s-form-container)
+   [fork/form {:path [:form]
+               :prevent-default? true
+               :clean-on-unmount? true
+               :validation (va/validator-for-humans t-quiz-setting-form)
+               :initial-values (let [quiz-settings @(re-frame/subscribe [::subs/quiz-settings])]
+                                 {"tags" (:tags quiz-settings)
+                                  "kind" (:kind quiz-settings)
+                                  "face" (:face quiz-settings)
+                                  "count" (:count quiz-settings)})
+               :on-submit #(re-frame/dispatch [::events/update-quiz-setting %])}
+    (fn [{:keys [values
+                 errors
+                 touched
+                 form-id
+                 handle-change
+                 handle-blur
+                 submitting?
+                 handle-submit]}]
+      [:form (use-style sf/s-form {:id form-id
+                                   :on-submit handle-submit})
+       [:div
+        [:label {:for "tags"} (tr "Tags")]
+        [:select (use-style sf/s-text {:value (values "tags")
+                                       :name "tags"
+                                       :id "tags"
+                                       :on-change handle-change
+                                       :on-blur handle-blur
+                                       :required true
+                                       :data-testid "quiz-setting__tags"})
+         [:option {:value ""} "なし"]
+         (doall (map (fn [tag] [:option {:value tag :key tag} tag]) @(re-frame/subscribe [::subs/tags])))]
+        [ErrorMessange touched errors "tags"]]
+       [:div
+        [:label (tr "Kind")]
+        [:div (use-style sf/s-horizontal-list)
+         (doall (map (fn [kind]
+                       (let [kind-id (str "kind-" (str/replace kind #"\W" "-"))
+                             checked (boolean ((set (values "kind")) kind))]
+                         [:span {:key kind-id}
+                          [:input {:type "checkbox"
+                                   :id kind-id
+                                   :name kind-id
+                                   :value kind
+                                   :defaultChecked checked}]
+                          [:label {:for kind-id}
+                           (tr kind)]]))
+                     db/t-quiz-setting-kind))]
+        [ErrorMessange touched errors "kind"]]
+       [:div
+        [:label {:for "face"} (tr "Face")]
+        [:select (use-style sf/s-text {:value (values "face")
+                                       :name "face"
+                                       :id "face"
+                                       :on-change handle-change
+                                       :on-blur handle-blur
+                                       :required true
+                                       :data-testid "quiz-setting__face"})
+         (doall (map (fn [face] [:option {:value face :key face} (tr face)]) db/t-quiz-setting-face))]
+        [ErrorMessange touched errors "face"]]
+       [:div
+        [:label {:for "count"} (tr "Count")]
+        [:input (use-style sf/s-text {:type "text"
+                                      :id "count"
+                                      :name "count"
+                                      :value (values "count")
+                                      :on-change handle-change
+                                      :on-blur handle-blur})]]
+       [:div (use-style sf/s-buttons-container)
+        [:button (use-style sf/s-submit {:type "submit" :data-testid "user-setting__submit" :disabled submitting?}) (tr "Submit")] ;; FIXME double submit
+        [Button {:href (path-for routes :word-penne.pages.home/home)} (tr "Cancel")]]])]])

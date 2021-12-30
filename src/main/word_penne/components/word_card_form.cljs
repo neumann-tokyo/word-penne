@@ -1,10 +1,8 @@
 (ns word-penne.components.word-card-form
   (:require [stylefy.core :as stylefy :refer [use-style]]
             [fork.reagent :as fork]
-            [bidi.bidi :refer [path-for]]
             [re-frame.core :as re-frame]
             [word-penne.subs :as subs]
-            [word-penne.routes :refer [routes]]
             [word-penne.style.form :as sf]
             [word-penne.components.button :refer [Button]]
             [word-penne.components.tags-input :refer [TagsInput]]
