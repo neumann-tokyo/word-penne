@@ -18,12 +18,15 @@
    "Back speak language" "裏面発話言語"
 
    ;; Quiz Setting
+   "Unspecified" "未指定"
    "Kind" "種別"
    "Latest" "最新"
    "High wrong rate" "高い誤答率"
    "Face" "面"
    "Both" "両方"
-   "Count" "件数"
+   "Amount" "問題数"
+   "Few" "少ない"
+   "Many" "多い"
 
    ;; Header
    "Search..." "検索..."

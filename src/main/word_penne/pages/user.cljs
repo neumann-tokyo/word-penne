@@ -29,9 +29,9 @@
                :prevent-default? true
                :clean-on-unmount? true
                :validation (va/validator-for-humans t-user-setting-form)
-               :initial-values {"locale" @(re-frame/subscribe [::subs/locale])
-                                "front-speak-language" @(re-frame/subscribe [::subs/front-speak-language])
-                                "back-speak-language" @(re-frame/subscribe [::subs/back-speak-language])}
+               :initial-values {"locale" (or @(re-frame/subscribe [::subs/locale]) "en")
+                                "front-speak-language" (or @(re-frame/subscribe [::subs/front-speak-language]) "en-US")
+                                "back-speak-language" (or @(re-frame/subscribe [::subs/back-speak-language]) "en-US")}
                :on-submit #(re-frame/dispatch [::events/update-user-setting %])}
     (fn [{:keys [values
                  errors
@@ -130,7 +130,6 @@
                                                 ;; TODO FIXME なぜかhandle-submitが動いてくれないので自作実装する
                                                 (.preventDefault e)
                                                 (re-frame/dispatch [::events/update-quiz-setting {:values (as-> (walk/keywordize-keys values) v
-                                                                                                            (update v :count js/parseInt)
                                                                                                             (assoc v :kind (update-kind v)))}]))})
 
        [:div
@@ -141,7 +140,7 @@
                                        :on-change handle-change
                                        :on-blur handle-blur
                                        :data-testid "quiz-setting__tags"})
-         [:option {:value ""} "なし"]
+         [:option {:value ""} (tr "Unspecified")]
          (doall (map (fn [tag] [:option {:value tag :key tag} tag]) @(re-frame/subscribe [::subs/tags])))]
         [ErrorMessange touched errors "tags"]]
        [:div
@@ -171,18 +170,21 @@
                                        :id "face"
                                        :on-change handle-change
                                        :on-blur handle-blur
-                                      ;;  :required true
+                                       :required true
                                        :data-testid "quiz-setting__face"})
          (doall (map (fn [face] [:option {:value face :key face} (tr face)]) db/t-quiz-setting-face))]
         [ErrorMessange touched errors "face"]]
        [:div
-        [:label {:for "count"} (tr "Count")]
-        [:input (use-style sf/s-text {:type "text"
-                                      :id "count"
-                                      :name "count"
-                                      :value (values "count")
-                                      :on-change handle-change
-                                      :on-blur handle-blur})]]
+        [:label {:for "amount"} (tr "Amount")]
+        [:select (use-style sf/s-text {:value (values "amount")
+                                       :name "amount"
+                                       :id "amount"
+                                       :on-change handle-change
+                                       :on-blur handle-blur
+                                       :required true
+                                       :data-testid "quiz-setting__amount"})
+         (doall (map (fn [amount] [:option {:value amount :key amount} (tr amount)]) db/t-quiz-setting-amount))]
+        [ErrorMessange touched errors "face"]]
        [:div (use-style sf/s-buttons-container)
         [:button (use-style sf/s-submit {:type "submit" :data-testid "quiz-setting__submit" :disabled submitting?}) (tr "Submit")] ;; FIXME double submit
         [Button {:href (path-for routes :word-penne.pages.home/home)} (tr "Cancel")]]])]])

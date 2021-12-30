@@ -14,7 +14,9 @@
    nil?
    [:enum "en" "ja"]])
 (def t-speak-language
-  [:enum "en-US" "ja-JP" "es-ES" "fr-FR" "it-IT" "zh-CN" "zh-TW" "ko-KR"])
+  [:or
+   nil?
+   [:enum "en-US" "ja-JP" "es-ES" "fr-FR" "it-IT" "zh-CN" "zh-TW" "ko-KR"]])
 (def t-speak-language-map
   {"en-US" "English"
    "ja-JP" "Japanese"
@@ -58,12 +60,14 @@
   ["Latest" "High wrong rate" "Random"])
 (def t-quiz-setting-face
   ["Front" "Back" "Both"])
+(def t-quiz-setting-amount
+  ["Few" "Many"])
 (def t-quiz-settings
   [:map
    [:tags string?]
    [:kind [:sequential (enum t-quiz-setting-kind)]]
    [:face (enum t-quiz-setting-face)]
-   [:count {:min 4 :max 10} int?]])
+   [:amount (enum t-quiz-setting-amount)]])
 (def t-db
   [:map
    [:user
@@ -118,4 +122,4 @@
    :quiz-settings {:tags ""
                    :kind t-quiz-setting-kind
                    :face "Both"
-                   :count 4}})
+                   :amount "Few"}})
