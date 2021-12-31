@@ -19,6 +19,14 @@
                   [front-quiz back-quiz])))))
     @cards))
 
+(defn- xxx [fns {:keys [user-uid item-count]}]
+  (-> (firestore)
+      (.collection (str "users/" user-uid "/cards"))
+      ((fn [f] ((apply comp (reverse fns)) f)))
+      (.where "archive" "==" false)
+      (.limit item-count)
+      (.get)))
+
 ;; promise を返すので <p! で処理すること
 (defmulti fetch-cards
   (fn [{:keys [kind]}]
