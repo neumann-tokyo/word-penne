@@ -115,7 +115,7 @@
                :clean-on-unmount? true
                :validation (va/validator-for-humans t-quiz-setting-form)
                :initial-values (walk/stringify-keys @(re-frame/subscribe [::subs/quiz-settings]))
-               :on-submit #(re-frame/dispatch [::events/update-quiz-setting (walk/keywordize-keys %)])}
+               :on-submit #(re-frame/dispatch [::events/update-quiz-settings (walk/keywordize-keys %)])}
     (fn [{:keys [values
                  errors
                  touched
@@ -129,8 +129,9 @@
                                    :on-submit (fn [e]
                                                 ;; TODO FIXME なぜかhandle-submitが動いてくれないので自作実装する
                                                 (.preventDefault e)
-                                                (re-frame/dispatch [::events/update-quiz-setting {:values (as-> (walk/keywordize-keys values) v
-                                                                                                            (assoc v :kind (update-kind v)))}]))})
+                                                (re-frame/dispatch [::events/update-quiz-settings {:values (as-> (walk/keywordize-keys values) v
+                                                                                                             (assoc v :kind (update-kind v))
+                                                                                                             (select-keys v [:tags :kind :face :amount]))}]))})
 
        [:div
         [:label {:for "tags"} (tr "Tags")]

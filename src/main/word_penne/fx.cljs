@@ -400,7 +400,7 @@
          (on-success @result))))))
 
 (re-frame/reg-fx
- ::firebase-update-quiz-setting
+ ::firebase-update-quiz-settings
  (fn [{:keys [user-uid values on-success]}]
    (when user-uid
      (-> (firestore)
@@ -408,3 +408,17 @@
          (.doc user-uid)
          (.set #js {:quiz-settings (clj->js values)} #js {:merge true})
          (.then on-success)))))
+
+(re-frame/reg-fx
+ ::firebase-load-quiz-settings
+ (fn [{:keys [user-uid on-success]}]
+   (when user-uid
+     (-> (firestore)
+         (.collection "users")
+         (.doc user-uid)
+         (.get)
+         (.then
+          (fn [doc]
+            (when (.-exists doc)
+              (when-let [quiz-settings (:quiz-settings (js->clj (.data doc) :keywordize-keys true))]
+                (on-success quiz-settings)))))))))
