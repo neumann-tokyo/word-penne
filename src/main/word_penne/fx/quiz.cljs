@@ -19,10 +19,10 @@
                   [front-quiz back-quiz])))))
     @cards))
 
-(defn- xxx [fns {:keys [user-uid item-count]}]
+(defn- with-fetch-cards [fns {:keys [user-uid item-count]}]
   (-> (firestore)
       (.collection (str "users/" user-uid "/cards"))
-      ((fn [f] ((apply comp (reverse fns)) f)))
+      ((apply comp (reverse fns)))
       (.where "archive" "==" false)
       (.limit item-count)
       (.get)))
@@ -32,29 +32,22 @@
   (fn [{:keys [kind]}]
     kind))
 
-(defmethod fetch-cards "Latest" [{:keys [user-uid item-count]}]
-  (-> (firestore)
-      (.collection (str "users/" user-uid "/cards"))
-      (.orderBy "updatedAt" "desc") ;; TODO もう少し random な要素を出せるなら出したい
-      (.where "archive" "==" false)
-      (.limit item-count)
-      (.get)))
+(defmethod fetch-cards "Latest" [params]
+  (with-fetch-cards
+    [#(.orderBy % "updatedAt" "desc") ;; TODO もう少し random な要素を出せるなら出したい
+     ]
+    params))
 
-(defmethod fetch-cards "High wrong rate" [{:keys [user-uid item-count]}]
-  (-> (firestore)
-      (.collection (str "users/" user-uid "/cards"))
-      (.orderBy "wrongRate" "desc") ;; TODO もう少し random な要素を出せるなら出したい
-      (.where "archive" "==" false)
-      (.limit item-count)
-      (.get)))
+(defmethod fetch-cards "High wrong rate" [params]
+  (with-fetch-cards
+    [#(.orderBy % "wrongRate" "desc") ;; TODO もう少し random な要素を出せるなら出したい
+     ]
+    params))
 
-(defmethod fetch-cards "Random" [{:keys [user-uid item-count rand-range]}]
+(defmethod fetch-cards "Random" [{:keys [rand-range] :as params}]
   (let [start-at (rand-int rand-range)]
-    (-> (firestore)
-        (.collection (str "users/" user-uid "/cards"))
-        (.orderBy "random")
-        (.orderBy "wrongRate") ;; TODO これ不要かもしれない
-        (.where "random" ">=" start-at)
-        (.where "archive" "==" false)
-        (.limit item-count)
-        (.get))))
+    (with-fetch-cards
+      [#(.orderBy % "random")
+       #(.orderBy % "wrongRate") ;; TODO これ不要かもしれない
+       #(.where % "random" ">=" start-at)]
+      params)))
