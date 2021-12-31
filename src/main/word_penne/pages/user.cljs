@@ -150,6 +150,7 @@
          (doall (map (fn [kind]
                        (let [kind-id (str "kind__" (str/replace kind #"\W" "-"))
                              checked (boolean ((set (values "kind")) kind))]
+                        ;; TODO すべてのチェックボックスが外されていたらバリデーションエラーにしたい
                          [:span {:key kind-id}
                           [:input (use-style s-checkbox
                                              {:type "checkbox"
@@ -186,6 +187,7 @@
                                        :data-testid "quiz-setting__amount"})
          (doall (map (fn [amount] [:option {:value amount :key amount} (tr amount)]) db/t-quiz-setting-amount))]
         [ErrorMessange touched errors "face"]]
+      ;;  TODO 今日登録した単語でテストとかしたい
        [:div (use-style sf/s-buttons-container)
         [:button (use-style sf/s-submit {:type "submit" :data-testid "quiz-setting__submit" :disabled submitting?}) (tr "Submit")] ;; FIXME double submit
         [Button {:href (path-for routes :word-penne.pages.home/home)} (tr "Cancel")]]])]])
