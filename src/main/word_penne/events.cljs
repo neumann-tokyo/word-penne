@@ -44,6 +44,7 @@
   (re-frame/dispatch [::reset-quiz-pointer])
   (re-frame/dispatch [::reset-tags-error])
   (re-frame/dispatch [::fetch-tags])
+  (re-frame/dispatch [::fetch-quiz-settings])
   {:dispatch [::fetch-cards]})
 (defmethod on-navigate :word-penne.pages.cards/show [_ params]
   {:dispatch [::fetch-card-by-uid (:id params)]})
@@ -390,6 +391,7 @@
  ::setup-quiz
  (fn [_ _]
    {::fx/firebase-setup-quiz {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
+                              :quiz-settings @(re-frame/subscribe [::subs/quiz-settings])
                               :on-success (fn [cards]
                                             (re-frame/dispatch [::reset-quiz-pointer])
                                             (re-frame/dispatch [::set-quiz-cards cards])
@@ -451,3 +453,28 @@
  (fn [db [_ res]]
    (assoc db
           :autocomplete-cards res)))
+
+(re-frame/reg-event-db
+ ::set-quiz-settings
+ [(validate-args db/t-quiz-settings)
+  validate-db]
+ (fn [db [_ res]]
+   (assoc db :quiz-settings res)))
+
+(def t-update-quiz-settings-arg
+  [:map [:values db/t-quiz-settings]])
+(re-frame/reg-event-fx
+ ::update-quiz-settings
+ [(validate-args t-update-quiz-settings-arg)]
+ (fn [_ [_ {:keys [values]}]]
+   {::fx/firebase-update-quiz-settings {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
+                                        :values values
+                                        :on-success (fn []
+                                                      (re-frame/dispatch [::set-quiz-settings values])
+                                                      (re-frame/dispatch [::navigate :word-penne.pages.home/home]))}}))
+
+(re-frame/reg-event-fx
+ ::fetch-quiz-settings
+ (fn [_ _]
+   {::fx/firebase-load-quiz-settings {:user-uid (:uid @(re-frame/subscribe [::subs/current-user]))
+                                      :on-success (fn [settings] (re-frame/dispatch [::set-quiz-settings settings]))}}))

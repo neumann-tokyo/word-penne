@@ -17,6 +17,17 @@
    "Front speak language" "表面発話言語"
    "Back speak language" "裏面発話言語"
 
+   ;; Quiz Setting
+   "Unspecified" "未指定"
+   "Kind" "種別"
+   "Latest" "最新"
+   "High wrong rate" "高い誤答率"
+   "Face" "面"
+   "Both" "両方"
+   "Amount" "問題数"
+   "Few" "少ない"
+   "Many" "多い"
+
    ;; Header
    "Search..." "検索..."
 
@@ -59,8 +70,12 @@
    "Answer" "正解"
    "Finish" "終了"
    "Edit" "編集"
+   "Retry" "再挑戦"
    "Make it correct" "正解にする"
-   "Do you quit? The data in the middle will be deleted." "クイズを終了しますか？途中のデータは削除されます。"})
+   "Do you quit? The data in the middle will be deleted." "クイズを終了しますか？途中のデータは削除されます。"
+   "Oops!!" "おおっと!!"
+   "Could not create a quiz. Please retry or review the settings." "クイズを作成できませんでした。やり直すか設定を見直してみてください。"
+   "Quiz Settings" "クイズ設定"})
 
 (defn- gettext [word-map text]
   (let [word (get word-map text)]

@@ -8,10 +8,11 @@
             [word-penne.firebase.firestore :refer [firestore timestamp] :as fs]
             [word-penne.firebase.auth :as firebase-auth]
             [word-penne.routes :as routes]
-            [word-penne.i18n :as i18n]))
+            [word-penne.i18n :as i18n]
+            [word-penne.fx.quiz :as quiz]))
 
 (def ^:private rand-range 99999999)
-(def ^:private quiz-item-count 4)
+;; (def ^:private quiz-item-count 4)
 
 (re-frame/reg-fx
  ::navigate
@@ -276,43 +277,29 @@
              (<p! (.commit batch))
              (on-success))))))))
 
-
-(defn- get-cards [snapshot]
-  (let [cards (r/atom [])]
-    (.forEach
-     snapshot
-     (fn [doc]
-       (let [card (js->clj (.data doc) :keywordize-keys true)]
-         (swap! cards
-                conj
-                {:uid (.-id doc) :front (:front card) :back (:back card) :comment (:comment card)}
-                {:uid (.-id doc) :front (:back card) :back (:front card) :comment (:comment card)}))))
-    @cards))
-
 (re-frame/reg-fx
  ::firebase-setup-quiz
- (fn [{:keys [user-uid on-success]}]
+ (fn [{:keys [user-uid quiz-settings on-success]}]
    (when user-uid
      (go
-       (let [half-quiz-count (/ quiz-item-count 2)
-             high-wrong-snap (<p! (-> (firestore)
-                                      (.collection (str "users/" user-uid "/cards"))
-                                      (.orderBy "wrongRate" "desc")
-                                      (.where "archive" "==" false)
-                                      (.limit half-quiz-count)
-                                      (.get)))
-             start-at (rand-int rand-range)
-             quiz-snap (<p! (-> (firestore)
-                                (.collection (str "users/" user-uid "/cards"))
-                                (.orderBy "random")
-                                (.orderBy "wrongRate")
-                                (.where "random" ">=" start-at)
-                                (.where "archive" "==" false)
-                                (.limit half-quiz-count)
-                                (.get)))
-             cards (distinct (into (get-cards high-wrong-snap)
-                                   (get-cards quiz-snap)))]
-         (on-success (shuffle cards)))))))
+       (let [item-count (get {"Few" 2 "Many" 4} (:amount quiz-settings) 2)
+             ps (map (fn [kind]
+                       (quiz/fetch-cards {:kind kind
+                                          :rand-range rand-range
+                                          :user-uid user-uid
+                                          :item-count item-count
+                                          :tags (:tags quiz-settings)}))
+                     (:kind quiz-settings))
+             cards (loop [result []
+                          [p & ps :as pps] ps]
+                     (if (seq pps)
+                       (recur
+                        (conj result (quiz/get-cards (<p! p) {:face (:face quiz-settings)
+                                                              :item-count item-count}))
+                        ps)
+                       result))
+             cards (-> cards flatten distinct shuffle)]
+         (on-success cards))))))
 
 (defn- check-answer [answer correct-text]
   (cond
@@ -397,3 +384,27 @@
                    (fn [doc]
                      (swap! result conj (:front (js->clj (.data doc) :keywordize-keys true)))))
          (on-success @result))))))
+
+(re-frame/reg-fx
+ ::firebase-update-quiz-settings
+ (fn [{:keys [user-uid values on-success]}]
+   (when user-uid
+     (-> (firestore)
+         (.collection "users")
+         (.doc user-uid)
+         (.set #js {:quiz-settings (clj->js values)} #js {:merge true})
+         (.then on-success)))))
+
+(re-frame/reg-fx
+ ::firebase-load-quiz-settings
+ (fn [{:keys [user-uid on-success]}]
+   (when user-uid
+     (-> (firestore)
+         (.collection "users")
+         (.doc user-uid)
+         (.get)
+         (.then
+          (fn [doc]
+            (when (.-exists doc)
+              (when-let [quiz-settings (:quiz-settings (js->clj (.data doc) :keywordize-keys true))]
+                (on-success quiz-settings)))))))))

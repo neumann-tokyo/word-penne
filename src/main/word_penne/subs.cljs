@@ -129,3 +129,8 @@
  ::back-speak-language
  (fn [db _]
    (:back-speak-language db)))
+
+(re-frame/reg-sub
+ ::quiz-settings
+ (fn [db _]
+   (:quiz-settings db)))
