@@ -294,7 +294,8 @@
                           [p & ps :as pps] ps]
                      (if (seq pps)
                        (recur
-                        (conj result (quiz/get-cards (<p! p) (:face quiz-settings)))
+                        (conj result (quiz/get-cards (<p! p) {:face (:face quiz-settings)
+                                                              :item-count item-count}))
                         ps)
                        result))
              cards (-> cards flatten distinct shuffle)]
