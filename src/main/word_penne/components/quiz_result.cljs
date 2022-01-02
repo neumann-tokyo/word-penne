@@ -47,38 +47,41 @@
   (let [cards @(re-frame/subscribe [::subs/quiz-cards])]
     [:div (use-style s-container)
      [:h3 (tr "Result")]
-     [:table (use-style s-table)
-      [:thead
-       [:tr
-        [:th (use-style s-table-header) (tr "Quiz")]
-        [:th (use-style s-table-header) (tr "Answer")]
-        [:th (use-style s-table-header) (tr "Result")]
-        [:th (use-style s-table-header) (tr "Edit")]]]
-      [:tbody
-       (doall (map-indexed
-               (fn [i card]
-                 ^{:key i} [:tr
-                            [:td (use-style s-table-row) (:front card)]
-                            [:td (use-style s-table-row) (:back card)]
-                            [:td (use-style s-table-row)
-                             [:div (use-style s-judgement)
-                              [JudgementMark (:judgement card)]
-                              [:span (tr (:judgement card))]]]
-                            [:td (use-style s-table-row-text-center)
-                             [:a (use-style s-edit-button {:href "#"
-                                                           :on-click (fn [e]
-                                                                       (.preventDefault e)
-                                                                       (re-frame/dispatch [::events/archive-card (:uid card) true]))
-                                                           :title "archive"})
-                              [:span {:class "material-icons-outlined"} "archive"]]
-                             [:a (use-style s-edit-button
-                                            {:href "#"
-                                             :title "edit"
-                                             :on-click (fn [e]
-                                                         (.preventDefault e)
-                                                         (re-frame/dispatch [::events/navigate :word-penne.pages.cards/edit {:id (:uid card)}]))})
-                              [:span {:class "material-icons-outlined"} "edit"]]]])
-               cards))]]
+     (if (seq cards)
+       [:table (use-style s-table)
+        [:thead
+         [:tr
+          [:th (use-style s-table-header) (tr "Quiz")]
+          [:th (use-style s-table-header) (tr "Answer")]
+          [:th (use-style s-table-header) (tr "Result")]
+          [:th (use-style s-table-header) (tr "Edit")]]]
+        [:tbody
+         (doall (map-indexed
+                 (fn [i card]
+                   ^{:key i} [:tr
+                              [:td (use-style s-table-row) (:front card)]
+                              [:td (use-style s-table-row) (:back card)]
+                              [:td (use-style s-table-row)
+                               [:div (use-style s-judgement)
+                                [JudgementMark (:judgement card)]
+                                [:span (tr (:judgement card))]]]
+                              [:td (use-style s-table-row-text-center)
+                               [:a (use-style s-edit-button {:href "#"
+                                                             :on-click (fn [e]
+                                                                         (.preventDefault e)
+                                                                         (re-frame/dispatch [::events/archive-card (:uid card) true]))
+                                                             :title "archive"})
+                                [:span {:class "material-icons-outlined"} "archive"]]
+                               [:a (use-style s-edit-button
+                                              {:href "#"
+                                               :title "edit"
+                                               :on-click (fn [e]
+                                                           (.preventDefault e)
+                                                           (re-frame/dispatch [::events/navigate :word-penne.pages.cards/edit {:id (:uid card)}]))})
+                                [:span {:class "material-icons-outlined"} "edit"]]]])
+                 cards))]]
+      ;;  TODO ちゃんとしたメッセージにする
+       [:div "Oops! クイズを作成できませんでした。設定を見直してみてください。[クイズ設定]"])
      [:div (use-style s-buttons-container)
       [Button {:kind "secondary"
                :on-click (fn [e]
