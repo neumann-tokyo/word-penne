@@ -20,11 +20,15 @@
                   [front-quiz back-quiz])))))
     @cards))
 
-(defn- with-fetch-cards [fns {:keys [user-uid item-count]}]
+(defn- with-fetch-cards [fns {:keys [user-uid item-count tags]}]
   (-> (firestore)
       (.collection (str "users/" user-uid "/cards"))
       ((apply comp (reverse fns)))
       (.where "archive" "==" false)
+      ((fn [f]
+         (if (seq tags)
+           (.where f "tags" "array-contains-any" #js[tags])
+           f)))
       (.limit item-count)
       (.get)))
 

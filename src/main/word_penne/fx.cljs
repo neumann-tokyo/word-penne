@@ -277,7 +277,6 @@
              (<p! (.commit batch))
              (on-success))))))))
 
-;; TODO quiz-settings の tags の対応
 (re-frame/reg-fx
  ::firebase-setup-quiz
  (fn [{:keys [user-uid quiz-settings on-success]}]
@@ -288,7 +287,8 @@
                        (quiz/fetch-cards {:kind kind
                                           :rand-range rand-range
                                           :user-uid user-uid
-                                          :item-count item-count}))
+                                          :item-count item-count
+                                          :tags (:tags quiz-settings)}))
                      (:kind quiz-settings))
              cards (loop [result []
                           [p & ps :as pps] ps]
