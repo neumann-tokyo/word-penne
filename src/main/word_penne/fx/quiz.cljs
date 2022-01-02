@@ -1,6 +1,7 @@
 (ns word-penne.fx.quiz
   (:require [reagent.core :as r]
-            [word-penne.firebase.firestore :refer [firestore] :as fs]))
+            ["spacetime" :as spacetime]
+            [word-penne.firebase.firestore :refer [firestore timestamp] :as fs]))
 
 (defn get-cards [snapshot face]
   (let [cards (r/atom [])]
@@ -33,10 +34,20 @@
     kind))
 
 (defmethod fetch-cards "Latest" [params]
-  (with-fetch-cards
-    [#(.orderBy % "updatedAt" "desc") ;; TODO もう少し random な要素を出せるなら出したい
-     ]
-    params))
+  ;; 1週間以内に更新があったデータからランダムに取得する
+  (let [now (-> (timestamp) .toDate spacetime)
+        min-start-date (-> now (.subtract 1 "week") .toNativeDate)
+        rand-range (- (.toNativeDate now) min-start-date)
+        start-int (rand-int rand-range)
+        end-int (rand-int (- rand-range start-int))
+        start-date (js/Date. (+ (.getTime min-start-date) start-int))
+        end-date (js/Date. (+ (.getTime min-start-date) start-int end-int))]
+    (with-fetch-cards
+      [#(-> %
+            (.where "updatedAt" ">=" start-date)
+            (.where "updatedAt" "<=" end-date)
+            (.orderBy "updatedAt"))]
+      params)))
 
 (defmethod fetch-cards "High wrong rate" [params]
   (with-fetch-cards
@@ -47,7 +58,6 @@
 (defmethod fetch-cards "Random" [{:keys [rand-range] :as params}]
   (let [start-at (rand-int rand-range)]
     (with-fetch-cards
-      [#(.orderBy % "random")
-       #(.orderBy % "wrongRate") ;; TODO これ不要かもしれない
-       #(.where % "random" ">=" start-at)]
+      [#(.where % "random" ">=" start-at)
+       #(.orderBy % "random")]
       params)))
