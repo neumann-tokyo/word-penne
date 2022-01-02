@@ -81,12 +81,6 @@
         [:button (use-style sf/s-submit {:type "submit" :data-testid "user-setting__submit" :disabled submitting?}) (tr "Submit")] ;; FIXME double submit
         [Button {:href (path-for routes :word-penne.pages.home/home)} (tr "Cancel")]]])]])
 
-(def ^:private t-quiz-setting-form
-  [:map
-   [:locale db/t-locale]
-   [:front-speak-language db/t-speak-language]
-   [:back-speak-language db/t-speak-language]])
-
 (def ^:private s-checkbox
   {:margin-right ".2rem"})
 
@@ -113,9 +107,12 @@
    [fork/form {:path [:form]
                :prevent-default? true
                :clean-on-unmount? true
-               :validation (va/validator-for-humans t-quiz-setting-form)
+               :validation (va/validator-for-humans db/t-quiz-settings)
                :initial-values (walk/stringify-keys @(re-frame/subscribe [::subs/quiz-settings]))
-               :on-submit #(re-frame/dispatch [::events/update-quiz-settings (walk/keywordize-keys %)])}
+               :on-submit (fn [{:keys [values]}]
+                            (re-frame/dispatch [::events/update-quiz-settings {:values (as-> (walk/keywordize-keys values) v
+                                                                                         (assoc v :kind (update-kind v))
+                                                                                         (select-keys v [:tags :kind :face :amount]))}]))}
     (fn [{:keys [values
                  errors
                  touched
@@ -123,15 +120,9 @@
                  handle-change
                  handle-blur
                  submitting?
-                ;;  handle-submit
-                 ]}]
+                 handle-submit]}]
       [:form (use-style sf/s-form {:id form-id
-                                   :on-submit (fn [e]
-                                                ;; TODO FIXME なぜかhandle-submitが動いてくれないので自作実装する
-                                                (.preventDefault e)
-                                                (re-frame/dispatch [::events/update-quiz-settings {:values (as-> (walk/keywordize-keys values) v
-                                                                                                             (assoc v :kind (update-kind v))
-                                                                                                             (select-keys v [:tags :kind :face :amount]))}]))})
+                                   :on-submit handle-submit})
 
        [:div
         [:label {:for "tags"} (tr "Tags")]
@@ -150,7 +141,6 @@
          (doall (map (fn [kind]
                        (let [kind-id (str "kind__" (str/replace kind #"\W" "-"))
                              checked (boolean ((set (values "kind")) kind))]
-                        ;; TODO すべてのチェックボックスが外されていたらバリデーションエラーにしたい
                          [:span {:key kind-id}
                           [:input (use-style s-checkbox
                                              {:type "checkbox"
@@ -187,7 +177,6 @@
                                        :data-testid "quiz-setting__amount"})
          (doall (map (fn [amount] [:option {:value amount :key amount} (tr amount)]) db/t-quiz-setting-amount))]
         [ErrorMessange touched errors "face"]]
-      ;;  TODO 今日登録した単語でテストとかしたい
        [:div (use-style sf/s-buttons-container)
         [:button (use-style sf/s-submit {:type "submit" :data-testid "quiz-setting__submit" :disabled submitting?}) (tr "Submit")] ;; FIXME double submit
         [Button {:href (path-for routes :word-penne.pages.home/home)} (tr "Cancel")]]])]])
