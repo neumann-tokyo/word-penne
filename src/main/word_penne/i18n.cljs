@@ -72,7 +72,10 @@
    "Edit" "編集"
    "Retry" "再挑戦"
    "Make it correct" "正解にする"
-   "Do you quit? The data in the middle will be deleted." "クイズを終了しますか？途中のデータは削除されます。"})
+   "Do you quit? The data in the middle will be deleted." "クイズを終了しますか？途中のデータは削除されます。"
+   "Oops!!" "おおっと!!"
+   "Could not create a quiz. Please retry or review the settings." "クイズを作成できませんでした。やり直すか設定を見直してみてください。"
+   "Quiz Settings" "クイズ設定"})
 
 (defn- gettext [word-map text]
   (let [word (get word-map text)]

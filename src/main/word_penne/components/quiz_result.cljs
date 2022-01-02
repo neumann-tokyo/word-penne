@@ -37,10 +37,16 @@
 (def s-buttons-container
   {:margin-top "1rem"
    :display "flex"
+   :justify-content "space-between"})
+(def s-buttons-container-right
+  {:display "flex"
    :justify-content "flex-end"
    :gap ".5rem"})
 (def s-edit-button
   {:color (:main-text color)})
+(def s-oops
+  {:font-weight "bold"
+   :font-size "2rem"})
 
 (defn QuizResult []
   @(re-frame/subscribe [::subs/locale])
@@ -80,11 +86,15 @@
                                                            (re-frame/dispatch [::events/navigate :word-penne.pages.cards/edit {:id (:uid card)}]))})
                                 [:span {:class "material-icons-outlined"} "edit"]]]])
                  cards))]]
-      ;;  TODO ちゃんとしたメッセージにする
-       [:div "Oops! クイズを作成できませんでした。設定を見直してみてください。[クイズ設定]"])
+       [:div
+        [:p (use-style s-oops) (tr "Oops!!")]
+        [:p (tr "Could not create a quiz. Please retry or review the settings.")]])
      [:div (use-style s-buttons-container)
-      [Button {:kind "secondary"
-               :on-click (fn [e]
-                           (.preventDefault e)
-                           (re-frame/dispatch [::events/setup-quiz]))} (tr "Retry")]
-      [Button {:kind "primary" :href (path-for routes :word-penne.pages.home/home)} (tr "Finish")]]]))
+      [:div
+       [Button {:kind "secondary" :href (path-for routes :word-penne.pages.user/quiz-settings)} (tr "Quiz Settings")]]
+      [:div (use-style s-buttons-container-right)
+       [Button {:kind "secondary"
+                :on-click (fn [e]
+                            (.preventDefault e)
+                            (re-frame/dispatch [::events/setup-quiz]))} (tr "Retry")]
+       [Button {:kind "primary" :href (path-for routes :word-penne.pages.home/home)} (tr "Finish")]]]]))
