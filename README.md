@@ -2,81 +2,81 @@
 
 ## Setup
 
-次が動くようにしておいてください。
+Please make sure the following works.
 
 * [direnv](https://direnv.net)
 * Node.js
 * Clojure
 
-別途お渡しする `.envrc` をリポジトリのルートディレクトリに配置してください。
+Place the `.envrc` that we will provide separately in the root directory of the repository.
 
-次のコマンドを実行してライブラリをインストールしてください。
+Install the library by running the following command.
 
-```
+````
 npm install
 ```
 
 ## Dev
 
-まず次のコマンドを実行して開発用の firebase emulators を起動してください。
+First, start the firebase emulators for development by running the following command: ``` npm install ``` ## Dev
 
 ```
 npm run emulators
 ```
 
-別のターミナルで次を実行してください。
+In another terminal, run the following.
 
-```
+````
 npm run dev
-```
+````
 
-localhost:8080 でシステムが動作します。
+The system will run on localhost:8080.
 
 ## Test
 
-まず次のコマンドを実行してテスト用の firebase emulators を起動してください。
+First, start the firebase emulators for testing by running the following command: ```` npm run dev ``` localhost:8080 ``` ## Test
 
 ```
 npm run emulators:test
-```
+````
 
-Cypress による E2E テストを行うので別のターミナルでサーバーを起動します。
+We will run E2E tests with Cypress, so start the server in a separate terminal.
 
-```
+````
 npm run dev
 ```
 
-再び別のターミナル（つまり３つ目）で次のコマンドを実行して Cypress によるテストを行います。
+Again, in another terminal (i.e., the third one), run the following commands to test with Cypress.
 
 ```
 npm run cypress:open
-# または
+# or
 npm run cypress:run
 ```
 
 ## Branch Rules
 
-* [git-flow](http://danielkummer.github.io/git-flow-cheatsheet/) に従います
-* https://github.com/conventional-changelog/standard-version を用いてバージョンを管理します
+* Follow [git-flow](http://danielkummer.github.io/git-flow-cheatsheet/)
+* Use https://github.com/conventional-changelog/standard-version to manage versions
 
 ## Commit Rules
 
-* [Conventinal Commits](https://www.conventionalcommits.org/ja/v1.0.0/) に従ってください
-* VS Code の場合 [vscode-conventional-commits](https://marketplace.visualstudio.com/items?itemName=vivaxy.vscode-conventional-commits) を使うと便利です
+* Follow [Conventinal Commits](https://www.conventionalcommits.org/ja/v1.0.0/)
+* For VS Code, use [vscode-conventional-commits](https://marketplace.visualstudio.com/items?itemName=vivaxy.vscode-conventional-commits) It is convenient to use [vscode-conventional-commits]()
 
 ## Deploy
 
-### 本番環境での動作確認
+### Verify that the code works in the production environment
 
-本番デプロイ前の動作確認を次のコマンドで行ってください。
+Please use the following commands to verify the operation before production deployment.
 
-```
+````
 npm run release
 npm run emulators:hosting
 ```
 
-### standard-version でバージョンを上げて firebase にデプロイ
+### standard-version to version up and deploy to firebase
 
-```
+``` make deploy
 make deploy
-```
+make deploy ```
