@@ -12,13 +12,13 @@ Place the `.envrc` that we will provide separately in the root directory of the 
 
 Install the library by running the following command.
 
-````
+```
 npm install
 ```
 
 ## Dev
 
-First, start the firebase emulators for development by running the following command: ``` npm install ``` ## Dev
+First, start the firebase emulators for development by running the following command: 
 
 ```
 npm run emulators
@@ -26,23 +26,23 @@ npm run emulators
 
 In another terminal, run the following.
 
-````
+```
 npm run dev
-````
+```
 
 The system will run on localhost:8080.
 
 ## Test
 
-First, start the firebase emulators for testing by running the following command: ```` npm run dev ``` localhost:8080 ``` ## Test
+First, start the firebase emulators for testing by running the following command:
 
 ```
 npm run emulators:test
-````
+```
 
 We will run E2E tests with Cypress, so start the server in a separate terminal.
 
-````
+```
 npm run dev
 ```
 
@@ -70,13 +70,13 @@ npm run cypress:run
 
 Please use the following commands to verify the operation before production deployment.
 
-````
+```
 npm run release
 npm run emulators:hosting
 ```
 
 ### standard-version to version up and deploy to firebase
 
-``` make deploy
+```
 make deploy
-make deploy ```
+```
